@@ -54,7 +54,7 @@ namespace WindowsFormsApplication1
         private void registrar_Click(object sender, EventArgs e)
         {
             {
-                string mensaje = "1/" + usuario.Text + email.Text + contra.Text;
+                string mensaje = "1/" + usuario.Text + "/" + contra.Text + "/" + email.Text;
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
@@ -102,7 +102,7 @@ namespace WindowsFormsApplication1
         private void acceder_Click(object sender, EventArgs e)
         {
             
-                string mensaje = "2/" + usuario.Text + contra.Text;
+                string mensaje = "2/" + usuario.Text + "/" + contra.Text;
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
