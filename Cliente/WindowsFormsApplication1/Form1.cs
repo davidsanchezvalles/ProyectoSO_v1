@@ -53,7 +53,7 @@ namespace WindowsFormsApplication1
 
         private void registrar_Click(object sender, EventArgs e)
         {
-            {
+            try{
                 string mensaje = "1/" + usuario.Text + "/" + contra.Text + "/" + email.Text;
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
@@ -66,6 +66,7 @@ namespace WindowsFormsApplication1
                 MessageBox.Show(mensaje);
                 groupBox2.Visible = true;
             }
+            catch { MessageBox.Show("Error al registrar.")}
             
             
         }
@@ -101,7 +102,8 @@ namespace WindowsFormsApplication1
 
         private void acceder_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
                 string mensaje = "2/" + usuario.Text + "/" + contra.Text;
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
@@ -113,52 +115,58 @@ namespace WindowsFormsApplication1
                 mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
                 MessageBox.Show(mensaje);
                 groupBox2.Visible = true;
+            }
+            catch { MessageBox.Show("Error al acceder.")}
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (gana.Checked)
+            try
             {
-                string mensaje = "3/" + idpartida.Text;
-                // Enviamos al servidor el nombre tecleado
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                server.Send(msg);
+                if (gana.Checked)
+                {
+                    string mensaje = "3/" + idpartida.Text;
+                    // Enviamos al servidor el nombre tecleado
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
 
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                MessageBox.Show("El ganador de la partida es: " + mensaje);
+                    //Recibimos la respuesta del servidor
+                    byte[] msg2 = new byte[80];
+                    server.Receive(msg2);
+                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                    MessageBox.Show("El ganador de la partida es: " + mensaje);
+                }
+
+                else if (pos.Checked)
+                {
+                    string mensaje = "4/" + idpartida.Text;
+                    // Enviamos al servidor el nombre tecleado
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+
+                    //Recibimos la respuesta del servidor
+                    byte[] msg2 = new byte[80];
+                    server.Receive(msg2);
+                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                    MessageBox.Show("Tu posicón en partida es: " + mensaje);
+                }
+
+                else if (tiemp.Checked)
+                {
+                    string mensaje = "5/" + idpartida.Text;
+                    // Enviamos al servidor el nombre tecleado
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+
+                    //Recibimos la respuesta del servidor
+                    byte[] msg2 = new byte[80];
+                    server.Receive(msg2);
+                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                    MessageBox.Show("Tu tiempo en partida es: " + mensaje + "min");
+                }
             }
-
-            else if (pos.Checked)
-            {
-                string mensaje = "4/" + idpartida.Text;
-                // Enviamos al servidor el nombre tecleado
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                server.Send(msg);
-
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                MessageBox.Show("Tu posicón en partida es: " + mensaje + "min");
-            }
-
-            else if (tiemp.Checked)
-            {
-                string mensaje = "5/" + idpartida.Text;
-                // Enviamos al servidor el nombre tecleado
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                server.Send(msg);
-
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                MessageBox.Show("Tu tiempo en partida es: " + mensaje);
-            }
+            catch {MessageBox.Show("Error al realizar la consulta.")}
         }
     }
 }
