@@ -66,7 +66,7 @@ namespace WindowsFormsApplication1
                 MessageBox.Show(mensaje);
                 groupBox2.Visible = true;
             }
-            catch { MessageBox.Show("Error al registrar.")}
+            catch { MessageBox.Show("Error al registrar."); }
             
             
         }
@@ -116,7 +116,7 @@ namespace WindowsFormsApplication1
                 MessageBox.Show(mensaje);
                 groupBox2.Visible = true;
             }
-            catch { MessageBox.Show("Error al acceder.")}
+            catch { MessageBox.Show("Error al acceder."); }
 
         }
 
@@ -165,8 +165,22 @@ namespace WindowsFormsApplication1
                     mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
                     MessageBox.Show("Tu tiempo en partida es: " + mensaje + "min");
                 }
+
+                else if (genteconec.Checked)
+                {
+                    string mensaje = "6";
+                    // Enviamos al servidor el nombre tecleado
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+
+                    //Recibimos la respuesta del servidor
+                    byte[] msg2 = new byte[80];
+                    server.Receive(msg2);
+                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                    MessageBox.Show("Los usuarios conectados son: " + mensaje);
+                }
             }
-            catch {MessageBox.Show("Error al realizar la consulta.")}
+            catch { MessageBox.Show("Error al realizar la consulta."); }
         }
     }
 }

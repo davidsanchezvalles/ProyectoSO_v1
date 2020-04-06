@@ -46,6 +46,7 @@
             this.contra = new System.Windows.Forms.TextBox();
             this.email = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.genteconec = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -111,6 +112,7 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.groupBox2.Controls.Add(this.genteconec);
             this.groupBox2.Controls.Add(this.tiemp);
             this.groupBox2.Controls.Add(this.pos);
             this.groupBox2.Controls.Add(this.gana);
@@ -241,6 +243,17 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // genteconec
+            // 
+            this.genteconec.AutoSize = true;
+            this.genteconec.Location = new System.Drawing.Point(173, 126);
+            this.genteconec.Name = "genteconec";
+            this.genteconec.Size = new System.Drawing.Size(108, 17);
+            this.genteconec.TabIndex = 10;
+            this.genteconec.TabStop = true;
+            this.genteconec.Text = "Gente conectada";
+            this.genteconec.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -280,6 +293,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox idpartida;
+        private System.Windows.Forms.RadioButton genteconec;
     }
 }
 

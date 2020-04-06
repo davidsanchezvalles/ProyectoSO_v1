@@ -10,11 +10,99 @@
 #include <pthread.h>
 
 
-void *AtenderCliente(void *socket){
+typedef struct {
+	char nombre[20];
+	int socket;
+}Conectado;
+
+typedef struct {
+	Conectado conectados[100];
+	int num;
+}ListaConectados;
+
+
+
+
+int Pon(ListaConectados *lista, char nombre[20], int socket){
+	//Añade nuevo conectado.
+	if(lista->num == 100){
+		return -1;
+	}else{
+		strcpy(lista->conectados[lista->num].nombre, nombre);
+		lista->conectados[lista->num].socket = socket;
+		lista->num = lista->num + 1;
+		return 0;
+	}
+}
+	
+int Eliminar(ListaConectados *lista, char nombre[20]){
+		
+	int pos = DamePosicion(lista, nombre);
+	
+	if(pos == -1){
+		return -1;
+	}else{
+		int i;
+		for(i=pos; i<lista->num-1; i++){
+			
+			strcpy(lista->conectados[i].nombre, lista->conectados[i+1].nombre);
+			lista->conectados[i].socket = lista->conectados[i+1].socket;
+			
+		}
+		lista->num--;
+		return 0;
+	}
+}
+		
+int DamePosicion(ListaConectados *lista, char nombre[20]){
+	//Devuelve Posicion
+	int i = 0;
+	int encontrado = 0;
+	
+	while(i<lista->num && encontrado==0){
+		if(strcmp(nombre, lista->conectados[i].nombre)==0){
+			encontrado = 1;
+		}if(encontrado==0){
+			i++;
+		}
+	}
+	if(encontrado == 1){
+		return i;
+	}else{
+		return -1;
+	}
+}
+			
+			
+void DameConectados(ListaConectados *lista, char conectados[300]){
+	//Pone en conectados los nombres de todos los conectados separados por /
+	//primero pone el num. de conectados. Ejemplo: 3/Maria/Juan
+	
+	sprintf(conectados, "%d", lista->num);
+	int i;
+	for(i=0; i<lista->num; i++){
+		sprintf(conectados, "%s/%s", conectados, lista->conectados[i].nombre);
+	}
+	printf("CONECTADOS: %s\n", conectados);
+}
+
+
+	
+void *AtenderCliente(ListaConectados *lista){
+	
+	printf("BEEE\n");
 	int sock_conn;
 	int *s;
-	s=(int *)socket;
+	int pos = lista->num  -1;
+	printf("POSICIO: %d\n", pos);
+	printf("LISTA: %d\n", lista->conectados[pos].socket);
+	s=&lista->conectados[pos].socket;
+	printf("S: %d\n", *s);
+	printf("BEEEE123\n");
 	sock_conn = *s;
+	printf("1SOCK_CONN:%d\n", sock_conn);
+	printf("LIST: %d\n", lista->conectados[pos].socket);
+	printf("BEEE0\n");
 	int ret, err;
 	char buff[512],buff2[512], nombre[20],contrasena[20], email[20], idPartida[20];;
 	MYSQL *conn;
@@ -24,7 +112,7 @@ void *AtenderCliente(void *socket){
 	
 	int terminar=0;
 	int codigo;
-	
+	printf("TOT OK\n");
 	
 	//Creamos una conexion al servidor MYSQL 
 	conn = mysql_init(NULL);
@@ -33,6 +121,7 @@ void *AtenderCliente(void *socket){
 				mysql_errno(conn), mysql_error(conn));
 		exit (1);
 	}
+	printf("TOT OK2\n");
 	//inicializar la conexin
 	conn = mysql_real_connect (conn, "localhost","root", "mysql", "juego",0, NULL, 0);
 	if (conn==NULL) {
@@ -40,12 +129,18 @@ void *AtenderCliente(void *socket){
 				mysql_errno(conn), mysql_error(conn));
 		exit (1);
 	}
+	printf("FINSAQUIBE\n");
+	
+	
+	
 	
 	
 	while (terminar==0){
 		ret=read(sock_conn,buff, sizeof(buff)); //recibimos mensaje
 		printf ("Recibido\n");  // Tenemos que a?adirle la marca de fin de string, para que no escriba lo que hay despues en el buffer
 		buff[ret]='\0';
+		printf("MENSAJE: %s\n", buff);
+		
 		
 		char *p;//porque el asterisco?????? Es un puntero, quan utilitzes la funcio strtok, fragmentes l'array pel caracter que
 		//t'interessa, aixo ho fas a través del punter. El punter va fins a la direcció de memoria on hi ha el caracter que t'interessa,
@@ -54,17 +149,28 @@ void *AtenderCliente(void *socket){
 		p = strtok( buff, "/");
 		codigo = atoi(p);
 		printf("CODIGO: %d\n", codigo);
+		p = strtok( NULL, "/");
+		strcpy (nombre, p);
+		
 		
 		switch (codigo)
 		{
+			case 0:{
+				printf("DESCONEXION\n");
+				close(sock_conn);
+				terminar = 1;
+				Eliminar(&lista, nombre);
+				break;
+			}
 			case 1:
 			{
 				printf("11111111\n");
 			
 				strcpy(consulta,"INSERT INTO jugador VALUES('");
 			
-				p = strtok( NULL, "/");
-				strcpy (nombre, p);
+				/*p = strtok( NULL, "/");
+				strcpy (nombre, p);*/
+				strcpy(lista->conectados[pos].nombre, p);
 				strcat(consulta,nombre);
 				strcat(consulta,"',");
 			
@@ -103,8 +209,9 @@ void *AtenderCliente(void *socket){
 				printf("222222222\n");
 				strcpy(consulta,"SELECT contrasena FROM jugador WHERE usuario = '");
 			
-				p = strtok( NULL, "/");
-				strcpy (nombre, p);
+				/*p = strtok( NULL, "/");
+				strcpy (nombre, p);*/
+				strcpy(lista->conectados[pos].nombre, nombre);
 				strcat(consulta,nombre);
 				strcat(consulta,"';");
 				printf("BE\n");
@@ -134,6 +241,8 @@ void *AtenderCliente(void *socket){
 				printf("Resultat: %s\n", row[0]);
 			
 				if(strcmp(row[0], contrasena)==0){
+					Pon(&lista, nombre, sock_conn);
+				//	DameConectados(&lista, lista->conectados);
 					printf("BE1\n");
 					strcpy (buff2,"Acceso");
 					write (sock_conn,buff2, strlen(buff2));
@@ -268,7 +377,7 @@ void *AtenderCliente(void *socket){
 		};
 		
 	}
-		close(sock_conn);
+		
 	
 }
 
@@ -276,6 +385,8 @@ void *AtenderCliente(void *socket){
 
 int main(int argc, char *argv[])
 {
+	
+	ListaConectados listaConectados;
 	int sock_conn, sock_listen;
 	struct sockaddr_in serv_adr;
 
@@ -304,19 +415,26 @@ int main(int argc, char *argv[])
 		//empezamos a escuchar
 	int peticion = 0;
 	int a = 0;
-	int sockets[100];
+	listaConectados.num =0;
+	//int sockets[100];
 	
 	pthread_t thread[100];//vector estructura thread
 	
 	while(peticion == 0){
-		a++;
+		
 		printf ("Escuchando\n");
 		sock_conn = accept(sock_listen, NULL, NULL); //realizamos conexion
 		printf ("Conexion realizada\n");
+		printf("0SOCK_CONN: %d\n", sock_conn);
 		
-		sockets[a]=sock_conn;
+		listaConectados.conectados[a].socket=sock_conn;
+		printf("LISTASOCKET: %d\n", listaConectados.conectados[a].socket);
+		printf("BEEE1\n");
+		listaConectados.num++;
 		
-		pthread_create(&thread[a], NULL, AtenderCliente, &sockets[a]);
+		pthread_create(&thread[a], NULL, AtenderCliente, &listaConectados);
+		printf("BE2\n");
+		a++;
 	}
 }
 		
