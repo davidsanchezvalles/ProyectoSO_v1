@@ -168,7 +168,7 @@ namespace WindowsFormsApplication1
 
                 else if (genteconec.Checked)
                 {
-                    string mensaje = "6";
+                    string mensaje = "6/";
                     // Enviamos al servidor el nombre tecleado
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                     server.Send(msg);
@@ -177,7 +177,7 @@ namespace WindowsFormsApplication1
                     byte[] msg2 = new byte[80];
                     server.Receive(msg2);
                     mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                    MessageBox.Show("Los usuarios conectados son: " + mensaje);
+                    genteconectada.Text = "Los usuarios conectados son: " + mensaje;
                 }
             }
             catch { MessageBox.Show("Error al realizar la consulta."); }
