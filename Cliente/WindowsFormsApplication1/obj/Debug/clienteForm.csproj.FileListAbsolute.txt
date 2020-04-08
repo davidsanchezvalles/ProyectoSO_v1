@@ -128,3 +128,11 @@ C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\o
 C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.cache
 C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
 C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+\\VBOXSVR\Desktop\ProyectoSO-master (3)\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+\\VBOXSVR\Desktop\ProyectoSO-master (3)\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+\\VBOXSVR\Desktop\ProyectoSO-master (3)\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+\\VBOXSVR\Desktop\ProyectoSO-master (3)\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+\\VBOXSVR\Desktop\ProyectoSO-master (3)\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csprojResolveAssemblyReference.cache
+\\VBOXSVR\Desktop\ProyectoSO-master (3)\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+\\VBOXSVR\Desktop\ProyectoSO-master (3)\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+\\VBOXSVR\Desktop\ProyectoSO-master (3)\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.Cache

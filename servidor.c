@@ -48,7 +48,7 @@ int Eliminar(ListaConectados *lista, char nombre[20]){
 			lista->conectados[i].socket = lista->conectados[i+1].socket;
 			
 		}
-		lista->num--;
+		lista->num = lista->num-1;
 		return 0;
 	}
 }
@@ -76,23 +76,28 @@ int DamePosicion(ListaConectados *lista, char nombre[20]){
 void DameConectados(ListaConectados *lista, char conectados[300]){
 	//Pone en conectados los nombres de todos los conectados separados por /
 	//primero pone el num. de conectados. Ejemplo: 3/Maria/Juan
-	
-	sprintf(conectados, "%d", lista->num);
 	int i;
-	for(i=0; i<lista->num; i++){
-		sprintf(conectados, "%s/%s", conectados, lista->conectados[i].nombre);
+	sprintf(conectados, "%s", lista->conectados[0].nombre);
+	printf("1:%s\n",conectados, lista->conectados[0].nombre);
+	printf("NUMERO DE CONECTATS: %d\n", lista->num);
+	if(lista->num > 0){
+		for(i=1; i<lista->num; i++){
+			sprintf(conectados, "%s/%s", conectados, lista->conectados[i].nombre);
+		}
 	}
 	printf("CONECTADOS: %s\n", conectados);
+	
 }
 
 
 	
 void *AtenderCliente(ListaConectados *lista){
 	
+	char conectados[300];
 	printf("BEEE\n");
 	int sock_conn;
 	int *s;
-	int pos = lista->num  -1;
+	int pos = lista->num;
 	printf("POSICIO: %d\n", pos);
 	printf("LISTA: %d\n", lista->conectados[pos].socket);
 	s=&lista->conectados[pos].socket;
@@ -101,7 +106,6 @@ void *AtenderCliente(ListaConectados *lista){
 	sock_conn = *s;
 	printf("1SOCK_CONN:%d\n", sock_conn);
 	printf("LIST: %d\n", lista->conectados[pos].socket);
-	printf("BEEE0\n");
 	int ret, err;
 	char buff[512],buff2[512], nombre[20],contrasena[20], email[20], idPartida[20];;
 	MYSQL *conn;
@@ -135,7 +139,7 @@ void *AtenderCliente(ListaConectados *lista){
 	
 	
 	while (terminar==0){
-		ret=read(sock_conn,buff, sizeof(buff)); //recibimos mensaje
+		ret=read(sock_conn, buff, sizeof(buff)); //recibimos mensaje
 		printf ("Recibido\n");  // Tenemos que a?adirle la marca de fin de string, para que no escriba lo que hay despues en el buffer
 		buff[ret]='\0';
 		printf("MENSAJE: %s\n", buff);
@@ -148,8 +152,10 @@ void *AtenderCliente(ListaConectados *lista){
 		p = strtok( buff, "/");
 		codigo = atoi(p);
 		printf("CODIGO: %d\n", codigo);
-		p = strtok( NULL, "/");
-		strcpy (nombre, p);
+		if(codigo==1 || codigo==2){
+			p = strtok( NULL, "/");
+			strcpy (nombre, p);
+		}
 		
 		
 		switch (codigo)
@@ -159,6 +165,7 @@ void *AtenderCliente(ListaConectados *lista){
 				close(sock_conn);
 				terminar = 1;
 				Eliminar(lista, nombre);
+				printf("Conectados: %d\n", lista->num);
 				break;
 			}
 			case 1:
@@ -212,7 +219,7 @@ void *AtenderCliente(ListaConectados *lista){
 			
 				/*p = strtok( NULL, "/");
 				strcpy (nombre, p);*/
-				strcpy(lista->conectados[pos].nombre, nombre);
+				//strcpy(lista->conectados[pos].nombre, nombre);
 				strcat(consulta,nombre);
 				strcat(consulta,"';");
 				printf("BE\n");
@@ -242,6 +249,7 @@ void *AtenderCliente(ListaConectados *lista){
 			
 				if(strcmp(row[0], contrasena)==0){
 					Pon(lista, nombre, sock_conn);
+					/////////////////////////////////////////////////////////AQUEST SOCKET JA L'HEM POSAT A LA LLISTA A BAIX DE TOOOT!!
 				//	DameConectados(&lista, lista->conectados);
 					printf("BE1\n");
 					strcpy (buff2,"Acceso");
@@ -373,33 +381,19 @@ void *AtenderCliente(ListaConectados *lista){
 		case 6:
 			{
 				printf("222222222\n");
-				printf("BE\n");
-				err=mysql_query (conn, consulta);
+				printf("Ha entrat a codi 6\n");
 				
 				/////////////////////////////////////////////////////////
 				//AQUI FALTA EL CODIGO PARA QUE ENVIE LOS USUARIOS 
 				//CONECTADOS EN UN MENSAJE AL CLIENTE
 				////////////////////////////////////////////////////////
+				DameConectados(lista, conectados);
 				
-				//recogemos el resultado de la consulta. El resultado de la
-				//consulta se devuelve en una variable del tipo puntero a
-				//MYSQL_RES tal y como hemos declarado anteriormente.
-				//Se trata de una tabla virtual en memoria que es la copia
-				//de la tabla real en disco.
-				resultado = mysql_store_result (conn);
-				// El resultado es una estructura matricial en memoria
-				// en la que cada fila contiene los datos de una persona.
+				printf("La funcio ha anat be, Llista: %s", conectados);
 				
-				// Ahora obtenemos la primera fila que se almacena en una
-				// variable de tipo MYSQL_ROW
-				row = mysql_fetch_row (resultado);
-				// En una fila hay tantas columnas como datos tiene una
-				// persona. En nuestro caso hay tres columnas: dni(row[0]),
-				// nombre(row[1]) y edad (row[2]).
-				printf("Resultat: %s\n", row[0]);
-				strcpy (buff2,row[0]);
-				write (sock_conn,buff2, strlen(buff2));
+				write (sock_conn,conectados, strlen(conectados));
 				//close(sock_conn); 
+				printf("CONECTADOOOOOS: %d", lista->num);
 				
 				
 				break;
@@ -457,14 +451,13 @@ int main(int argc, char *argv[])
 		printf ("Conexion realizada\n");
 		printf("0SOCK_CONN: %d\n", sock_conn);
 		
-		listaConectados.conectados[a].socket=sock_conn;
-		printf("LISTASOCKET: %d\n", listaConectados.conectados[a].socket);
+		listaConectados.conectados[listaConectados.num].socket=sock_conn;
+		printf("LISTASOCKET: %d\n", listaConectados.conectados[listaConectados.num].socket);
 		printf("BEEE1\n");
-		listaConectados.num++;
+		//listaConectados.num++;
 		
 		pthread_create(&thread[a], NULL, AtenderCliente, &listaConectados);
 		printf("BE2\n");
-		a++;
 	}
 }
 		
