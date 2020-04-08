@@ -23,7 +23,7 @@ typedef struct {
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; //Acceso excluyente
 
 int Pon(ListaConectados *lista, char nombre[20], int socket){
-	//Añade nuevo conectado.
+	//Aï¿½ade nuevo conectado.
 	if(lista->num == 100){
 		return -1;
 	}else{
@@ -142,8 +142,8 @@ void *AtenderCliente(ListaConectados *lista){
 		
 		
 		char *p;//porque el asterisco?????? Es un puntero, quan utilitzes la funcio strtok, fragmentes l'array pel caracter que
-		//t'interessa, aixo ho fas a través del punter. El punter va fins a la direcció de memoria on hi ha el caracter que t'interessa,
-		//el substitueix per un caracter fi de linea: '\0' i el punter queda en aquella posició per seguir fragmentant l'array
+		//t'interessa, aixo ho fas a travï¿½s del punter. El punter va fins a la direcciï¿½ de memoria on hi ha el caracter que t'interessa,
+		//el substitueix per un caracter fi de linea: '\0' i el punter queda en aquella posiciï¿½ per seguir fragmentant l'array
 		char consulta[80];
 		p = strtok( buff, "/");
 		codigo = atoi(p);
@@ -229,9 +229,8 @@ void *AtenderCliente(ListaConectados *lista){
 				//MYSQL_RES tal y como hemos declarado anteriormente.
 				//Se trata de una tabla virtual en memoria que es la copia
 				//de la tabla real en disco.
-				resultado = mysql_store_result (conn);
-				// El resultado es una estructura matricial en memoria
-				// en la que cada fila contiene los datos de una persona.
+				resultado = mysql_store_result (conn);							// El resultado es una estructura matricial en memoria,en la que cada fila contiene los datos de una persona.
+				
 			
 				// Ahora obtenemos la primera fila que se almacena en una
 				// variable de tipo MYSQL_ROW
@@ -324,7 +323,7 @@ void *AtenderCliente(ListaConectados *lista){
 				// En una fila hay tantas columnas como datos tiene una
 				// persona. En nuestro caso hay tres columnas: dni(row[0]),
 				// nombre(row[1]) y edad (row[2]).
-				printf("Posició: %s\n", row[0]);
+				printf("Posiciï¿½: %s\n", row[0]);
 				strcpy (buff2,row[0]);
 				write (sock_conn,buff2, strlen(buff2));
 				//close(sock_conn); 
@@ -421,7 +420,7 @@ int main(int argc, char *argv[])
 	int sock_conn, sock_listen;
 	struct sockaddr_in serv_adr;
 
-	//inicialitzem el socket per poder establir una connexió
+	//inicialitzem el socket per poder establir una connexiï¿½
 
 	if ((sock_listen = socket(AF_INET, SOCK_STREAM, 0)) < 0){ //INICIALITZACIONS,Obrim el socket	
 		printf("Error creant socket");
