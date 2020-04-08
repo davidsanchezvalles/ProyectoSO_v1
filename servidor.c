@@ -20,8 +20,7 @@ typedef struct {
 	int num;
 }ListaConectados;
 
-
-
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; //Acceso excluyente
 
 int Pon(ListaConectados *lista, char nombre[20], int socket){
 	//Añade nuevo conectado.
@@ -159,11 +158,12 @@ void *AtenderCliente(ListaConectados *lista){
 				printf("DESCONEXION\n");
 				close(sock_conn);
 				terminar = 1;
-				Eliminar(&lista, nombre);
+				Eliminar(lista, nombre);
 				break;
 			}
 			case 1:
 			{
+				pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
 				printf("11111111\n");
 			
 				strcpy(consulta,"INSERT INTO jugador VALUES('");
@@ -200,7 +200,8 @@ void *AtenderCliente(ListaConectados *lista){
 				
 				
 				}
-			
+			 
+				pthread_mutex_unlock (&mutex);//Ya pueden interrumpir
 				break;
 			}
 		
@@ -241,7 +242,7 @@ void *AtenderCliente(ListaConectados *lista){
 				printf("Resultat: %s\n", row[0]);
 			
 				if(strcmp(row[0], contrasena)==0){
-					Pon(&lista, nombre, sock_conn);
+					Pon(lista, nombre, sock_conn);
 				//	DameConectados(&lista, lista->conectados);
 					printf("BE1\n");
 					strcpy (buff2,"Acceso");
@@ -284,7 +285,7 @@ void *AtenderCliente(ListaConectados *lista){
 				// En una fila hay tantas columnas como datos tiene una
 				// persona. En nuestro caso hay tres columnas: dni(row[0]),
 				// nombre(row[1]) y edad (row[2]).
-				printf("Resultat: %s\n", row[0]);
+				printf("Resultado: %s\n", row[0]);
 				strcpy (buff2,row[0]);
 				write (sock_conn,buff2, strlen(buff2));
 				//close(sock_conn); 
@@ -295,10 +296,6 @@ void *AtenderCliente(ListaConectados *lista){
 			}
 			case 4:
 			{
-				p = strtok( NULL, "/");
-				strcpy (idPartida, p);
-				strcat(consulta, idPartida);
-			
 				printf("222222222\n");
 				strcpy(consulta,"SELECT posicion FROM resumen, partida, jugador WHERE partida.ID = ");
 				strcat(consulta, idPartida);
@@ -374,8 +371,42 @@ void *AtenderCliente(ListaConectados *lista){
 			
 				break;
 			}
+		case 6:
+			{
+				printf("222222222\n");
+				printf("BE\n");
+				err=mysql_query (conn, consulta);
+				
+				/////////////////////////////////////////////////////////
+				//AQUI FALTA EL CODIGO PARA QUE ENVIE LOS USUARIOS 
+				//CONECTADOS EN UN MENSAJE AL CLIENTE
+				////////////////////////////////////////////////////////
+				
+				//recogemos el resultado de la consulta. El resultado de la
+				//consulta se devuelve en una variable del tipo puntero a
+				//MYSQL_RES tal y como hemos declarado anteriormente.
+				//Se trata de una tabla virtual en memoria que es la copia
+				//de la tabla real en disco.
+				resultado = mysql_store_result (conn);
+				// El resultado es una estructura matricial en memoria
+				// en la que cada fila contiene los datos de una persona.
+				
+				// Ahora obtenemos la primera fila que se almacena en una
+				// variable de tipo MYSQL_ROW
+				row = mysql_fetch_row (resultado);
+				// En una fila hay tantas columnas como datos tiene una
+				// persona. En nuestro caso hay tres columnas: dni(row[0]),
+				// nombre(row[1]) y edad (row[2]).
+				printf("Resultat: %s\n", row[0]);
+				strcpy (buff2,row[0]);
+				write (sock_conn,buff2, strlen(buff2));
+				//close(sock_conn); 
+				
+				
+				break;
+				
+			}
 		};
-		
 	}
 		
 	
