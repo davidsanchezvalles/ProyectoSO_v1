@@ -27,12 +27,13 @@ INSERT INTO jugador VALUES('davidsv', 1234, 'david@upc.edu');
 INSERT INTO jugador VALUES('sergiogl', 1234, 'sergio@upc.edu');
 INSERT INTO jugador VALUES('martigc', 1234, 'marti@upc.edu');
 
-INSERT INTO partida VALUES(1, '2020-01-12', 37, 'davidsv');
-INSERT INTO partida VALUES(2, '2020-01-18', 57, 'sergiogl');
-INSERT INTO partida VALUES(3, '2020-02-15', 47, 'martigc');
-INSERT INTO partida VALUES(NULL, '2020-01-18', 43, 'martigc');
+INSERT INTO partida VALUES(NULL, '2020-01-12', 37, 'davidsv');
+INSERT INTO partida VALUES(NULL, '2020-01-18', 57, 'sergiogl');
+INSERT INTO partida VALUES(NULL, '2020-02-15', 47, 'martigc');
+INSERT INTO partida VALUES(NULL, '2020-01-18', 43, 'sergiogl');
 
 INSERT INTO resumen VALUES(1, 12, 'davidsv', 1);
-INSERT INTO resumen VALUES(2, 10, 'martigc', 3);
-INSERT INTO resumen VALUES(3, 8, 'sergiogl', 2);
+INSERT INTO resumen VALUES(2, 10, 'sergiogl', 3);
+INSERT INTO resumen VALUES(3, 8, 'martigc', 2);
+INSERT INTO resumen VALUES(1, 8, 'sergiogl', 4);
 INSERT INTO resumen VALUES(2, 10, 'martigc', 1);
