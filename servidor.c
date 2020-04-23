@@ -121,7 +121,7 @@ void *AtenderCliente(ListaConectados *lista){
 		exit (1);
 	}
 	//inicializar la conexin
-	conn = mysql_real_connect (conn, "localhost","root", "mysql", "juego",0, NULL, 0);
+	conn = mysql_real_connect (conn, "shiva2.upc.es","root", "mysql", "M5_BBDDJuego",0, NULL, 0);
 	if (conn==NULL) {
 		printf ("Error al inicializar la conexion: %u %s\n", 
 				mysql_errno(conn), mysql_error(conn));
@@ -397,7 +397,7 @@ int main(int argc, char *argv[])
 	//htonl formatea el numero que recibe al formato necesario
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
 	// escucharemos en el port 9050
-	serv_adr.sin_port = htons(9080);
+	serv_adr.sin_port = htons(5013);
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0){
 		printf ("Error al bind");
 	}
