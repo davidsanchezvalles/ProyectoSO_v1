@@ -108,6 +108,7 @@ namespace WindowsFormsApplication1
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
+                
 
                 //Recibimos la respuesta del servidor
                 byte[] msg2 = new byte[80];
@@ -115,12 +116,27 @@ namespace WindowsFormsApplication1
                 mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
                 MessageBox.Show(mensaje);
                 groupBox2.Visible = true;
+
+                consultarconectados();
             }
             catch { MessageBox.Show("Error al acceder."); }
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void consultarconectados() 
+        {
+            string mensaje = "6/"; 
+            //Enviamos al servidor el nombre tecleado
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg); 
+            
+            //Recibimos la respuesta del servidor
+            byte[] msg2 = new byte[80];
+            server.Receive(msg2);
+            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+            genteconectada.Text = "Los usuarios conectados son: " + mensaje;
+                }
+    private void button2_Click(object sender, EventArgs e)
         {
             try
             {
@@ -164,20 +180,6 @@ namespace WindowsFormsApplication1
                     server.Receive(msg2);
                     mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
                     MessageBox.Show("Tu tiempo en partida es: " + mensaje + "min");
-                }
-
-                else if (genteconec.Checked)
-                {
-                    string mensaje = "6/";
-                    // Enviamos al servidor el nombre tecleado
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                    server.Send(msg);
-
-                    //Recibimos la respuesta del servidor
-                    byte[] msg2 = new byte[80];
-                    server.Receive(msg2);
-                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                    genteconectada.Text = "Los usuarios conectados son: " + mensaje;
                 }
             }
             catch { MessageBox.Show("Error al realizar la consulta."); }

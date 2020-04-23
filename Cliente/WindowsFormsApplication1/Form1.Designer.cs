@@ -34,7 +34,7 @@
             this.acceder = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.genteconec = new System.Windows.Forms.RadioButton();
+            this.genteconectada = new System.Windows.Forms.Label();
             this.tiemp = new System.Windows.Forms.RadioButton();
             this.pos = new System.Windows.Forms.RadioButton();
             this.gana = new System.Windows.Forms.RadioButton();
@@ -47,7 +47,6 @@
             this.contra = new System.Windows.Forms.TextBox();
             this.email = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
-            this.genteconectada = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -93,7 +92,6 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.registrar);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
@@ -114,31 +112,27 @@
             // 
             this.groupBox2.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.groupBox2.Controls.Add(this.genteconectada);
-            this.groupBox2.Controls.Add(this.genteconec);
             this.groupBox2.Controls.Add(this.tiemp);
             this.groupBox2.Controls.Add(this.pos);
             this.groupBox2.Controls.Add(this.gana);
             this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.idpartida);
-            this.groupBox2.Location = new System.Drawing.Point(0, 0);
+            this.groupBox2.Location = new System.Drawing.Point(25, 98);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(372, 208);
+            this.groupBox2.Size = new System.Drawing.Size(567, 208);
             this.groupBox2.TabIndex = 18;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Consulta";
             this.groupBox2.Visible = false;
             // 
-            // genteconec
+            // genteconectada
             // 
-            this.genteconec.AutoSize = true;
-            this.genteconec.Location = new System.Drawing.Point(173, 126);
-            this.genteconec.Name = "genteconec";
-            this.genteconec.Size = new System.Drawing.Size(108, 17);
-            this.genteconec.TabIndex = 10;
-            this.genteconec.TabStop = true;
-            this.genteconec.Text = "Gente conectada";
-            this.genteconec.UseVisualStyleBackColor = true;
+            this.genteconectada.AutoSize = true;
+            this.genteconectada.Location = new System.Drawing.Point(378, 35);
+            this.genteconectada.Name = "genteconectada";
+            this.genteconectada.Size = new System.Drawing.Size(0, 13);
+            this.genteconectada.TabIndex = 11;
             // 
             // tiemp
             // 
@@ -256,19 +250,12 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // genteconectada
-            // 
-            this.genteconectada.AutoSize = true;
-            this.genteconectada.Location = new System.Drawing.Point(190, 157);
-            this.genteconectada.Name = "genteconectada";
-            this.genteconectada.Size = new System.Drawing.Size(0, 13);
-            this.genteconectada.TabIndex = 11;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(426, 421);
+            this.ClientSize = new System.Drawing.Size(604, 421);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button1);
@@ -303,7 +290,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox idpartida;
-        private System.Windows.Forms.RadioButton genteconec;
         private System.Windows.Forms.Label genteconectada;
     }
 }
