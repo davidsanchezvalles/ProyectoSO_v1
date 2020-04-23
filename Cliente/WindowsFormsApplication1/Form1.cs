@@ -29,8 +29,8 @@ namespace WindowsFormsApplication1
         {
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
-            IPAddress direc = IPAddress.Parse("192.168.56.102");
-            IPEndPoint ipep = new IPEndPoint(direc, 9080);
+            IPAddress direc = IPAddress.Parse("145.83.117.22");
+            IPEndPoint ipep = new IPEndPoint(direc, 50013);
             
 
             //Creamos el socket 
