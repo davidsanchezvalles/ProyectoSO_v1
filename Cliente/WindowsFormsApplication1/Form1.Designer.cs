@@ -50,6 +50,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.textoserver = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -115,6 +116,7 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.groupBox2.Controls.Add(this.textoserver);
             this.groupBox2.Controls.Add(this.genteconectada);
             this.groupBox2.Controls.Add(this.genteconec);
             this.groupBox2.Controls.Add(this.tiemp);
@@ -285,6 +287,14 @@
             this.label4.TabIndex = 12;
             this.label4.Text = "Lista de conectados";
             // 
+            // textoserver
+            // 
+            this.textoserver.Location = new System.Drawing.Point(42, 86);
+            this.textoserver.Name = "textoserver";
+            this.textoserver.Size = new System.Drawing.Size(100, 95);
+            this.textoserver.TabIndex = 12;
+            this.textoserver.Text = "Respuestas";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -320,7 +330,7 @@
         private System.Windows.Forms.TextBox contra;
         private System.Windows.Forms.TextBox email;
         private System.Windows.Forms.Button registrar;
-        public System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton tiemp;
         private System.Windows.Forms.RadioButton pos;
         private System.Windows.Forms.RadioButton gana;
@@ -331,6 +341,7 @@
         private System.Windows.Forms.Label genteconectada;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label textoserver;
     }
 }
 
