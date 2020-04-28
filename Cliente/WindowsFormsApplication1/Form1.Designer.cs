@@ -35,6 +35,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.genteconectada = new System.Windows.Forms.Label();
+            this.genteconec = new System.Windows.Forms.RadioButton();
             this.tiemp = new System.Windows.Forms.RadioButton();
             this.pos = new System.Windows.Forms.RadioButton();
             this.gana = new System.Windows.Forms.RadioButton();
@@ -47,6 +48,8 @@
             this.contra = new System.Windows.Forms.TextBox();
             this.email = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -92,6 +95,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.registrar);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
@@ -112,15 +116,16 @@
             // 
             this.groupBox2.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.groupBox2.Controls.Add(this.genteconectada);
+            this.groupBox2.Controls.Add(this.genteconec);
             this.groupBox2.Controls.Add(this.tiemp);
             this.groupBox2.Controls.Add(this.pos);
             this.groupBox2.Controls.Add(this.gana);
             this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.idpartida);
-            this.groupBox2.Location = new System.Drawing.Point(25, 98);
+            this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(567, 208);
+            this.groupBox2.Size = new System.Drawing.Size(372, 208);
             this.groupBox2.TabIndex = 18;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Consulta";
@@ -129,15 +134,26 @@
             // genteconectada
             // 
             this.genteconectada.AutoSize = true;
-            this.genteconectada.Location = new System.Drawing.Point(378, 35);
+            this.genteconectada.Location = new System.Drawing.Point(190, 157);
             this.genteconectada.Name = "genteconectada";
             this.genteconectada.Size = new System.Drawing.Size(0, 13);
             this.genteconectada.TabIndex = 11;
             // 
+            // genteconec
+            // 
+            this.genteconec.AutoSize = true;
+            this.genteconec.Location = new System.Drawing.Point(173, 109);
+            this.genteconec.Name = "genteconec";
+            this.genteconec.Size = new System.Drawing.Size(108, 17);
+            this.genteconec.TabIndex = 10;
+            this.genteconec.TabStop = true;
+            this.genteconec.Text = "Gente conectada";
+            this.genteconec.UseVisualStyleBackColor = true;
+            // 
             // tiemp
             // 
             this.tiemp.AutoSize = true;
-            this.tiemp.Location = new System.Drawing.Point(173, 103);
+            this.tiemp.Location = new System.Drawing.Point(173, 86);
             this.tiemp.Name = "tiemp";
             this.tiemp.Size = new System.Drawing.Size(110, 17);
             this.tiemp.TabIndex = 9;
@@ -148,7 +164,7 @@
             // pos
             // 
             this.pos.AutoSize = true;
-            this.pos.Location = new System.Drawing.Point(173, 80);
+            this.pos.Location = new System.Drawing.Point(173, 60);
             this.pos.Name = "pos";
             this.pos.Size = new System.Drawing.Size(115, 17);
             this.pos.TabIndex = 8;
@@ -159,7 +175,7 @@
             // gana
             // 
             this.gana.AutoSize = true;
-            this.gana.Location = new System.Drawing.Point(173, 57);
+            this.gana.Location = new System.Drawing.Point(173, 34);
             this.gana.Name = "gana";
             this.gana.Size = new System.Drawing.Size(116, 17);
             this.gana.TabIndex = 7;
@@ -169,9 +185,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(28, 123);
+            this.button2.Location = new System.Drawing.Point(181, 147);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(100, 34);
             this.button2.TabIndex = 4;
             this.button2.Text = "Consultar";
             this.button2.UseVisualStyleBackColor = true;
@@ -189,9 +205,9 @@
             // 
             // idpartida
             // 
-            this.idpartida.Location = new System.Drawing.Point(173, 31);
+            this.idpartida.Location = new System.Drawing.Point(45, 53);
             this.idpartida.Name = "idpartida";
-            this.idpartida.Size = new System.Drawing.Size(164, 20);
+            this.idpartida.Size = new System.Drawing.Size(92, 20);
             this.idpartida.TabIndex = 3;
             // 
             // registrar
@@ -242,20 +258,40 @@
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(25, 332);
+            this.button3.Location = new System.Drawing.Point(198, 40);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(147, 53);
+            this.button3.Size = new System.Drawing.Size(147, 32);
             this.button3.TabIndex = 10;
             this.button3.Text = "desconectar";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(432, 98);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(178, 212);
+            this.listBox1.TabIndex = 11;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(440, 68);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(160, 18);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Lista de conectados";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(604, 421);
-            this.Controls.Add(this.groupBox2);
+            this.ClientSize = new System.Drawing.Size(679, 331);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button1);
@@ -267,6 +303,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -283,14 +320,17 @@
         private System.Windows.Forms.TextBox contra;
         private System.Windows.Forms.TextBox email;
         private System.Windows.Forms.Button registrar;
-        private System.Windows.Forms.GroupBox groupBox2;
+        public System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton tiemp;
         private System.Windows.Forms.RadioButton pos;
         private System.Windows.Forms.RadioButton gana;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox idpartida;
+        private System.Windows.Forms.RadioButton genteconec;
         private System.Windows.Forms.Label genteconectada;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Label label4;
     }
 }
 
