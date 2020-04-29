@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-//using System.ComponentModel;
+
 
 namespace WindowsFormsApplication1
 {
@@ -21,20 +21,103 @@ namespace WindowsFormsApplication1
         public Form1()
         {
             InitializeComponent();
-            CheckForIllegalCrossThreadCalls=false;
+            //CheckForIllegalCrossThreadCalls=false;
         }
 
-        public class HeavyTaskResponse 
+        private void atenderserver()
         {
-            private readonly string message;
 
-            public HeavyTaskResponse(string msg)
+            while (true)
             {
-                this.message = msg;
+                //Application.DoEvents();
+                //Thread.Sleep(5000);
+
+                int i = 0,codigo=0;
+
+                //MessageBox.Show("2");
+                //Recibimos la respuesta del servidor
+                byte[] msg2 = new byte[80];
+
+                do
+                {
+                    server.Receive(msg2);
+                } while (msg2[0] != '0');  //lo he puesto para probar, pero nose porque recibe si mensaje si el servidor no le envia nada
+
+                
+                string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
+          
+                    codigo = Convert.ToInt32(trozos[0]);
+               
+               
+                string mensaje;
+
+                switch (codigo)
+                {
+
+                    case 1:
+
+
+                        mensaje = trozos[1].Split('\0')[0];
+                        textoserver.Text = mensaje;
+                        MessageBox.Show(mensaje);
+                        groupBox2.Visible = true;
+
+
+                        break;
+
+
+
+                    case 2:
+
+
+                        mensaje = trozos[1].Split('\0')[0];
+                        if (mensaje.Length > 2)
+                        {
+                            //MessageBox.Show(mensaje);
+                            textoserver.Text = mensaje;
+                            groupBox2.Visible = true;
+                            //MessageBox.Show("1");
+
+                        }
+                        else MessageBox.Show("Usuario o contraseña incorrectos");
+
+
+                        break;
+
+
+
+
+                    case 3:
+
+
+                        mensaje = trozos[1].Split('\0')[0];
+                        MessageBox.Show("El ganador de la partida es: " + mensaje);
+
+
+                        break;
+
+
+
+                    case 6:
+
+
+                        while (i < trozos.Length)
+                        {
+                            MessageBox.Show(trozos[i]);
+                            listBox1.Items.Add(trozos[i]);
+                            i++;
+                        }
+
+
+
+
+                        break;
+
+
+                }
             }
 
-            public string Message { get { return message; } }
-        }   //prueba mensajes entre threads
+        }     //procesado de las respuestas del servidor
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -96,7 +179,7 @@ namespace WindowsFormsApplication1
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
-                mensaje = "10/";
+                //mensaje = "10/";
               
             }
             catch { MessageBox.Show("Error al registrar."); }
@@ -137,7 +220,7 @@ namespace WindowsFormsApplication1
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
-                mensaje = "10/";
+                //mensaje = "10/";
 
                
             }
@@ -167,11 +250,7 @@ namespace WindowsFormsApplication1
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                     server.Send(msg);
 
-                    //Recibimos la respuesta del servidor
-                    //byte[] msg2 = new byte[80];
-                    //server.Receive(msg2);
-                    //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                    //MessageBox.Show("Tu posicón en partida es: " + mensaje);
+                  
                 }
 
                 else if (tiemp.Checked)
@@ -181,11 +260,7 @@ namespace WindowsFormsApplication1
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                     server.Send(msg);
 
-                    //Recibimos la respuesta del servidor
-                    //byte[] msg2 = new byte[80];
-                    //server.Receive(msg2);
-                    //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                    //MessageBox.Show("Tu tiempo en partida es: " + mensaje + "min");
+                
                 }
 
                 else if (genteconec.Checked)
@@ -197,11 +272,7 @@ namespace WindowsFormsApplication1
                     server.Send(msg);
                     MessageBox.Show(Encoding.ASCII.GetString(msg));  //-----------------
 
-                    //Recibimos la respuesta del servidor
-                    //byte[] msg2 = new byte[80];
-                    //server.Receive(msg2);
-                    //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                    //MessageBox.Show("Los usuarios conectados son: " + mensaje);
+            
 
 
                 }
@@ -211,91 +282,7 @@ namespace WindowsFormsApplication1
 
 
 
-        private void atenderserver()
-        {
-            int contador = 0;
-            while (true)
-            {
-                Application.DoEvents();
-                Thread.Sleep(500);
-                
-                int i = 0;
-                contador++;
-                
-                //MessageBox.Show("2");
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                string [] trozos = Encoding.ASCII.GetString(msg2).Split('/');
-                int codigo = Convert.ToInt32(trozos[0]);
-                string mensaje;
-
-                switch (codigo){
-                    
-                    case 1:
-
-                    
-                        mensaje =trozos[1].Split('\0')[0];
-                        textoserver.Text = mensaje;
-                        MessageBox.Show(mensaje);
-                        groupBox2.Visible = true;
-                        
-
-                        break;
-
-
-
-                    case 2:
-
-                   
-                        mensaje = trozos[1].Split('\0')[0];
-                        if (mensaje.Length > 2)
-                        {
-                            //MessageBox.Show(mensaje);
-                            textoserver.Text = mensaje;
-                            groupBox2.Visible = true;
-                            //MessageBox.Show("1");
-                            
-                        }
-                        else MessageBox.Show("Usuario o contraseña incorrectos");
-
-
-                        break;
-
-
-
-
-                    case 3:
-
-
-                        mensaje = trozos[1].Split('\0')[0];
-                        MessageBox.Show("El ganador de la partida es: " + mensaje);
-
-
-                        break;
-
-
-
-                    case 6:
-
-
-                        while (i < trozos.Length)
-                        {
-                            MessageBox.Show(trozos[i]);
-                            listBox1.Items.Add(trozos[i]);
-                            i++;
-                        }
-
-
-
-
-                        break;
-
-
-            }   
-            }
-        
-        }     //procesado de las respuestas del servidor
+       
 
         
     }
