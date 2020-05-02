@@ -127,7 +127,7 @@ void *AtenderCliente(void *socket){
 	int sock_conn;
 	int *s;
 	s= (int *) socket;
-	sock_conn= s;
+	sock_conn= *s;
 	
 	//comprobamos el socket del usuario x
 	printf("Se ha conectado el usuario con socket: %d\n", sock_conn);
@@ -164,10 +164,13 @@ void *AtenderCliente(void *socket){
 				pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
 				Eliminar(&lista, nombre);
 				pthread_mutex_unlock (&mutex); //ya puede interrumpir
-				DameConectados(&lista,conectados);
 				printf("%d personas conectadas: %s \n", lista.num,conectados);
-				sprintf(buff2,"6/%s",conectados);
-				printf("Enviado por socket %d los conectados: %s\n", sock_conn, conectados); 
+				DameConectados(&lista,conectados);
+				sprintf(buff2,"6/%s",conectados); //enviamos lista conectados a todos los conectados que quedan
+				printf ("Enviamos a todos los conectados: %s\n", buff2);
+				for (i=0; i<lista.num; i++){
+					write (lista.conectados[i].socket,buff2, strlen(buff2)); 
+				}
 				terminar = 1;
 				break;
 			}
@@ -228,30 +231,33 @@ void *AtenderCliente(void *socket){
 				// Ahora obtenemos la primera fila que se almacena en una
 				// variable de tipo MYSQL_ROW
 				row = mysql_fetch_row (resultado);
-				if (row!=0){ 
-				
-					printf("Resultado consulta: %s\n", row[0]);
-				
+				if (row == NULL){
+					//enviamos un mensaje al cliente
+					strcpy (buff2,"2/Acceso NO correcto");
+					write (sock_conn,buff2, strlen(buff2));
+					printf ("No se han obtenido datos en la consulta\n");
+					printf ("Enviamos a client: %s\n", buff2);
+				} else {
 					if(strcmp(row[0], contrasena)==0){
-						
+						int i;
 						pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
 						Poner(&lista,nombre,sock_conn); //añadimos el usuario a la lista conectados
 						pthread_mutex_unlock (&mutex); //ya puede interrumpir
-						strcpy (buff2,"2/Acceso correcto");
-						write (sock_conn,buff2, strlen(buff2)); //enviamos el mensaje al cliente
-					
-					}else{
-						
-						//enviamos un mnesaje vacio
-						//strcpy (buff2,"2/Acceso correcto");
-						//write (sock_conn,buff2, strlen(buff2)); 
-					
+						DameConectados(&lista,conectados);
+						printf("Password correcto: %s y %s coninciden\n", contrasena, row[0]);
+						sprintf(buff2,"6/%s",conectados); //enviamos lista conectados a todos los conectados
+						printf ("Enviamos a todos los conectados: %s\n", buff2);
+						for (i=0; i<lista.num; i++){
+							write (lista.conectados[i].socket,buff2, strlen(buff2)); 
+						}
+					} else {
+						//enviamos un mensaje al cliente
+						strcpy (buff2,"2/Acceso NO correcto");
+						write (sock_conn,buff2, strlen(buff2)); 
+						printf("Password NO correcto: %s y %s coninciden\n", contrasena, row[0]);
+						printf ("Enviamos a client: %s\n", buff2);
 					}
-					
-					
 				}
-			
-			
 				break;
 			}
 			case 3: {   //ganador
