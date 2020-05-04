@@ -140,11 +140,9 @@ C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\obj
 C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
 C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
 C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
-C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csprojAssemblyReference.cache
 C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
 C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
 C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.cache
-C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.CoreCompileInputs.cache
 C:\Users\User\Desktop\BackUP\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
 C:\Users\User\Desktop\BackUP\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
 C:\Users\User\Desktop\BackUP\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe

@@ -34,8 +34,8 @@
             this.acceder = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.textoserver = new System.Windows.Forms.Label();
             this.genteconectada = new System.Windows.Forms.Label();
-            this.genteconec = new System.Windows.Forms.RadioButton();
             this.tiemp = new System.Windows.Forms.RadioButton();
             this.pos = new System.Windows.Forms.RadioButton();
             this.gana = new System.Windows.Forms.RadioButton();
@@ -50,7 +50,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textoserver = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -118,7 +117,6 @@
             this.groupBox2.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.groupBox2.Controls.Add(this.textoserver);
             this.groupBox2.Controls.Add(this.genteconectada);
-            this.groupBox2.Controls.Add(this.genteconec);
             this.groupBox2.Controls.Add(this.tiemp);
             this.groupBox2.Controls.Add(this.pos);
             this.groupBox2.Controls.Add(this.gana);
@@ -133,6 +131,14 @@
             this.groupBox2.Text = "Consulta";
             this.groupBox2.Visible = false;
             // 
+            // textoserver
+            // 
+            this.textoserver.Location = new System.Drawing.Point(42, 86);
+            this.textoserver.Name = "textoserver";
+            this.textoserver.Size = new System.Drawing.Size(100, 95);
+            this.textoserver.TabIndex = 12;
+            this.textoserver.Text = "Respuestas";
+            // 
             // genteconectada
             // 
             this.genteconectada.AutoSize = true;
@@ -140,17 +146,6 @@
             this.genteconectada.Name = "genteconectada";
             this.genteconectada.Size = new System.Drawing.Size(0, 13);
             this.genteconectada.TabIndex = 11;
-            // 
-            // genteconec
-            // 
-            this.genteconec.AutoSize = true;
-            this.genteconec.Location = new System.Drawing.Point(173, 109);
-            this.genteconec.Name = "genteconec";
-            this.genteconec.Size = new System.Drawing.Size(108, 17);
-            this.genteconec.TabIndex = 10;
-            this.genteconec.TabStop = true;
-            this.genteconec.Text = "Gente conectada";
-            this.genteconec.UseVisualStyleBackColor = true;
             // 
             // tiemp
             // 
@@ -187,7 +182,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(181, 147);
+            this.button2.Location = new System.Drawing.Point(173, 125);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 34);
             this.button2.TabIndex = 4;
@@ -287,14 +282,6 @@
             this.label4.TabIndex = 12;
             this.label4.Text = "Lista de conectados";
             // 
-            // textoserver
-            // 
-            this.textoserver.Location = new System.Drawing.Point(42, 86);
-            this.textoserver.Name = "textoserver";
-            this.textoserver.Size = new System.Drawing.Size(100, 95);
-            this.textoserver.TabIndex = 12;
-            this.textoserver.Text = "Respuestas";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -337,7 +324,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox idpartida;
-        private System.Windows.Forms.RadioButton genteconec;
         private System.Windows.Forms.Label genteconectada;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label4;
