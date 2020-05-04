@@ -113,7 +113,6 @@ void *AtenderCliente(void *socket){
 		exit (1);
 	}
 
-	 
 	//inicializar la conexin MYSQL
 	conn = mysql_real_connect (conn, "localhost","root", "mysql", "juego",0, NULL, 0);
 	if (conn==NULL) {
@@ -122,8 +121,7 @@ void *AtenderCliente(void *socket){
 		exit (1);
 	}
 
-  
-	//metodo para inicializar correctamente el socket que hemos pasado
+  	//metodo para inicializar correctamente el socket que hemos pasado
 	int sock_conn;
 	int *s;
 	s= (int *) socket;
@@ -245,9 +243,9 @@ void *AtenderCliente(void *socket){
 						pthread_mutex_unlock (&mutex); //ya puede interrumpir
 						DameConectados(&lista,conectados);
 						printf("Password correcto: %s y %s coninciden\n", contrasena, row[0]);
-						sprintf(buff2,"6/%s",conectados); //enviamos lista conectados a todos los conectados
+						sprintf(buff2,"6/%s",conectados); //enviamos todos los conectados de la lista 
 						printf ("Enviamos a todos los conectados: %s\n", buff2);
-						for (i=0; i<lista.num; i++){
+						for (i=0; i<lista.num; i++){  //enviamos esta lista a todos los clientes
 							write (lista.conectados[i].socket,buff2, strlen(buff2)); 
 						}
 					} else {
@@ -279,7 +277,7 @@ void *AtenderCliente(void *socket){
 				row = mysql_fetch_row (resultado);
 				
 				printf("Resultado: %s\n", row[0]);
-				strcpy(buff2,"2/");
+				strcpy(buff2,"3/");
 				strcat (buff2, row[0]);
 				write (sock_conn,buff2, strlen(buff2));
 			
@@ -309,7 +307,7 @@ void *AtenderCliente(void *socket){
 				row = mysql_fetch_row (resultado);
 				
 				printf("Posicion: %s\n", row[0]);
-				strcpy (buff2,row[0]);
+				sprintf (buff2,"4/%s",row[0]);
 				write (sock_conn,buff2, strlen(buff2));
 			
 				break;
@@ -320,11 +318,10 @@ void *AtenderCliente(void *socket){
 				p = strtok( NULL, "/");
 				strcpy (idPartida, p);
 				strcat(consulta, idPartida);
-				
 				strcpy(consulta,"SELECT duracion FROM partida WHERE partida.ID = ");
 				strcat(consulta, idPartida);
 				strcat(consulta,";");
-				printf("BE\n");
+
 				err=mysql_query (conn, consulta);
 				if (err!=0) {
 					printf ("Error al insertar datos en la base %u %s\n",
@@ -335,8 +332,8 @@ void *AtenderCliente(void *socket){
 				resultado = mysql_store_result (conn);
 				row = mysql_fetch_row (resultado);
 				
-				printf("Duracin: %s\n", row[0]);
-				strcpy (buff2,row[0]);
+				printf("Duracion: %s\n", row[0]);
+				sprintf (buff2,"5/%s",row[0]);
 				write (sock_conn,buff2, strlen(buff2));
 			
 				break;
@@ -373,7 +370,7 @@ int main(int argc, char *argv[]) {
 	memset(&serv_adr, 0, sizeof(serv_adr));// inicialitza a zero serv_addr
 	serv_adr.sin_family = AF_INET;	// asocia el socket a cualquiera de las IP de la m?quina.
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY); //htonl formatea el numero que recibe al formato necesario
-	serv_adr.sin_port = htons(9040); // escucharemos en el port 90X0
+	serv_adr.sin_port = htons(9050); // escucharemos en el port 90X0
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0){
 		printf ("Error al bind");
 	}

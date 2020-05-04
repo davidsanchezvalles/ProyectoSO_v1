@@ -35,4 +35,4 @@ INSERT INTO partida VALUES(NULL, '2020-01-18', 43, 'martigc');
 INSERT INTO resumen VALUES(1, 12, 'davidsv', 1);
 INSERT INTO resumen VALUES(2, 10, 'martigc', 3);
 INSERT INTO resumen VALUES(3, 8, 'sergiogl', 2);
-INSERT INTO resumen VALUES(2, 10, 'martigc', 1);
+
