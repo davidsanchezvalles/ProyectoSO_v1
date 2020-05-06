@@ -136,3 +136,26 @@ C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\o
 \\VBOXSVR\Desktop\ProyectoSO-master (3)\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
 \\VBOXSVR\Desktop\ProyectoSO-master (3)\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
 \\VBOXSVR\Desktop\ProyectoSO-master (3)\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.Cache
+C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\User\Desktop\proyectoSO\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.cache
+C:\Users\User\Desktop\BackUP\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\User\Desktop\BackUP\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\User\Desktop\BackUP\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\User\Desktop\BackUP\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\User\Desktop\BackUP\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\User\Desktop\BackUP\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\User\Desktop\BackUP\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.Cache
+E:\SO\TEMP\SO-M5\ProyectoSO\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+E:\SO\TEMP\SO-M5\ProyectoSO\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+E:\SO\TEMP\SO-M5\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csprojAssemblyReference.cache
+E:\SO\TEMP\SO-M5\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+E:\SO\TEMP\SO-M5\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+E:\SO\TEMP\SO-M5\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.cache
+E:\SO\TEMP\SO-M5\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.CoreCompileInputs.cache
+E:\SO\TEMP\SO-M5\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+E:\SO\TEMP\SO-M5\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb

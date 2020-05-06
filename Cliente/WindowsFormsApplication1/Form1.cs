@@ -1,37 +1,118 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
+
 
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
         Socket server;
+        Thread atender;
+
+        delegate void DelegadoParaPonerConectados(string[] texto);
+        delegate void DelegadoParaVisualBox(string[] texto);
+
         public Form1()
         {
             InitializeComponent();
+            // CheckForIllegalCrossThreadCalls = false; //Necesario para que los elementos de los formularios puedan ser
+            //accedidos desde threads diferentes a los que los crearon
         }
+
+        private void PonConectados(string[] trozos)
+        {
+            int i = 1; // i=0 tiene el código 6 
+            groupBox2.Visible = true;
+            listBox1.Items.Clear();
+            string jugador;
+            while (i < trozos.Length - 1)
+            {
+                jugador = trozos[i].Split('\0')[0];
+                // MessageBox.Show(jugador);
+                listBox1.Items.Add(jugador);
+                i++;
+            }
+        }
+
+        private void atenderserver()
+        {
+
+            while (true)
+            {
+                //Recibimos mensaje del servidor
+                byte[] msg2 = new byte[80];
+                server.Receive(msg2);
+                string recibido = Encoding.ASCII.GetString(msg2).TrimEnd('\0');
+                // MessageBox.Show(recibido);
+                string[] trozos = recibido.Split('/');
+                int codigo = Convert.ToInt32(trozos[0]);
+                string mensaje;
+                switch (codigo)
+                {
+
+                    case 1: // insertar
+                        mensaje = trozos[1].Split('\0')[0];
+                        MessageBox.Show(mensaje);
+                        break;
+
+                    case 2:  //acceder
+                        mensaje = trozos[1].Split('\0')[0];
+                        break;
+
+                    case 3:  //ganador
+                        mensaje = trozos[1].Split('\0')[0];
+                        MessageBox.Show("El ganador de la partida es: " + mensaje);
+                        break;
+
+                    case 4:  //posicion
+                        mensaje = trozos[1].Split('\0')[0];
+                        MessageBox.Show("La posicion es: " + mensaje);
+                        break;
+
+                    case 5:  //duracion
+                        mensaje = trozos[1].Split('\0')[0];
+                        MessageBox.Show("La duracion es: " + mensaje);
+                        break;
+
+
+                    case 6:
+                        DelegadoParaPonerConectados delegado = new DelegadoParaPonerConectados(PonConectados);
+                        groupBox2.Invoke(delegado, new object[] { trozos });
+                        break;
+                }
+            }
+
+        }     //procesado de las respuestas del servidor
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            
+            
+            ListBox listbox = new ListBox();
+        }
 
-           
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
-            IPAddress direc = IPAddress.Parse("147.83.117.22");
-            IPEndPoint ipep = new IPEndPoint(direc, 50013);
-            
+            IPAddress direc = IPAddress.Parse("192.168.56.102");
+            IPEndPoint ipep = new IPEndPoint(direc, 9050);
+
 
             //Creamos el socket 
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -41,36 +122,36 @@ namespace WindowsFormsApplication1
                 this.BackColor = Color.Green;
                 MessageBox.Show("Conectado");
 
+
             }
-            catch (SocketException er )
+            catch (SocketException)
             {
                 //Si hay excepcion imprimimos error y salimos del programa con return 
                 MessageBox.Show("No he podido conectar con el servidor");
-                MessageBox.Show("Error" + er.Message);
                 return;
             }
 
-        }
+
+            ThreadStart st = delegate { atenderserver(); };
+            atender = new Thread(st);
+            atender.Start();
+        }   //conectar
 
         private void registrar_Click(object sender, EventArgs e)
         {
-            try{
+            try
+            {
                 string mensaje = "1/" + usuario.Text + "/" + contra.Text + "/" + email.Text;
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
 
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                MessageBox.Show(mensaje);
-                groupBox2.Visible = true;
+
             }
             catch { MessageBox.Show("Error al registrar."); }
-            
-            
-        }
+
+
+        }   //registrar
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -87,6 +168,7 @@ namespace WindowsFormsApplication1
                 this.BackColor = Color.Gray;
                 server.Shutdown(SocketShutdown.Both);
                 server.Close();
+                atender.Abort();
             }
             catch
             {
@@ -94,12 +176,7 @@ namespace WindowsFormsApplication1
             }
 
 
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
+        }    //desconectar
 
         private void acceder_Click(object sender, EventArgs e)
         {
@@ -109,50 +186,26 @@ namespace WindowsFormsApplication1
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
-                
+                //mensaje = "10/";
 
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                MessageBox.Show(mensaje);
-                groupBox2.Visible = true;
 
-                consultarconectados();
             }
             catch { MessageBox.Show("Error al acceder."); }
 
-        }
+        }    //acceder
 
-        private void consultarconectados() 
-        {
-            string mensaje = "6/"; 
-            //Enviamos al servidor el nombre tecleado
-            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-            server.Send(msg); 
-            
-            //Recibimos la respuesta del servidor
-            byte[] msg2 = new byte[80];
-            server.Receive(msg2);
-            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-            genteconectada.Text = "Los usuarios conectados son: " + mensaje;
-                }
-    private void button2_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
             try
             {
                 if (gana.Checked)
                 {
+
                     string mensaje = "3/" + idpartida.Text;
-                    // Enviamos al servidor el nombre tecleado
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                     server.Send(msg);
 
-                    //Recibimos la respuesta del servidor
-                    byte[] msg2 = new byte[80];
-                    server.Receive(msg2);
-                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                    MessageBox.Show("El ganador de la partida es: " + mensaje);
+
                 }
 
                 else if (pos.Checked)
@@ -162,11 +215,7 @@ namespace WindowsFormsApplication1
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                     server.Send(msg);
 
-                    //Recibimos la respuesta del servidor
-                    byte[] msg2 = new byte[80];
-                    server.Receive(msg2);
-                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                    MessageBox.Show("Tu posicón en partida es: " + mensaje);
+
                 }
 
                 else if (tiemp.Checked)
@@ -176,14 +225,18 @@ namespace WindowsFormsApplication1
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                     server.Send(msg);
 
-                    //Recibimos la respuesta del servidor
-                    byte[] msg2 = new byte[80];
-                    server.Receive(msg2);
-                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                    MessageBox.Show("Tu tiempo en partida es: " + mensaje + "min");
+
                 }
+
+
             }
             catch { MessageBox.Show("Error al realizar la consulta."); }
+            //consultas   
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
         }
     }
 }
