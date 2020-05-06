@@ -91,8 +91,10 @@ namespace WindowsFormsApplication1
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
             
             
+
             ListBox listbox = new ListBox();
         }
 
@@ -110,7 +112,10 @@ namespace WindowsFormsApplication1
         {
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
+
             IPAddress direc = IPAddress.Parse("192.168.56.102");
+
+
             IPEndPoint ipep = new IPEndPoint(direc, 9050);
 
 
@@ -232,10 +237,12 @@ namespace WindowsFormsApplication1
             }
             catch { MessageBox.Show("Error al realizar la consulta."); }
             //consultas   
+
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+
 
         }
     }

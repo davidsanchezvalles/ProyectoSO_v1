@@ -55,16 +55,24 @@ int DamePosicion(ListaConectados *lista, char nombre[20]){
 		}else return -1;
 		
 		
+<<<<<<< HEAD
 	}
 	
 int Eliminar(ListaConectados *lista, char nombre[20]){
 		
+=======
+>>>>>>> 82545308bb89c19c844233268fc63252015a18a0
 	int pos = DamePosicion(lista, nombre); //encontramos la posicion de la persona en la lista
 	int i;
 	if(pos == -1){
 		return -1;  //no se encontro
+<<<<<<< HEAD
 	}
 	else{
+=======
+	}else{
+		
+>>>>>>> 82545308bb89c19c844233268fc63252015a18a0
 		for(i=pos; i<lista->num-1; i++){
 			
 			strcpy(lista->conectados[i].nombre, lista->conectados[i+1].nombre);
@@ -76,6 +84,29 @@ int Eliminar(ListaConectados *lista, char nombre[20]){
 	}
 }
 		
+<<<<<<< HEAD
+=======
+int DamePosicion(ListaConectados *lista, char nombre[20]){
+	//Devuelve Posicion en caso de encontrarlo, en caso contrario devuelve -1
+	int i = 0;
+	int encontrado = 0;
+	
+	while(i<lista->num && encontrado==0)
+	{
+		if(strcmp(nombre, lista->conectados[i].nombre)==0)
+		{
+			encontrado = 1;
+		}i++;
+	}
+	if(encontrado == 1)
+	{
+		return i;
+	
+	}else return -1;
+		
+	
+}
+>>>>>>> 82545308bb89c19c844233268fc63252015a18a0
 			
 			
 void DameConectados(ListaConectados *lista, char conectados[80]){ 
@@ -94,11 +125,23 @@ void DameConectados(ListaConectados *lista, char conectados[80]){
 	 }
 	printf("%d personas conectadas: %s\n" , lista->num, conectados);
 }
+<<<<<<< HEAD
 	
 	
 void *AtenderCliente(void *socket){
 	
 	
+=======
+	
+	
+
+
+
+	
+void *AtenderCliente(void *socket){
+	
+	
+>>>>>>> 82545308bb89c19c844233268fc63252015a18a0
 	MYSQL *conn;
 	MYSQL_RES *resultado; // Estructura especial para almacenar resultados de consultas 
 	MYSQL_ROW row;
@@ -123,11 +166,19 @@ void *AtenderCliente(void *socket){
 	int *s;
 	s= (int *) socket;
 	sock_conn= *s;
+<<<<<<< HEAD
 	
 	//comprobamos el socket del usuario x
 	printf("Se ha conectado el usuario con socket: %d\n", sock_conn);
 	
 	
+=======
+	
+	//comprobamos el socket del usuario x
+	printf("Se ha conectado el usuario con socket: %d\n", sock_conn);
+	
+	
+>>>>>>> 82545308bb89c19c844233268fc63252015a18a0
 	char buff[512],buff2[512], nombre[20],contrasena[20], email[20], idPartida[20];
 	char conectados[80];
 	int ret, err;
