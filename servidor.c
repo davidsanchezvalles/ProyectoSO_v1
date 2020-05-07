@@ -20,6 +20,11 @@ typedef struct {
 	int num;
 }ListaConectados;
 
+typedef struct {
+	Conectado invitaciones[100];
+	int num;
+}Invitaciones;
+
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; //Acceso excluyente
 
 ListaConectados lista;
@@ -46,7 +51,10 @@ int DamePosicion(ListaConectados *lista, char nombre[20]){
 			if(strcmp(nombre, lista->conectados[i].nombre)==0)
 			{
 				encontrado = 1;
-			}i++;
+			}
+			else{
+			i++;
+			}
 		}
 		if(encontrado == 1)
 		{
@@ -95,6 +103,35 @@ void DameConectados(ListaConectados *lista, char conectados[80]){
 	printf("%d personas conectadas: %s\n" , lista->num, conectados);
 }
 	
+int AnadirInvitacion(Invitaciones *lista, char invitado[20]) {
+	
+	//Añade la invitacion a la lista invitaciones
+	int i = 0;
+	int encontrado = 0;
+	
+	while(i<lista->num && encontrado==0)
+	{
+		if(strcmp(lista->invitaciones[i].nombre, "")==0)
+		{
+			encontrado = 1;
+		}
+		else
+		i++;
+	}
+	if(encontrado == 1)
+	{
+		if(lista->num == 100)
+			return -1;
+		else
+		strcpy(lista->invitaciones[lista->num].nombre, invitado); 
+		lista->num = lista->num + 1;
+		return 0;
+	}
+	else
+	   return -1;
+}
+
+
 	
 void *AtenderCliente(void *socket){
 	
@@ -342,7 +379,6 @@ void *AtenderCliente(void *socket){
 				write (sock_conn,buff2, strlen(buff2)); 
 			
 				break;
-				
 			}
 		}
 	}
