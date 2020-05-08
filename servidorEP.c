@@ -58,6 +58,7 @@ int Eliminar(ListaConectados *lista, char nombre[20]){
 }
 		
 int DamePosicion(ListaConectados *lista, char nombre[20]){
+	
 	//Devuelve Posicion en caso de encontrarlo, en caso contrario devuelve -1
 	int i = 0;
 	int encontrado = 0;
@@ -71,12 +72,34 @@ int DamePosicion(ListaConectados *lista, char nombre[20]){
 	}
 	if(encontrado == 1)
 	{
-		return i;
+		return i-1;  //no esta devolviendo la posicion siguiente a la encontrada? le pongo -1
 	
 	}else return -1;
 		
 	
 }
+	
+int DameSocket(ListaConectados *lista, char nombre[20]){
+		//Devuelve socket en caso de encontrarlo, en caso contrario devuelve -1
+		int i = 0;
+		int encontrado = 0;
+		
+		while(i<lista->num && encontrado==0)
+		{
+			if(strcmp(nombre, lista->conectados[i].nombre)==0)
+			{
+				encontrado = 1;
+			}i++;
+		}
+		if(encontrado == 1)
+		{
+			return lista->conectados[i-1].socket;  //no esta devolviendo la posicion siguiente a la encontrada? le pongo -1
+			
+		}else return -1;
+		
+		
+	}
+		
 			
 			
 void DameConectados(ListaConectados *lista, char conectados[80]){ 
@@ -150,7 +173,7 @@ void *AtenderCliente(void *socket){
 		p = strtok( buff, "/");
 		codigo = atoi(p);  //convierte el string en un entero
 		
-		if(codigo==1 || codigo==2){  //los casos de acceder y registrar
+		if(codigo==1 || codigo==2 || codigo==7 || codigo==8){  //los casos de acceder y registrar
 			p = strtok( NULL, "/");
 			strcpy (nombre, p);
 		}
@@ -347,12 +370,42 @@ void *AtenderCliente(void *socket){
 				write (sock_conn,buff2, strlen(buff2)); 
 			
 				break;
+			}	
+			case 7: {
+				int sok=DameSocket(&lista,nombre);
+				printf("Socket %d\n", sok);
+				sprintf(buff2,"7/Desea jugar?");
+				printf("%s\n", buff2);
+				write (sok,buff2, strlen(buff2)); 
 				
+				break;
+			}
+			
+		case 8: {
+				if (strcmp(nombre,"SI")==0)
+				{
+					printf("yes!!");
+					sprintf(buff2,"8/Se acepto invitacion,comienza el juego");
+					for (i=0; i<lista.num; i++){  //enviamos esta lista a todos los clientes
+						write (lista.conectados[i].socket,buff2, strlen(buff2)); 
+					}
+				}else
+				{
+						sprintf(buff2,"8/No se acepto invitacion");
+						for (i=0; i<lista.num; i++){  //enviamos esta lista a todos los clientes
+							write (lista.conectados[i].socket,buff2, strlen(buff2)); 	
+						}
+				}
+				
+				
+				
+				break;
 			}
 		}
 	}
 			
 }
+
 
 
 
