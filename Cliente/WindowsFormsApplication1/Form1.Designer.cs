@@ -50,6 +50,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -266,7 +267,7 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(432, 98);
+            this.listBox1.Location = new System.Drawing.Point(432, 70);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(178, 212);
             this.listBox1.TabIndex = 11;
@@ -276,17 +277,28 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(440, 68);
+            this.label4.Location = new System.Drawing.Point(429, 49);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(160, 18);
             this.label4.TabIndex = 12;
             this.label4.Text = "Lista de conectados";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(432, 288);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 13;
+            this.button4.Text = "Invitar";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(679, 331);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button3);
@@ -328,6 +340,7 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label textoserver;
+        private System.Windows.Forms.Button button4;
     }
 }
 

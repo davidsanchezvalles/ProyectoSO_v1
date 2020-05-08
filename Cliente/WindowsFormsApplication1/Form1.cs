@@ -51,6 +51,7 @@ namespace WindowsFormsApplication1
                 // MessageBox.Show(recibido);
                 string[] trozos = recibido.Split('/');
                 int codigo = Convert.ToInt32(trozos[0]);
+                MessageBox.Show(trozos[0]);
                 string mensaje;
                 switch (codigo)
                 {
@@ -80,10 +81,38 @@ namespace WindowsFormsApplication1
                         break;
 
 
-                    case 6:
+                    case 6:  //conectados
                         DelegadoParaPonerConectados delegado = new DelegadoParaPonerConectados(PonConectados);
                         groupBox2.Invoke(delegado, new object[] { trozos });
                         break;
+
+
+                    case 7:  //recibimos invitacion
+                           mensaje = trozos[1].Split('\0')[0];
+                           DialogResult result;
+                           result= MessageBox.Show(mensaje,"invitacion", MessageBoxButtons.YesNo);
+                           if (result == System.Windows.Forms.DialogResult.Yes)
+                           {
+                               string men = "8/SI";
+                               byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                               server.Send(msg);
+
+                           }
+                           else
+                           {
+                               string men = "8/NO";
+                               byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                               server.Send(msg);
+
+                           }
+                            
+                           break;
+
+
+                    case 8:  //respuesta invitacion
+                           mensaje = trozos[1].Split('\0')[0];
+                           MessageBox.Show( mensaje);
+                           break;
                 }
             }
 
@@ -93,11 +122,8 @@ namespace WindowsFormsApplication1
         {
             
             
-            
-            
-            
-            
             ListBox listbox = new ListBox();
+         
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -114,7 +140,7 @@ namespace WindowsFormsApplication1
         {
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
-            IPAddress direc = IPAddress.Parse("IP DE TU SHIVA");
+            IPAddress direc = IPAddress.Parse("147.83.117.22");
             IPEndPoint ipep = new IPEndPoint(direc, 50013);
 
 
@@ -231,11 +257,27 @@ namespace WindowsFormsApplication1
 
 
                 }
+            
 
 
             }
             catch { MessageBox.Show("Error al realizar la consulta."); }
-            //consultas   
-        }
+          
+        }   //consultas
+
+        private void button4_Click(object sender, EventArgs e)     //invitar
+        {
+            if (listBox1.SelectedItem != null)
+            {
+                string nombre = listBox1.SelectedItem.ToString();
+                string mensaje = "7/" + nombre;
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
+
+
+            }
+        }     
+
+     
     }
 }
