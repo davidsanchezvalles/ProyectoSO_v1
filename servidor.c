@@ -28,6 +28,7 @@ typedef struct {
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; //Acceso excluyente
 
 ListaConectados lista;
+Invitaciones invitados;
 
 int Poner(ListaConectados *lista, char nombre[20], int socket){
 	//Anade nuevo conectado.
@@ -165,7 +166,7 @@ void *AtenderCliente(void *socket){
 	printf("Se ha conectado el usuario con socket: %d\n", sock_conn);
 	
 	
-	char buff[512],buff2[512], nombre[20],contrasena[20], email[20], idPartida[20];
+	char buff[512],buff2[512], nombre[20],contrasena[20], email[20], idPartida[20], invitado[20];
 	char conectados[80];
 	int ret, err;
 	int codigo, pos, i;
@@ -380,6 +381,20 @@ void *AtenderCliente(void *socket){
 			
 				break;
 			}
+			case 7: {   //invitaciones
+				p = strtok( NULL, "/");
+				strcpy (invitado, p);
+				pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
+				int res = AnadirInvitacion(&invitados, invitado); //añadimos el nuevo usuario a la lista de invitaciones			
+				pthread_mutex_unlock (&mutex); //ya puede interrumpir
+				if(res==0)
+				{
+					printf("Invitacion enviada correctamente.\n");
+					sprintf (buff2,"7/%s",row[0]);
+					write (sock_conn,buff2, strlen(buff2));
+				}
+				break;
+			}
 		}
 	}
 			
@@ -427,6 +442,6 @@ int main(int argc, char *argv[]) {
 		a++;
 		
 	}
-}
+	}
 	
 
