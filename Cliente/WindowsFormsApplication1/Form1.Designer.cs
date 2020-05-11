@@ -50,11 +50,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.Jugadores = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.Invita = new System.Windows.Forms.RadioButton();
-            this.no = new System.Windows.Forms.RadioButton();
-            this.si = new System.Windows.Forms.RadioButton();
+            this.button4 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -120,11 +116,6 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.groupBox2.Controls.Add(this.si);
-            this.groupBox2.Controls.Add(this.no);
-            this.groupBox2.Controls.Add(this.Invita);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.Jugadores);
             this.groupBox2.Controls.Add(this.textoserver);
             this.groupBox2.Controls.Add(this.genteconectada);
             this.groupBox2.Controls.Add(this.tiemp);
@@ -167,7 +158,6 @@
             this.tiemp.TabStop = true;
             this.tiemp.Text = "Tiempo en partida";
             this.tiemp.UseVisualStyleBackColor = true;
-            this.tiemp.CheckedChanged += new System.EventHandler(this.tiemp_CheckedChanged);
             // 
             // pos
             // 
@@ -193,7 +183,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(173, 131);
+            this.button2.Location = new System.Drawing.Point(173, 125);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 34);
             this.button2.TabIndex = 4;
@@ -277,7 +267,7 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(432, 98);
+            this.listBox1.Location = new System.Drawing.Point(432, 70);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(178, 212);
             this.listBox1.TabIndex = 11;
@@ -287,68 +277,28 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(440, 68);
+            this.label4.Location = new System.Drawing.Point(429, 49);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(160, 18);
             this.label4.TabIndex = 12;
             this.label4.Text = "Lista de conectados";
             // 
-            // Jugadores
+            // button4
             // 
-            this.Jugadores.Location = new System.Drawing.Point(219, 171);
-            this.Jugadores.Name = "Jugadores";
-            this.Jugadores.Size = new System.Drawing.Size(92, 20);
-            this.Jugadores.TabIndex = 13;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(12, 166);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(177, 25);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "Invitar Jugadores";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
-            // 
-            // Invita
-            // 
-            this.Invita.AutoSize = true;
-            this.Invita.Location = new System.Drawing.Point(173, 108);
-            this.Invita.Name = "Invita";
-            this.Invita.Size = new System.Drawing.Size(103, 17);
-            this.Invita.TabIndex = 15;
-            this.Invita.TabStop = true;
-            this.Invita.Text = "InvitarJugadores";
-            this.Invita.UseVisualStyleBackColor = true;
-            // 
-            // no
-            // 
-            this.no.AutoSize = true;
-            this.no.Location = new System.Drawing.Point(27, 146);
-            this.no.Name = "no";
-            this.no.Size = new System.Drawing.Size(39, 17);
-            this.no.TabIndex = 16;
-            this.no.TabStop = true;
-            this.no.Text = "No";
-            this.no.UseVisualStyleBackColor = true;
-            // 
-            // si
-            // 
-            this.si.AutoSize = true;
-            this.si.Location = new System.Drawing.Point(27, 117);
-            this.si.Name = "si";
-            this.si.Size = new System.Drawing.Size(34, 17);
-            this.si.TabIndex = 17;
-            this.si.TabStop = true;
-            this.si.Text = "Si";
-            this.si.UseVisualStyleBackColor = true;
+            this.button4.Location = new System.Drawing.Point(432, 288);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 13;
+            this.button4.Text = "Invitar";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(679, 331);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button3);
@@ -356,7 +306,6 @@
             this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "Juego";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -391,11 +340,7 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label textoserver;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox Jugadores;
-        private System.Windows.Forms.RadioButton Invita;
-        private System.Windows.Forms.RadioButton si;
-        private System.Windows.Forms.RadioButton no;
+        private System.Windows.Forms.Button button4;
     }
 }
 

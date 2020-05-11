@@ -51,6 +51,7 @@ namespace WindowsFormsApplication1
                 // MessageBox.Show(recibido);
                 string[] trozos = recibido.Split('/');
                 int codigo = Convert.ToInt32(trozos[0]);
+                MessageBox.Show(trozos[0]);
                 string mensaje;
                 switch (codigo)
                 {
@@ -80,35 +81,38 @@ namespace WindowsFormsApplication1
                         break;
 
 
-                    case 6:
+                    case 6:  //conectados
                         DelegadoParaPonerConectados delegado = new DelegadoParaPonerConectados(PonConectados);
                         groupBox2.Invoke(delegado, new object[] { trozos });
                         break;
 
 
-                    case 7:
-                        DialogResult result;
-                        mensaje = trozos[1].Split('\0')[0];
-                        result = MessageBox.Show("Invitación", "" + mensaje, MessageBoxButtons.YesNo);
-                        if (result == System.Windows.Forms.DialogResult.Yes)
-                        {
-                            string men = "7/SI";
-                            // Enviamos al servidor
-                            byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
-                            server.Send(msg);
-                        }
-                        else
-                        {
-                            string men = "7/NO";
-                            // Enviamos al servidor
-                            byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
-                            server.Send(msg);
-                        }
-                        break;
-                    case 8:
-                        string m = trozos[1].Split('\0')[0];
-                        MessageBox.Show(m);
-                        break;
+                    case 7:  //recibimos invitacion
+                           mensaje = trozos[1].Split('\0')[0];
+                           DialogResult result;
+                           result= MessageBox.Show(mensaje,"invitacion", MessageBoxButtons.YesNo);
+                           if (result == System.Windows.Forms.DialogResult.Yes)
+                           {
+                               string men = "8/SI";
+                               byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                               server.Send(msg);
+
+                           }
+                           else
+                           {
+                               string men = "8/NO";
+                               byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                               server.Send(msg);
+
+                           }
+                            
+                           break;
+
+
+                    case 8:  //respuesta invitacion
+                           mensaje = trozos[1].Split('\0')[0];
+                           MessageBox.Show( mensaje);
+                           break;
                 }
             }
 
@@ -116,11 +120,10 @@ namespace WindowsFormsApplication1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
             
             
-
             ListBox listbox = new ListBox();
+         
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -137,11 +140,8 @@ namespace WindowsFormsApplication1
         {
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
-
-            IPAddress direc = IPAddress.Parse("192.168.1.208");
-
-
-            IPEndPoint ipep = new IPEndPoint(direc, 9050);
+            IPAddress direc = IPAddress.Parse("147.83.117.22");
+            IPEndPoint ipep = new IPEndPoint(direc, 50013);
 
 
             //Creamos el socket 
@@ -257,47 +257,27 @@ namespace WindowsFormsApplication1
 
 
                 }
-                else if (Invita.Checked)
-                {
-                    string mensaje = "7/" + Jugadores.Text;
-                    // Enviamos al servidor el nombre tecleado
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                    server.Send(msg);
-
-
-                }
+            
 
 
             }
             catch { MessageBox.Show("Error al realizar la consulta."); }
-            //consultas   
+          
+        }   //consultas
 
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void button4_Click(object sender, EventArgs e)     //invitar
         {
-            //Mensaje de desconexión
-            string mensaje = "0/";
-            groupBox2.Visible = false;
+            if (listBox1.SelectedItem != null)
+            {
+                string nombre = listBox1.SelectedItem.ToString();
+                string mensaje = "7/" + nombre;
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
 
-            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-            server.Send(msg);
 
-            // Nos desconectamos
-            this.BackColor = Color.Gray;
-            server.Shutdown(SocketShutdown.Both);
-            server.Close();
-            atender.Abort();
-        }
+            }
+        }     
 
-        private void label5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tiemp_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
+     
     }
 }
