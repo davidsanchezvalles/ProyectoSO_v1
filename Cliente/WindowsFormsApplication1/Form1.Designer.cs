@@ -51,6 +51,7 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -136,7 +137,7 @@
             // 
             this.textoserver.Location = new System.Drawing.Point(42, 86);
             this.textoserver.Name = "textoserver";
-            this.textoserver.Size = new System.Drawing.Size(100, 95);
+            this.textoserver.Size = new System.Drawing.Size(142, 95);
             this.textoserver.TabIndex = 12;
             this.textoserver.Text = "Respuestas";
             // 
@@ -151,7 +152,7 @@
             // tiemp
             // 
             this.tiemp.AutoSize = true;
-            this.tiemp.Location = new System.Drawing.Point(173, 86);
+            this.tiemp.Location = new System.Drawing.Point(193, 86);
             this.tiemp.Name = "tiemp";
             this.tiemp.Size = new System.Drawing.Size(110, 17);
             this.tiemp.TabIndex = 9;
@@ -162,7 +163,7 @@
             // pos
             // 
             this.pos.AutoSize = true;
-            this.pos.Location = new System.Drawing.Point(173, 60);
+            this.pos.Location = new System.Drawing.Point(193, 60);
             this.pos.Name = "pos";
             this.pos.Size = new System.Drawing.Size(115, 17);
             this.pos.TabIndex = 8;
@@ -173,7 +174,7 @@
             // gana
             // 
             this.gana.AutoSize = true;
-            this.gana.Location = new System.Drawing.Point(173, 34);
+            this.gana.Location = new System.Drawing.Point(193, 34);
             this.gana.Name = "gana";
             this.gana.Size = new System.Drawing.Size(116, 17);
             this.gana.TabIndex = 7;
@@ -183,7 +184,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(173, 125);
+            this.button2.Location = new System.Drawing.Point(203, 120);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 34);
             this.button2.TabIndex = 4;
@@ -267,7 +268,7 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(432, 70);
+            this.listBox1.Location = new System.Drawing.Point(432, 61);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(178, 212);
             this.listBox1.TabIndex = 11;
@@ -277,7 +278,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(429, 49);
+            this.label4.Location = new System.Drawing.Point(429, 40);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(160, 18);
             this.label4.TabIndex = 12;
@@ -285,7 +286,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(432, 288);
+            this.button4.Location = new System.Drawing.Point(476, 292);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 13;
@@ -293,11 +294,21 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(429, 276);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(199, 13);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "(Seleccione al jugador que desee invitar)";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(679, 331);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.listBox1);
@@ -341,6 +352,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label textoserver;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label label5;
     }
 }
 

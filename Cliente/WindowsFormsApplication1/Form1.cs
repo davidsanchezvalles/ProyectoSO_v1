@@ -15,13 +15,12 @@ namespace WindowsFormsApplication1
         Thread atender;
 
         delegate void DelegadoParaPonerConectados(string[] texto);
-        //delegate void DelegadoParaVisualBox(string[] texto);
+        delegate void DelegadoParaRespuestas(string[] texto);
+
 
         public Form1()
         {
             InitializeComponent();
-            // CheckForIllegalCrossThreadCalls = false; //Necesario para que los elementos de los formularios puedan ser
-            //accedidos desde threads diferentes a los que los crearon
         }
 
         private void PonConectados(string[] trozos)
@@ -33,10 +32,16 @@ namespace WindowsFormsApplication1
             while (i < trozos.Length - 1)
             {
                 jugador = trozos[i].Split('\0')[0];
-                // MessageBox.Show(jugador);
                 listBox1.Items.Add(jugador);
                 i++;
             }
+        }
+
+        private void Respuestas(string[] trozos)
+        {
+             string  respuesta = trozos[1].Split('\0')[0];
+             textoserver.Text = respuesta;
+  
         }
 
         private void atenderserver()
@@ -57,8 +62,14 @@ namespace WindowsFormsApplication1
                 {
 
                     case 1: // insertar
+
+                        DelegadoParaRespuestas del = new DelegadoParaRespuestas(Respuestas);
+                        textoserver.Invoke(del, new object[] { trozos });
+
+                        
                         mensaje = trozos[1].Split('\0')[0];
                         MessageBox.Show(mensaje);
+                        textoserver.Text = mensaje;
                         break;
 
                     case 2:  //acceder
@@ -140,8 +151,8 @@ namespace WindowsFormsApplication1
         {
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
-            IPAddress direc = IPAddress.Parse("147.83.117.22");
-            IPEndPoint ipep = new IPEndPoint(direc, 50013);
+            IPAddress direc = IPAddress.Parse("192.168.1.208");
+            IPEndPoint ipep = new IPEndPoint(direc, 9050);
 
 
             //Creamos el socket 
@@ -265,7 +276,7 @@ namespace WindowsFormsApplication1
           
         }   //consultas
 
-        private void button4_Click(object sender, EventArgs e)     //invitar
+        private void button4_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedItem != null)
             {
@@ -276,7 +287,7 @@ namespace WindowsFormsApplication1
 
 
             }
-        }     
+        }   //invitar
 
      
     }
