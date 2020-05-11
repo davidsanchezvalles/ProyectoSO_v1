@@ -9,13 +9,13 @@ using System.Threading;
 
 namespace WindowsFormsApplication1
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form          //v4_ser_sin entorno
     {
         Socket server;
         Thread atender;
 
         delegate void DelegadoParaPonerConectados(string[] texto);
-        delegate void DelegadoParaVisualBox(string[] texto);
+        //delegate void DelegadoParaVisualBox(string[] texto);
 
         public Form1()
         {
