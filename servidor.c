@@ -8,6 +8,8 @@
 #include <mysql.h>
 #include <stdbool.h>
 #include <pthread.h>
+//#include <my_global.h>
+//v4_sergio	
 
 
 typedef struct {
@@ -20,15 +22,9 @@ typedef struct {
 	int num;
 }ListaConectados;
 
-typedef struct {
-	Conectado invitaciones[100];
-	int num;
-}Invitaciones;
-
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; //Acceso excluyente
 
 ListaConectados lista;
-Invitaciones invitados;
 
 int Poner(ListaConectados *lista, char nombre[20], int socket){
 	//Anade nuevo conectado.
@@ -42,38 +38,14 @@ int Poner(ListaConectados *lista, char nombre[20], int socket){
 	}
 }
 	
-int DamePosicion(ListaConectados *lista, char nombre[20]){
-		//Devuelve Posicion en caso de encontrarlo, en caso contrario devuelve -1
-		int i = 0;
-		int encontrado = 0;
-		
-		while(i<lista->num && encontrado==0)
-		{
-			if(strcmp(nombre, lista->conectados[i].nombre)==0)
-			{
-				encontrado = 1;
-			}
-			else{
-			i++;
-			}
-		}
-		if(encontrado == 1)
-		{
-			return i;
-			
-		}else return -1;
-		
-		
-	}
-	
 int Eliminar(ListaConectados *lista, char nombre[20]){
 		
 	int pos = DamePosicion(lista, nombre); //encontramos la posicion de la persona en la lista
 	int i;
 	if(pos == -1){
 		return -1;  //no se encontro
-	}
-	else{
+	}else{
+		
 		for(i=pos; i<lista->num-1; i++){
 			
 			strcpy(lista->conectados[i].nombre, lista->conectados[i+1].nombre);
@@ -84,6 +56,49 @@ int Eliminar(ListaConectados *lista, char nombre[20]){
 		return 0;
 	}
 }
+		
+int DamePosicion(ListaConectados *lista, char nombre[20]){
+	
+	//Devuelve Posicion en caso de encontrarlo, en caso contrario devuelve -1
+	int i = 0;
+	int encontrado = 0;
+	
+	while(i<lista->num && encontrado==0)
+	{
+		if(strcmp(nombre, lista->conectados[i].nombre)==0)
+		{
+			encontrado = 1;
+		}i++;
+	}
+	if(encontrado == 1)
+	{
+		return i-1;  //no esta devolviendo la posicion siguiente a la encontrada? le pongo -1
+	
+	}else return -1;
+		
+	
+}
+	
+int DameSocket(ListaConectados *lista, char nombre[20]){
+		//Devuelve socket en caso de encontrarlo, en caso contrario devuelve -1
+		int i = 0;
+		int encontrado = 0;
+		
+		while(i<lista->num && encontrado==0)
+		{
+			if(strcmp(nombre, lista->conectados[i].nombre)==0)
+			{
+				encontrado = 1;
+			}i++;
+		}
+		if(encontrado == 1)
+		{
+			return lista->conectados[i-1].socket;  //no esta devolviendo la posicion siguiente a la encontrada? le pongo -1
+			
+		}else return -1;
+		
+		
+	}
 		
 			
 			
@@ -104,33 +119,8 @@ void DameConectados(ListaConectados *lista, char conectados[80]){
 	printf("%d personas conectadas: %s\n" , lista->num, conectados);
 }
 	
-int AnadirInvitacion(Invitaciones *lista, char invitado[20]) {
 	
-	//Añade la invitacion a la lista invitaciones
-	int i = 0;
-	int encontrado = 0;
-	
-	while(i<lista->num && encontrado==0)
-	{
-		if(strcmp(lista->invitaciones[i].nombre, "")==0)
-		{
-			encontrado = 1;
-		}
-		else
-		i++;
-	}
-	if(encontrado == 1)
-	{
-		if(lista->num == 100)
-			return -1;
-		else
-		strcpy(lista->invitaciones[lista->num].nombre, invitado); 
-		lista->num = lista->num + 1;
-		return 0;
-	}
-	else
-	   return -1;
-}
+
 
 
 	
@@ -166,7 +156,7 @@ void *AtenderCliente(void *socket){
 	printf("Se ha conectado el usuario con socket: %d\n", sock_conn);
 	
 	
-	char buff[512],buff2[512], nombre[20],contrasena[20], email[20], idPartida[20], invitado[20];
+	char buff[512],buff2[512], nombre[20],contrasena[20], email[20], idPartida[20];
 	char conectados[80];
 	int ret, err;
 	int codigo, pos, i;
@@ -183,7 +173,7 @@ void *AtenderCliente(void *socket){
 		p = strtok( buff, "/");
 		codigo = atoi(p);  //convierte el string en un entero
 		
-		if(codigo==1 || codigo==2){  //los casos de acceder y registrar
+		if(codigo==1 || codigo==2 || codigo==7 || codigo==8){  //los casos de acceder y registrar
 			p = strtok( NULL, "/");
 			strcpy (nombre, p);
 		}
@@ -380,37 +370,42 @@ void *AtenderCliente(void *socket){
 				write (sock_conn,buff2, strlen(buff2)); 
 			
 				break;
+			}	
+			case 7: {
+				int sok=DameSocket(&lista,nombre);
+				printf("Socket %d\n", sok);
+				sprintf(buff2,"7/Desea jugar?");
+				printf("%s\n", buff2);
+				write (sok,buff2, strlen(buff2)); 
+				
+				break;
 			}
-			case 7: {   //invitaciones
-				int socketInvitado;
-				p = strtok( NULL, "/");
-				strcpy (invitado, p);
-				if(strcmp(invitado,"SI")!=0 && strcmp(invitado,"NO")!=0){
-					int posicionJug = DamePosicion(&lista, invitado);
-					/*pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
-					int res = AnadirInvitacion(&invitados, invitado); //añadimos el nuevo usuario a la lista de invitaciones			
-					pthread_mutex_unlock (&mutex); //ya puede interrumpir*/
-					printf("Invitacion enviada correctamente Al jugador: %s.\n", lista.conectados[posicionJug].nombre);
-					sprintf (buff2,"7/Quieres Jugar?");
-					socketInvitado = lista.conectados[posicionJug].socket;
-					write (lista.conectados[posicionJug].socket,buff2, strlen(buff2));
-				}else{
-					if(strcmp(invitado,"SI")==0){
-						//invitados.invitaciones
-						//printf("No se ha aceptado la partida", lista.conectados[posicionJug].nombre);
-						sprintf (buff2,"8/Se jugara la partida");
-						write (sock_conn,buff2, strlen(buff2));
-					}else{
-						sprintf (buff2,"8/No se jugara la partida");
-						write (sock_conn,buff2, strlen(buff2));
+			
+		case 8: {
+				if (strcmp(nombre,"SI")==0)
+				{
+					printf("yes!!");
+					sprintf(buff2,"8/Se acepto invitacion,comienza el juego");
+					for (i=0; i<lista.num; i++){  //enviamos esta lista a todos los clientes
+						write (lista.conectados[i].socket,buff2, strlen(buff2)); 
 					}
+				}else
+				{
+						sprintf(buff2,"8/No se acepto invitacion");
+						for (i=0; i<lista.num; i++){  //enviamos esta lista a todos los clientes
+							write (lista.conectados[i].socket,buff2, strlen(buff2)); 	
+						}
 				}
+				
+				
+				
 				break;
 			}
 		}
 	}
 			
 }
+
 
 
 
@@ -454,6 +449,6 @@ int main(int argc, char *argv[]) {
 		a++;
 		
 	}
-	}
+}
 	
 
