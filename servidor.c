@@ -37,7 +37,27 @@ int Poner(ListaConectados *lista, char nombre[20], int socket){
 		return 0;
 	}
 }
-	
+int DamePosicion(ListaConectados *lista, char nombre[20]){
+		
+		//Devuelve Posicion en caso de encontrarlo, en caso contrario devuelve -1
+		int i = 0;
+		int encontrado = 0;
+		
+		while(i<lista->num && encontrado==0)
+		{
+			if(strcmp(nombre, lista->conectados[i].nombre)==0)
+			{
+				encontrado = 1;
+			}else i++;
+		}
+		if(encontrado == 1)
+		{
+			return i; 
+			
+		}else return -1;
+		
+		
+	}	
 int Eliminar(ListaConectados *lista, char nombre[20]){
 		
 	int pos = DamePosicion(lista, nombre); //encontramos la posicion de la persona en la lista
@@ -46,7 +66,7 @@ int Eliminar(ListaConectados *lista, char nombre[20]){
 		return -1;  //no se encontro
 	}else{
 		
-		for(i=pos; i<lista->num-1; i++){
+		for(i=pos; i<lista->num; i++){  //he quitado el -1 porque sino no llega a eliminar el ultimo
 			
 			strcpy(lista->conectados[i].nombre, lista->conectados[i+1].nombre);
 			lista->conectados[i].socket = lista->conectados[i+1].socket;
@@ -56,55 +76,10 @@ int Eliminar(ListaConectados *lista, char nombre[20]){
 		return 0;
 	}
 }
-		
-int DamePosicion(ListaConectados *lista, char nombre[20]){
 	
-	//Devuelve Posicion en caso de encontrarlo, en caso contrario devuelve -1
-	int i = 0;
-	int encontrado = 0;
-	
-	while(i<lista->num && encontrado==0)
-	{
-		if(strcmp(nombre, lista->conectados[i].nombre)==0)
-		{
-			encontrado = 1;
-		}i++;
-	}
-	if(encontrado == 1)
-	{
-		return i-1;  //no esta devolviendo la posicion siguiente a la encontrada? le pongo -1
-	
-	}else return -1;
-		
-	
-}
-	
-int DameSocket(ListaConectados *lista, char nombre[20]){
-		//Devuelve socket en caso de encontrarlo, en caso contrario devuelve -1
-		int i = 0;
-		int encontrado = 0;
-		
-		while(i<lista->num && encontrado==0)
-		{
-			if(strcmp(nombre, lista->conectados[i].nombre)==0)
-			{
-				encontrado = 1;
-			}i++;
-		}
-		if(encontrado == 1)
-		{
-			return lista->conectados[i-1].socket;  //no esta devolviendo la posicion siguiente a la encontrada? le pongo -1
-			
-		}else return -1;
-		
-		
-	}
-		
-			
-			
 void DameConectados(ListaConectados *lista, char conectados[80]){ 
 	
-	//Pone en conectados los nombres de todos los conectados separados por /
+	//Pone en variable conectados los nombres de los usuarios conectados separados por /
 	int i;
 	strcpy(conectados,""); //nos aseguramos que esta vacio
 	
@@ -120,17 +95,25 @@ void DameConectados(ListaConectados *lista, char conectados[80]){
 }
 	
 	
+void registro(char nombre[20], char consulta[80]){
+	
+	
+	
+}
+	
+	
 
 
 
 	
 void *AtenderCliente(void *socket){
+	//Funcion concurrente para atender los mensajes de los clientes
 	
-	
+	//Primero de todo creamos una conexion al servidor MYSQL  
 	MYSQL *conn;
 	MYSQL_RES *resultado; // Estructura especial para almacenar resultados de consultas 
 	MYSQL_ROW row;
-	conn = mysql_init(NULL); //Creamos una conexion al servidor MYSQL  
+	conn = mysql_init(NULL); 
 	
 	if (conn==NULL) {
 		printf ("Error al crear la conexion: %u %s\n", 
@@ -146,7 +129,7 @@ void *AtenderCliente(void *socket){
 		exit (1);
 	}
 
-  	//metodo para inicializar correctamente el socket que hemos pasado
+  	//metodo para inicializar correctamente el socket que hemos pasado como un puntero void
 	int sock_conn;
 	int *s;
 	s= (int *) socket;
@@ -166,7 +149,7 @@ void *AtenderCliente(void *socket){
 	while (terminar==0){
 		
 		
-		ret=read(sock_conn, buff, sizeof(buff)); //longitud mensaje recibido
+		ret=read(sock_conn, buff, sizeof(buff)); //ret=longitud mensaje recibido, buff=mensaje recibido
 		buff[ret]='\0'; // Tenemos que anadirle la marca de fin de string, para que no escriba lo que hay despues en el buffer
 		printf("MENSAJE CLIENTE RECIBIDO: %s\n", buff);
 		char *p;
@@ -197,8 +180,10 @@ void *AtenderCliente(void *socket){
 				terminar = 1;
 				break;
 			}
-			case 1: {   //insertar
+			case 1: {   //registro
 			
+				//registro(nombre,consulta); //obtenemos la consulta registro en la variable consulta
+				strcpy(consulta,""); //nos aseguramos que esta vacio
 				strcpy(consulta,"INSERT INTO jugador VALUES('");  //concatenamos la consulta
 				strcat(consulta,nombre);
 				strcat(consulta,"',");
@@ -210,8 +195,6 @@ void *AtenderCliente(void *socket){
 				strcpy (email, p);
 				strcat(consulta,email);
 				strcat(consulta,"');");
-				
-			
 				err=mysql_query (conn, consulta);
 				if (err!=0) {
 					printf ("Error al insertar datos en la base %u %s\n",
@@ -224,10 +207,9 @@ void *AtenderCliente(void *socket){
 					pthread_mutex_unlock (&mutex); //ya puede interrumpir
 					
 					strcpy (buff2,"1/El servidor realizo correctamente el registro");
-					write (sock_conn,buff2, strlen(buff2));
+					write (sock_conn,buff2, strlen(buff2));//enviamos mensaje
 				}
-				//printf("Se conecto %s con socket: %d\n", 
-				//lista->conectados[lista->num -1].nombre, lista->conectados[lista->num -1].socket); //le restamos uno porque el numero de la lista se incremento
+			
 				break;
 			}
 		
@@ -372,11 +354,11 @@ void *AtenderCliente(void *socket){
 				break;
 			}	
 			case 7: {
-				int sok=DameSocket(&lista,nombre);
-				printf("Socket %d\n", sok);
+				int pos=DamePosicion(&lista,nombre);
+				printf("Socket %d\n", lista.conectados[pos].socket);
 				sprintf(buff2,"7/Desea jugar?");
 				printf("%s\n", buff2);
-				write (sok,buff2, strlen(buff2)); 
+				write (lista.conectados[pos].socket,buff2, strlen(buff2)); 
 				
 				break;
 			}
