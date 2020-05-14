@@ -71,6 +71,7 @@ namespace WindowsFormsApplication1
                 // MessageBox.Show(recibido);
                 string[] trozos = recibido.Split('/');
                 int codigo = Convert.ToInt32(trozos[0]);
+                MessageBox.Show(trozos[0]);
                 string mensaje;
                 switch (codigo)
                 {
@@ -113,6 +114,7 @@ namespace WindowsFormsApplication1
 
 
                     case 7:  //recibimos invitacion
+<<<<<<< HEAD
                         mensaje = trozos[1].Split('\0')[0];
                         DialogResult result;
                         result = MessageBox.Show(mensaje, "invitacion", MessageBoxButtons.YesNo);
@@ -146,6 +148,33 @@ namespace WindowsFormsApplication1
                         listBox2.Invoke(del_chat, new object[] { trozos });
 
                         break;
+=======
+                           mensaje = trozos[1].Split('\0')[0];
+                           DialogResult result;
+                           result= MessageBox.Show(mensaje,"invitacion", MessageBoxButtons.YesNo);
+                           if (result == System.Windows.Forms.DialogResult.Yes)
+                           {
+                               string men = "8/SI";
+                               byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                               server.Send(msg);
+
+                           }
+                           else
+                           {
+                               string men = "8/NO";
+                               byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                               server.Send(msg);
+
+                           }
+                            
+                           break;
+
+
+                    case 8:  //respuesta invitacion
+                           mensaje = trozos[1].Split('\0')[0];
+                           MessageBox.Show( mensaje);
+                           break;
+>>>>>>> e8addc630ab67e1cc46fa88aeba45b7d90d2bd87
                 }
             }
 
@@ -155,6 +184,14 @@ namespace WindowsFormsApplication1
         //objetos------------------------------------
         private void Form1_Load(object sender, EventArgs e)
         {
+<<<<<<< HEAD
+=======
+            
+            
+            ListBox listbox = new ListBox();
+         
+        }
+>>>>>>> e8addc630ab67e1cc46fa88aeba45b7d90d2bd87
 
 
             ListBox listbox = new ListBox();  //necessari?
@@ -288,15 +325,23 @@ namespace WindowsFormsApplication1
 
 
                 }
+            
 
 
 
             }
             catch { MessageBox.Show("Error al realizar la consulta."); }
+<<<<<<< HEAD
 
         }   //consultas
 
         private void button4_Click(object sender, EventArgs e)
+=======
+          
+        }   //consultas
+
+        private void button4_Click(object sender, EventArgs e)     //invitar
+>>>>>>> e8addc630ab67e1cc46fa88aeba45b7d90d2bd87
         {
             if (listBox1.SelectedItem != null)
             {
@@ -307,6 +352,7 @@ namespace WindowsFormsApplication1
 
 
             }
+<<<<<<< HEAD
             else
             {
                 MessageBox.Show("Debe seleccionar a un jugador conectado");
@@ -332,5 +378,10 @@ namespace WindowsFormsApplication1
 
 
         }   //chat
+=======
+        }     
+
+     
+>>>>>>> e8addc630ab67e1cc46fa88aeba45b7d90d2bd87
     }
 }

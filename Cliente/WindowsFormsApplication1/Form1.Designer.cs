@@ -51,11 +51,14 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
+<<<<<<< HEAD
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
+=======
+>>>>>>> e8addc630ab67e1cc46fa88aeba45b7d90d2bd87
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -274,7 +277,11 @@
             // 
             this.listBox1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.listBox1.FormattingEnabled = true;
+<<<<<<< HEAD
             this.listBox1.Location = new System.Drawing.Point(432, 117);
+=======
+            this.listBox1.Location = new System.Drawing.Point(432, 70);
+>>>>>>> e8addc630ab67e1cc46fa88aeba45b7d90d2bd87
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(157, 147);
             this.listBox1.TabIndex = 11;
@@ -284,7 +291,11 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+<<<<<<< HEAD
             this.label4.Location = new System.Drawing.Point(429, 98);
+=======
+            this.label4.Location = new System.Drawing.Point(429, 49);
+>>>>>>> e8addc630ab67e1cc46fa88aeba45b7d90d2bd87
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(160, 18);
             this.label4.TabIndex = 12;
@@ -292,7 +303,11 @@
             // 
             // button4
             // 
+<<<<<<< HEAD
             this.button4.Location = new System.Drawing.Point(463, 283);
+=======
+            this.button4.Location = new System.Drawing.Point(432, 288);
+>>>>>>> e8addc630ab67e1cc46fa88aeba45b7d90d2bd87
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 13;
@@ -300,6 +315,7 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+<<<<<<< HEAD
             // label5
             // 
             this.label5.AutoSize = true;
@@ -346,16 +362,22 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+=======
+>>>>>>> e8addc630ab67e1cc46fa88aeba45b7d90d2bd87
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(889, 331);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.listBox2);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
+=======
+            this.ClientSize = new System.Drawing.Size(679, 331);
+>>>>>>> e8addc630ab67e1cc46fa88aeba45b7d90d2bd87
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.listBox1);
@@ -399,11 +421,14 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label textoserver;
         private System.Windows.Forms.Button button4;
+<<<<<<< HEAD
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button5;
+=======
+>>>>>>> e8addc630ab67e1cc46fa88aeba45b7d90d2bd87
     }
 }
 
