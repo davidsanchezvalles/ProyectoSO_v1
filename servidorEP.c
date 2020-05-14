@@ -8,8 +8,8 @@
 #include <mysql.h>
 #include <stdbool.h>
 #include <pthread.h>
-#include <my_global.h>
-	
+//#include <my_global.h>
+
 
 
 typedef struct {
@@ -37,16 +37,38 @@ int Poner(ListaConectados *lista, char nombre[20], int socket){
 		return 0;
 	}
 }
-	
+int DamePosicion(ListaConectados *lista, char nombre[20]){
+		
+		//Devuelve Posicion en caso de encontrarlo, en caso contrario devuelve -1
+		int i = 0;
+		int encontrado = 0;
+		
+		while(i<lista->num && encontrado==0)
+		{
+			if(strcmp(nombre, lista->conectados[i].nombre)==0)
+			{
+				encontrado = 1;
+			}
+			else i++;
+		}
+		if(encontrado == 1)
+		{
+			return i; 
+			
+		}else return -1;
+		
+		
+	}	
 int Eliminar(ListaConectados *lista, char nombre[20]){
 		
 	int pos = DamePosicion(lista, nombre); //encontramos la posicion de la persona en la lista
 	int i;
 	if(pos == -1){
 		return -1;  //no se encontro
-	}else{
+	}
+	else{
 		
-		for(i=pos; i<lista->num-1; i++){
+		for(i=pos; i<lista->num; i++){  //he quitado el -1 porque sino no llega a eliminar el ultimo
 			
 			strcpy(lista->conectados[i].nombre, lista->conectados[i+1].nombre);
 			lista->conectados[i].socket = lista->conectados[i+1].socket;
@@ -56,32 +78,10 @@ int Eliminar(ListaConectados *lista, char nombre[20]){
 		return 0;
 	}
 }
-		
-int DamePosicion(ListaConectados *lista, char nombre[20]){
-	//Devuelve Posicion en caso de encontrarlo, en caso contrario devuelve -1
-	int i = 0;
-	int encontrado = 0;
 	
-	while(i<lista->num && encontrado==0)
-	{
-		if(strcmp(nombre, lista->conectados[i].nombre)==0)
-		{
-			encontrado = 1;
-		}i++;
-	}
-	if(encontrado == 1)
-	{
-		return i;
-	
-	}else return -1;
-		
-	
-}
-			
-			
 void DameConectados(ListaConectados *lista, char conectados[80]){ 
 	
-	//Pone en conectados los nombres de todos los conectados separados por /
+	//Pone en variable conectados los nombres de los usuarios conectados separados por /
 	int i;
 	strcpy(conectados,""); //nos aseguramos que esta vacio
 	
@@ -97,17 +97,34 @@ void DameConectados(ListaConectados *lista, char conectados[80]){
 }
 	
 	
-
-
-
+void acceder(char buff[512], char consulta[80]){ //per fer provas de optimitzacio
+	char *p;
+	char nombre[20];
+	char contrasena[20];
+	
+	p = strtok( NULL, "/");
+	strcpy (nombre, p);
+	//printf("%s\n",nombre);
+	strcpy(consulta,"");
+	strcpy(consulta,"SELECT contrasena FROM jugador WHERE usuario = '");  //concatenamos la consulta
+	strcat(consulta,nombre);
+	strcat(consulta,"';");
+	
+	p = strtok( NULL, "/");
+	strcpy (contrasena, p);
+	
+	
+	
+	
+}
 	
 void *AtenderCliente(void *socket){
-	
-	
+	//Funcion concurrente para atender los mensajes de los clientes
+	//Primero de todo creamos una conexion al servidor MYSQL  
 	MYSQL *conn;
 	MYSQL_RES *resultado; // Estructura especial para almacenar resultados de consultas 
 	MYSQL_ROW row;
-	conn = mysql_init(NULL); //Creamos una conexion al servidor MYSQL  
+	conn = mysql_init(NULL); 
 	
 	if (conn==NULL) {
 		printf ("Error al crear la conexion: %u %s\n", 
@@ -123,7 +140,7 @@ void *AtenderCliente(void *socket){
 		exit (1);
 	}
 
-  	//metodo para inicializar correctamente el socket que hemos pasado
+  	//metodo para inicializar correctamente el socket que hemos pasado como un puntero void
 	int sock_conn;
 	int *s;
 	s= (int *) socket;
@@ -138,24 +155,24 @@ void *AtenderCliente(void *socket){
 	int ret, err;
 	int codigo, pos, i;
 	int terminar=0;
-	
+	char consulta[80];  //variable utilizada para las consultas SQL
 
 	while (terminar==0){
 		
 		
-		ret=read(sock_conn, buff, sizeof(buff)); //longitud mensaje recibido
+		ret=read(sock_conn, buff, sizeof(buff)); //ret=longitud mensaje recibido, buff=mensaje recibido
 		buff[ret]='\0'; // Tenemos que anadirle la marca de fin de string, para que no escriba lo que hay despues en el buffer
 		printf("MENSAJE CLIENTE RECIBIDO: %s\n", buff);
 		char *p;
-		p = strtok( buff, "/");
+		p = strtok( buff, "/"); //primera llamada strtok
 		codigo = atoi(p);  //convierte el string en un entero
 		
-		if(codigo==1 || codigo==2){  //los casos de acceder y registrar
+		if(codigo==1 || codigo==2 ){  //los casos de acceder y registrar
 			p = strtok( NULL, "/");
 			strcpy (nombre, p);
 		}
 		
-		char consulta[80];  //variable utilizada para las consultas SQL
+		
 		switch (codigo)
 		{
 			case 0: {   //desconexion
@@ -174,8 +191,10 @@ void *AtenderCliente(void *socket){
 				terminar = 1;
 				break;
 			}
-			case 1: {   //insertar
+			case 1: {   //registro
 			
+				
+				strcpy(consulta,""); //nos aseguramos que esta vacio
 				strcpy(consulta,"INSERT INTO jugador VALUES('");  //concatenamos la consulta
 				strcat(consulta,nombre);
 				strcat(consulta,"',");
@@ -188,8 +207,9 @@ void *AtenderCliente(void *socket){
 				strcat(consulta,email);
 				strcat(consulta,"');");
 				
-			
+				
 				err=mysql_query (conn, consulta);
+				
 				if (err!=0) {
 					printf ("Error al insertar datos en la base %u %s\n",
 							mysql_errno(conn), mysql_error(conn));
@@ -198,13 +218,12 @@ void *AtenderCliente(void *socket){
 				{
 					pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
 					Poner(&lista,nombre,sock_conn); //añadimos el nuevo usuario a la lista de conectados				
-					pthread_mutex_unlock (&mutex); //ya puede interrumpir
+					pthread_mutex_unlock (&mutex); //ya puede interrumpir*/
 					
 					strcpy (buff2,"1/El servidor realizo correctamente el registro");
-					write (sock_conn,buff2, strlen(buff2));
+					write (sock_conn,buff2, strlen(buff2));//enviamos mensaje
 				}
-				//printf("Se conecto %s con socket: %d\n", 
-				//lista->conectados[lista->num -1].nombre, lista->conectados[lista->num -1].socket); //le restamos uno porque el numero de la lista se incremento
+			
 				break;
 			}
 		
@@ -216,6 +235,7 @@ void *AtenderCliente(void *socket){
 				
 				p = strtok( NULL, "/");
 				strcpy (contrasena, p);
+				
 				
 				err=mysql_query (conn, consulta);
 				if (err!=0) {
@@ -347,12 +367,61 @@ void *AtenderCliente(void *socket){
 				write (sock_conn,buff2, strlen(buff2)); 
 			
 				break;
+			}	
+			case 7: {   //invitacion
+				char nombre_invitar[20];
+				p = strtok( NULL, "/");
+				strcpy(nombre_invitar, p);
 				
+				int pos=DamePosicion(&lista,nombre_invitar);
+				printf("Invitando a %s con socket: %d\n",lista.conectados[pos].nombre, lista.conectados[pos].socket);
+				sprintf(buff2,"7/Desea jugar?");
+				write (lista.conectados[pos].socket,buff2, strlen(buff2)); 
+				
+				break;
 			}
+			
+			case 8: {	//respuesta
+				
+				char respuesta[4];
+				p = strtok( NULL, "/");
+				strcpy (respuesta, p);
+				if (strcmp(respuesta,"SI")==0)
+				{
+					sprintf(buff2,"8/Se acepto invitacion,comienza el juego");
+					for (i=0; i<lista.num; i++){  //enviamos este mensaje a todos los clientes
+						write (lista.conectados[i].socket,buff2, strlen(buff2)); 
+					}
+				}else
+				{
+					int pos=DamePosicion(&lista,nombre);
+					sprintf(buff2,"8/No se acepto invitacion");
+					//Enviamos la respuesta a mi cliente
+					write (lista.conectados[pos].socket,buff2, strlen(buff2)); 	
+						
+				}
+				
+				
+				
+				break;
+			}
+			case 9: {	//chat
+				char mensaje[50];
+				p = strtok( NULL, "/");
+				strcpy(mensaje, p);
+				sprintf(buff2,"9/%s: %s",nombre,mensaje);
+				for (i=0; i<lista.num; i++){  //enviamos este mensaje a todos los clientes
+					write (lista.conectados[i].socket,buff2, strlen(buff2)); 
+				}
+				
+				break;
+			}
+				
 		}
 	}
 			
 }
+
 
 
 
