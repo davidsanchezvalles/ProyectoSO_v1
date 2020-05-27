@@ -139,6 +139,7 @@
             // 
             // textoserver
             // 
+            this.textoserver.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textoserver.Location = new System.Drawing.Point(25, 88);
             this.textoserver.Name = "textoserver";
             this.textoserver.Size = new System.Drawing.Size(142, 95);
