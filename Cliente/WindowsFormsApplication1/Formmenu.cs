@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace WindowsFormsApplication1
 {
-    public partial class Form1 : Form          //v4_ser_sin entorno
+    public partial class Formmenu : Form          //v4_ser_sin entorno
     {
         Socket server;
         Thread atender;
@@ -19,7 +19,7 @@ namespace WindowsFormsApplication1
         delegate void DelegadoParaVisualBox();
 
 
-        public Form1()
+        public Formmenu()
         {
             InitializeComponent();
         }
@@ -152,6 +152,8 @@ namespace WindowsFormsApplication1
         }     //procesado de las respuestas del servidor
 
 
+       
+        
         //objetos------------------------------------
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -330,6 +332,13 @@ namespace WindowsFormsApplication1
 
 
 
-        }   //chat
+        }  //chat
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            int turno = 1;
+            juegoForm juego = new juegoForm(turno);
+            juego.Show();
+        }  
     }
 }
