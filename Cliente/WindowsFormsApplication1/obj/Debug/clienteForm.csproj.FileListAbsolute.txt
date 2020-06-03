@@ -123,7 +123,6 @@ C:\Users\antonia\Desktop\ProyectoSO-master\Cliente\WindowsFormsApplication1\obj\
 C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
 C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
 C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csprojAssemblyReference.cache
-C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
 C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
 C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.cache
 C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
@@ -159,3 +158,6 @@ E:\SO\TEMP\SO-M5\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\clienteFo
 E:\SO\TEMP\SO-M5\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.CoreCompileInputs.cache
 E:\SO\TEMP\SO-M5\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
 E:\SO\TEMP\SO-M5\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Formmenu.resources
+C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.juegoForm.resources
+C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.CoreCompileInputs.cache

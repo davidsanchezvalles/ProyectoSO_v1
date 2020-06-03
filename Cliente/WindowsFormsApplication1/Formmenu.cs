@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace WindowsFormsApplication1
 {
-    public partial class Form1 : Form          //v5_ser_sin entorno
+    public partial class Formmenu : Form          //v4_ser_sin entorno
     {
         Socket server;
         Thread atender;
@@ -19,7 +19,7 @@ namespace WindowsFormsApplication1
         delegate void DelegadoParaVisualBox();
 
 
-        public Form1()
+        public Formmenu()
         {
             InitializeComponent();
         }
@@ -146,12 +146,50 @@ namespace WindowsFormsApplication1
                         listBox2.Invoke(del_chat, new object[] { trozos });
 
                         break;
+
+                    case 10:
+                        int a;
+                        
+                        string jugador = trozos[1].Split('\0')[0];
+                        int vides0 = Convert.ToInt32(trozos[2].Split('\0')[0]);  
+                        int vides1 = Convert.ToInt32(trozos[3].Split('\0')[0]);
+                        int fuerza = Convert.ToInt32(trozos[4].Split('\0')[0]);
+                        string grados = trozos[5].Split('\0')[0];
+
+                        if (jugador == usuario.Text)
+                        {
+                            a = 1;
+                            juegoForm juego = new juegoForm(a);
+                            juego.pBar3.Value = vides0;
+                            juego.pBar4.Value = vides1;
+                            juego.pBar2.Value = fuerza;
+                            juego.label2.Text = grados;
+                        }
+                        else
+                        {
+                            a = 2;
+                            juegoForm juego = new juegoForm(a);
+                            juego.pBar3.Value = vides1;
+                            juego.pBar4.Value = vides0;
+                            juego.pBar1.Value = fuerza;
+                            juego.label1.Text = grados;
+                        }
+
+
+
+
+
+
+
+                        break;
                 }
             }
 
         }     //procesado de las respuestas del servidor
 
 
+       
+        
         //objetos------------------------------------
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -170,7 +208,7 @@ namespace WindowsFormsApplication1
         {
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
-            IPAddress direc = IPAddress.Parse("192.168.56.1");
+            IPAddress direc = IPAddress.Parse("192.168.1.208");
             IPEndPoint ipep = new IPEndPoint(direc, 9050);
 
 
@@ -330,6 +368,13 @@ namespace WindowsFormsApplication1
 
 
 
-        }   //chat
+        }  //chat
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            int turno = 1;
+            juegoForm juego = new juegoForm(turno);
+            juego.Show();
+        }  
     }
 }
