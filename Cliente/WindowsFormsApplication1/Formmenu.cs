@@ -17,6 +17,8 @@ namespace WindowsFormsApplication1
         delegate void DelegadoParaPonerConectados(string[] texto);
         delegate void DelegadoParaRespuestas(string[] texto);
         delegate void DelegadoParaVisualBox();
+        
+
 
 
         public Formmenu()
@@ -121,7 +123,10 @@ namespace WindowsFormsApplication1
                             string men = "8/SI";
                             byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
                             server.Send(msg);
-
+                            int turno = 2;
+                            int tetoca = 0;
+                            juegoForm juego = new juegoForm(turno, tetoca);
+                            juego.Show();
                         }
                         else
                         {
@@ -137,6 +142,13 @@ namespace WindowsFormsApplication1
                     case 8:  //respuesta invitacion
                         mensaje = trozos[1].Split('\0')[0];
                         MessageBox.Show(mensaje);
+                        if (mensaje == "SI")
+                        {
+                            int turno = 1;
+                            int tetoca = 1;
+                            juegoForm juego = new juegoForm(turno, tetoca);
+                            juego.Show();
+                        }
                         break;
 
 
@@ -149,6 +161,7 @@ namespace WindowsFormsApplication1
 
                     case 10:
                         int a;
+                        int b;
                         
                         string jugador = trozos[1].Split('\0')[0];
                         int vides0 = Convert.ToInt32(trozos[2].Split('\0')[0]);  
@@ -159,7 +172,8 @@ namespace WindowsFormsApplication1
                         if (jugador == usuario.Text)
                         {
                             a = 1;
-                            juegoForm juego = new juegoForm(a);
+                            b = 0;
+                            juegoForm juego = new juegoForm(a , b);
                             juego.pBar3.Value = vides0;
                             juego.pBar4.Value = vides1;
                             juego.pBar2.Value = fuerza;
@@ -168,7 +182,8 @@ namespace WindowsFormsApplication1
                         else
                         {
                             a = 2;
-                            juegoForm juego = new juegoForm(a);
+                            b = 1;
+                            juegoForm juego = new juegoForm(a, b);
                             juego.pBar3.Value = vides1;
                             juego.pBar4.Value = vides0;
                             juego.pBar1.Value = fuerza;
@@ -373,7 +388,7 @@ namespace WindowsFormsApplication1
         private void button6_Click(object sender, EventArgs e)
         {
             int turno = 1;
-            juegoForm juego = new juegoForm(turno);
+            juegoForm juego = new juegoForm(turno, 1);
             juego.Show();
         }  
     }

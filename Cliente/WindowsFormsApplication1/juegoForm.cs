@@ -20,10 +20,11 @@ namespace WindowsFormsApplication1
         Socket server;
         Formmenu form1 = new Formmenu();
 
-        public juegoForm(int a)
+        public juegoForm(int a, int b)
         {
             InitializeComponent();
             int turno = a;
+            int tetoca = b;
         }
 
         private void juegoForm_Load(object sender, EventArgs e)
@@ -102,33 +103,61 @@ namespace WindowsFormsApplication1
         {
             if (turno == 1)
             {
-
-                string[] trozos = label1.Text.Split(' ');
-                grado = Convert.ToInt32(trozos[0]);
-                Vx = pBar1.Value * Math.Cos((grado * 2 * PI) / 360) * 3.95; //numero  3.95 elegido convenientemente
-                Voy = pBar1.Value * Math.Sin((grado * 2 * PI) / 360) * 3.95;
-                timer3.Stop();
-                vida = 0; // indicamos que le puede quitar vida(una vez por tirada)
-                timer2.Start();
-                string mensaje = "10/" + "/" + form1.usuario + "/" + pBar3.Value + "/" + pBar4.Value + "/" + pBar1.Value + "/" + label1.Text ;
-                // Enviamos al servidor el nombre tecleado
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                server.Send(msg);
+                if (tetoca == 1)
+                {
+                    string[] trozos = label1.Text.Split(' ');
+                    grado = Convert.ToInt32(trozos[0]);
+                    Vx = pBar1.Value * Math.Cos((grado * 2 * PI) / 360) * 3.95; //numero  3.95 elegido convenientemente
+                    Voy = pBar1.Value * Math.Sin((grado * 2 * PI) / 360) * 3.95;
+                    timer3.Stop();
+                    vida = 0; // indicamos que le puede quitar vida(una vez por tirada)
+                    timer2.Start();
+                    string mensaje = "10/" + "/" + form1.usuario + "/" + pBar3.Value + "/" + pBar4.Value + "/" + pBar1.Value + "/" + label1.Text;
+                    // Enviamos al servidor el nombre tecleado
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+                }
+                else
+                {
+                    string[] trozos = label2.Text.Split(' ');
+                    grado = Convert.ToInt32(trozos[0]);
+                    Vx = pBar2.Value * Math.Cos((grado * 2 * PI) / 360) * 3.95; //numero  3.95 elegido convenientemente
+                    Voy = pBar2.Value * Math.Sin((grado * 2 * PI) / 360) * 3.95;
+                    timer3.Stop();
+                    vida = 0; // indicamos que le puede quitar vida(una vez por tirada)
+                    timer2.Start();
+                }
             }
             else if (turno == 2)
             {
-
-                string[] trozos = label2.Text.Split(' ');
-                grado = Convert.ToInt32(trozos[0]); 
-                Vx = pBar2.Value * Math.Cos((grado * 2 * PI) / 360) * 3.95; //numero  3.95 elegido convenientemente
-                Voy = pBar2.Value * Math.Sin((grado * 2 * PI) / 360) * 3.95;
-                timer3.Stop();
-                vida = 0; // indicamos que le puede quitar vida(una vez por tirada)
-                timer2.Start();
-
+                if (tetoca == 1)
+                {
+                    string[] trozos = label2.Text.Split(' ');
+                    grado = Convert.ToInt32(trozos[0]);
+                    Vx = pBar2.Value * Math.Cos((grado * 2 * PI) / 360) * 3.95; //numero  3.95 elegido convenientemente
+                    Voy = pBar2.Value * Math.Sin((grado * 2 * PI) / 360) * 3.95;
+                    timer3.Stop();
+                    vida = 0; // indicamos que le puede quitar vida(una vez por tirada)
+                    timer2.Start();
+                    string mensaje = "10/" + "/" + form1.usuario + "/" + pBar4.Value + "/" + pBar3.Value + "/" + pBar2.Value + "/" + label2.Text;
+                    // Enviamos al servidor el nombre tecleado
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+                }
+                else
+                {
+                    string[] trozos = label1.Text.Split(' ');
+                    grado = Convert.ToInt32(trozos[0]);
+                    Vx = pBar1.Value * Math.Cos((grado * 2 * PI) / 360) * 3.95; //numero  3.95 elegido convenientemente
+                    Voy = pBar1.Value * Math.Sin((grado * 2 * PI) / 360) * 3.95;
+                    timer3.Stop();
+                    vida = 0; // indicamos que le puede quitar vida(una vez por tirada)
+                    timer2.Start();
+                }
             }
         }
 
+        public int tetoca = 0;
         public int turno = 1;
         private void KeyEvent(object sender, KeyEventArgs e) //Keyup Event 
         {
