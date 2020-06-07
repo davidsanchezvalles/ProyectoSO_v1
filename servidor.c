@@ -22,9 +22,18 @@ typedef struct {
 	int num;
 }ListaConectados;
 
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; //Acceso excluyente
 
+typedef struct{
+	int identificador;
+	char jugador1[20];
+	char jugador2[20];
+}Cpartida;
+
+
+
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; //Acceso excluyente
 ListaConectados lista;
+Cpartida partida;
 
 int Poner(ListaConectados *lista, char nombre[20], int socket){
 	//Anade nuevo conectado.
@@ -110,9 +119,11 @@ void acceder(char buff[512], char consulta[80]){ //per fer provas de optimitzaci
 	
 	p = strtok( NULL, "/");
 	strcpy (contrasena, p);
-
-}
 	
+	
+	
+	
+}
 	
 void *AtenderCliente(void *socket){
 	//Funcion concurrente para atender los mensajes de los clientes
@@ -141,7 +152,6 @@ void *AtenderCliente(void *socket){
 	int *s;
 	s= (int *) socket;
 	sock_conn= *s;
-	
 	
 	//comprobamos el socket del usuario x
 	printf("Se ha conectado el usuario con socket: %d\n", sock_conn);
@@ -214,7 +224,7 @@ void *AtenderCliente(void *socket){
 				}else
 				{
 					/**pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
-					Poner(&lista,nombre,sock_conn); //aÃ±adimos el nuevo usuario a la lista de conectados				
+					Poner(&lista,nombre,sock_conn); //añadimos el nuevo usuario a la lista de conectados				
 					pthread_mutex_unlock (&mutex); //ya puede interrumpir*/
 					
 					strcpy (buff2,"1/El servidor realizo correctamente el registro");
@@ -258,7 +268,7 @@ void *AtenderCliente(void *socket){
 					if(strcmp(row[0], contrasena)==0){
 						int i;
 						pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
-						Poner(&lista,nombre,sock_conn); //aÃ±adimos el usuario a la lista conectados
+						Poner(&lista,nombre,sock_conn); //añadimos el usuario a la lista conectados
 						pthread_mutex_unlock (&mutex); //ya puede interrumpir
 						DameConectados(&lista,conectados);
 						printf("Password correcto: %s y %s coninciden\n", contrasena, row[0]);
@@ -372,27 +382,31 @@ void *AtenderCliente(void *socket){
 				
 				int pos=DamePosicion(&lista,nombre_invitar);
 				printf("Invitando a %s con socket: %d\n",lista.conectados[pos].nombre, lista.conectados[pos].socket);
-				sprintf(buff2,"7/Desea jugar?");
-				write (lista.conectados[pos].socket,buff2, strlen(buff2)); 
+				sprintf(buff2,"7/El jugador %s le ha invitado a jugar,acepta el reto?", nombre);
+				write (lista.conectados[pos].socket,buff2, strlen(buff2));
+				strcpy(partida.jugador1, nombre); //el jugador que invita será el que tendrá el turno 1, el que empezará a jugar primero
 				
 				break;
 			}
 			
-			case 8: {	//respuesta
+			case 8: {	//respuestainvitacion
 				
 				char respuesta[4];
 				p = strtok( NULL, "/");
 				strcpy (respuesta, p);
 				if (strcmp(respuesta,"SI")==0)
 				{
-					sprintf(buff2,"8/Se acepto invitacion,comienza el juego");
-					for (i=0; i<lista.num; i++){  //enviamos este mensaje a todos los clientes
-						write (lista.conectados[i].socket,buff2, strlen(buff2)); 
-					}
-				}else
+					strcpy(partida.jugador2, nombre);  // el jugador que ha aceptado la invitacion será el jugador 2
+					sprintf(buff2,"8/%s/%s/1",partida.jugador1, partida.jugador2); //enviamos al jugador que invito, el jugador 1, los nombres de los jugadores de la partida y le indicamos que será su turno
+					int pos1 = DamePosicion(&lista, partida.jugador1);
+					write (lista.conectados[pos1].socket,buff2, strlen(buff2));
+					sprintf(buff2,"8/%s/%s/0",partida.jugador1, partida.jugador2); //enviamos al jugador 2 que no es su turno 
+					int pos2 = DamePosicion(&lista, partida.jugador2);
+					write (lista.conectados[pos2].socket,buff2, strlen(buff2));
+				
+				}else if (strcmp(respuesta,"NO")==0)
 				{
-					socketJugadorPartida = 0;
-					int pos=DamePosicion(&lista,nombre)	
+					int pos=DamePosicion(&lista,nombre);	
 					sprintf(buff2,"8/No se acepto invitacion");
 					//Enviamos la respuesta a mi cliente
 					write (lista.conectados[pos].socket,buff2, strlen(buff2)); 	
@@ -413,67 +427,41 @@ void *AtenderCliente(void *socket){
 				}
 				
 				break;
-			}
-			
-			case 10: {	//inicio de partida
-				int partida = 1;
-				char n[10];//nombe
-				int vides0;//vides que tinc
-				int vides1;//vides que te l'adversari(a qui envio)
-				float fuerza, grados;
-				int sock_adversario; //socketAdversario
-				//10/nombre/vides_que_tinc/vides_que_te/forÃ§a/graus
 				
-				p = strtok( NULL, "/");
-				strcpy (n, p);
-				p = strtok( NULL, "/");
-				vides0 = atoi(p);
-				p = strtok( NULL, "/");
-				vides1 = atoi(p);
-				p = strtok( NULL, "/");
-				fuerza = atof(p);
-				p = strtok( NULL, "/");
-				grados = atof(p);
-				//Busquem a quin socket correspon el nom que rebem
-				int pos;
-				for(i=0; i<lista.num; i++){
-					if(strcmp(n, lista.conectados[i].nombre)==0){
-						sock_adversario = lista.conectados[i].socket;
-						pos = i;
-						i = lista.num;
-					}
+				
+			case 10:  //tiro
+				
+				p = strtok( NULL, "/"); 
+				int turno ;
+				turno = atoi(p);
+				p = strtok( NULL, "/"); 
+				char  Vx[20];
+				strcpy(Vx,p); 
+				p = strtok( NULL, "/"); 
+				char  Voy[20];
+				strcpy(Voy,p);
+				p = strtok( NULL, "/"); 
+				int  vida1;
+				vida1 = atoi(p);
+				p = strtok( NULL, "/"); 
+				int  vida2;
+				vida2 = atoi(p);
+				
+				
+				sprintf(buff2,"10/%d/%s/%s/%d/%d", turno,Vx, Voy, vida1,vida2); // le pasamos a los 2 jugadores los datos para simular el tiro del contrincante y su turno
+				printf("%s\n", buff2);
+				int p1 = DamePosicion(&lista, partida.jugador1);
+				int p2 = DamePosicion(&lista, partida.jugador2);
+				
+				if( turno==1)
+				{
+					write (lista.conectados[p2].socket,buff2, strlen(buff2));
+					
+				}else if ( turno==2)
+				{
+					write (lista.conectados[p1].socket,buff2, strlen(buff2));
 				}
 				
-				
-				if(vides1 == 0){
-					strcpy(buff2, "10/Has perdido/%.2f/%.2f", fuerza, grados);
-					strcpy(consulta,"INSERT INTO partida VALUES('");  //concatenamos la consulta
-					strcat(consulta,"2020-01-12");//mirar com aconseguir la data
-					strcat(consulta,"',");
-					strcat(consulta,"100");//La duracion?? s'ha de posar? podria contarho el client i enviar el temps quan algu guanyi(potser serÃ  mÃ©s fÃ cil, en c# hi ha funcions per a tot)
-					strcat(consulta,"',");
-					strcat(consulta, nombre);
-					strcat(consulta,"');");
-					strcpy(consulta,"INSERT INTO resumen VALUES('");  //concatenamos la consulta
-					strcat(consulta, "1");
-					strcat(consulta,"',");
-					strcat(consulta,"10");//poso puntuaciÃ³ de 10 al que guanya
-					strcat(consulta,"',");
-					strcat(consulta,"0");//aqui va l'ID partida
-					strcat(consulta,"');");
-					strcpy(consulta,"INSERT INTO resumen VALUES('");  //concatenamos la consulta
-					strcat(consulta, "2");
-					strcat(consulta,"',");
-					strcat(consulta,"5");//5 punts al que perd la partida
-					strcat(consulta,"',");
-					strcat(consulta, lista.conectados[i].nombre);
-					strcat(consulta,"');");
-				}else{
-					strcpy(buff2, "10/Sigue la partida/%.2f/%.2f", fuerza, grados);
-				}
-			
-				//enviem
-				write (sock_adversario, buff2, strlen(buff2));
 				
 				break;
 			}
@@ -502,9 +490,9 @@ int main(int argc, char *argv[]) {
 	memset(&serv_adr, 0, sizeof(serv_adr));// inicialitza a zero serv_addr
 	serv_adr.sin_family = AF_INET;	// asocia el socket a cualquiera de las IP de la m?quina.
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY); //htonl formatea el numero que recibe al formato necesario
-	serv_adr.sin_port = htons(9050); // escucharemos en el port 90X0
+	serv_adr.sin_port = htons(9040); // escucharemos en el port 90X0
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0){
-		printf ("Error al bind");
+		printf ("Error al bind\n");
 	}
 	//La cola de peticiones pendientes no podr? ser superior a 4
 	if (listen(sock_listen, 2) < 0){
@@ -522,11 +510,10 @@ int main(int argc, char *argv[]) {
 		printf ("Escuchando\n");  //empezamos a escuchar
 		sock_conn = accept(sock_listen, NULL, NULL); //realizamos conexion, sock_conn es el socket que usaremos para este cliente
 		printf ("Conexion realizada\n ");
-		pthread_create(&thread[a], NULL, AtenderCliente, &sock_conn); //creamos un hilo para cada cliente, y llamamos ala funcion atender cliente que atenderÃ¡ todas sus peticiones
+		pthread_create(&thread[a], NULL, AtenderCliente, &sock_conn); //creamos un hilo para cada cliente, y llamamos ala funcion atender cliente que atenderá todas sus peticiones
 		a++;
 		
 	}
 }
-	
 	
 
