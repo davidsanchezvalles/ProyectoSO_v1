@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Collections.Generic;
 
 
 namespace WindowsFormsApplication1
@@ -13,18 +14,46 @@ namespace WindowsFormsApplication1
     {
         Socket server;
         Thread atender;
+        Thread formulario;
+        List<juegoForm> listaform = new List<juegoForm>();    
 
         delegate void DelegadoParaPonerConectados(string[] texto);
         delegate void DelegadoParaRespuestas(string[] texto);
         delegate void DelegadoParaVisualBox();
-
+        delegate void DelegadoForm(string[] texto);
+        delegate void DelegadoTiro(string[] texto);
 
         public Formmenu()
         {
             InitializeComponent();
+            
         }
 
         //funciones------------------------------------
+        private void Crearform(string[] trozos)
+        {
+
+            juegoForm game = new juegoForm(server);
+            game.inicializar(trozos[1], trozos[2], Convert.ToInt32(trozos[3]));
+            game.Show();
+            
+            listaform.Add(game);
+            
+        }
+
+        private void Tiro(string[] trozos)
+        {
+            listaform[0].simulartiro( Convert.ToInt32(trozos[1]) ,Convert.ToDouble(trozos[2]), Convert.ToDouble(trozos[3]));
+        }
+
+       /* private void threadforms()
+        {
+            ThreadStart ts = delegate { Crearform(); };
+            formulario = new Thread(ts);
+            formulario.Start();
+
+        }  */
+        
         private void PonConectados(string[] trozos)
         {
             int i = 1; // i=0 tiene el código 6 
@@ -68,7 +97,7 @@ namespace WindowsFormsApplication1
                 byte[] msg2 = new byte[80];
                 server.Receive(msg2);
                 string recibido = Encoding.ASCII.GetString(msg2).TrimEnd('\0');
-                // MessageBox.Show(recibido);
+                 //MessageBox.Show(recibido);
                 string[] trozos = recibido.Split('/');
                 int codigo = Convert.ToInt32(trozos[0]);
                 string mensaje;
@@ -92,6 +121,8 @@ namespace WindowsFormsApplication1
 
                         DelegadoParaRespuestas del_respuestas = new DelegadoParaRespuestas(Respuestas);
                         textoserver.Invoke(del_respuestas, new object[] { trozos });
+                        
+
                        
                         break;
 
@@ -109,6 +140,7 @@ namespace WindowsFormsApplication1
                     case 6:  //conectados
                         DelegadoParaPonerConectados delegado = new DelegadoParaPonerConectados(PonConectados);
                         groupBox2.Invoke(delegado, new object[] { trozos });
+                        
                         break;
 
 
@@ -135,15 +167,28 @@ namespace WindowsFormsApplication1
 
 
                     case 8:  //respuesta invitacion
-                        mensaje = trozos[1].Split('\0')[0];
-                        MessageBox.Show(mensaje);
+                        
+
+                        //creamos el formulario del juego
+                        DelegadoForm formdelegate = new DelegadoForm(Crearform);
+                        Invoke(formdelegate, new object[] { trozos });
+                      
                         break;
 
 
-                    case 9:
+                    case 9:  //chat
 
                         DelegadoParaPonerConectados del_chat = new DelegadoParaPonerConectados(Chat);
                         listBox2.Invoke(del_chat, new object[] { trozos });
+
+                        break;
+
+                    case 10:
+
+                       
+                        DelegadoTiro tirodelegate = new DelegadoTiro(Tiro);
+                        Invoke(tirodelegate, new object[] { trozos });
+
 
                         break;
                 }
@@ -173,7 +218,7 @@ namespace WindowsFormsApplication1
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
             IPAddress direc = IPAddress.Parse("192.168.1.208");
-            IPEndPoint ipep = new IPEndPoint(direc, 9050);
+            IPEndPoint ipep = new IPEndPoint(direc, 9040);
 
 
             //Creamos el socket 
@@ -336,9 +381,8 @@ namespace WindowsFormsApplication1
 
         private void button6_Click(object sender, EventArgs e)
         {
-            int turno = 1;
-            juegoForm juego = new juegoForm(turno);
-            juego.Show();
+          
+            
         }  
     }
 }
