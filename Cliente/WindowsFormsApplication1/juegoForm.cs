@@ -32,7 +32,7 @@ namespace WindowsFormsApplication1
         public const double PI = 3.1415926535897931;
         public int max1 = 0, max2 = 0;
         public int max_g = 0, grade = 0;
-        public int turno=2;
+        public int turno;
         public int recibido;
         public Socket server;
         public string jugador1, jugador2;
@@ -44,10 +44,12 @@ namespace WindowsFormsApplication1
             label3.Text = jugador1;
             label4.Text = jugador2;
             label8.Text = "Le toca a: " + jugador1;
+            pBar5.Value = 20;
             if (turno == 1)
             {
                 timer1.Start();
                 timer3.Start();
+                timer_turno.Start();
             }
 
         }
@@ -74,7 +76,7 @@ namespace WindowsFormsApplication1
             //timer1.Start();
 
             timer2.Enabled = true; //timer de la posicion flecha
-            timer2.Interval = 25;
+            timer2.Interval = 50;
             timer2.Tick += new EventHandler(timer2_Tick);
             timer2.Stop();//nose porque se pone en marcha si no le doy start,por eso lo pongo
 
@@ -93,7 +95,7 @@ namespace WindowsFormsApplication1
             pBar4.Value = 15;
             pBar4.SetState(2);//color rojo
 
-            timer_turno.Interval = 500;
+            timer_turno.Interval = 1000;
             timer_turno.Tick += new EventHandler(timer_turno_Tick);
             //timer_turno.Start();
 
@@ -113,6 +115,7 @@ namespace WindowsFormsApplication1
         private void f_grade()
         {
             timer3.Stop();
+            timer_turno.Stop();
             vida = 0;
          
             //depende del turno, cojeremos los valores de unos progresbar o otros, y realizaremos un tiro de derecha a izquierda o viceversa
@@ -159,11 +162,19 @@ namespace WindowsFormsApplication1
             turno = torn;  //de esta manera el timer2 , el que realiza la parábola, sabrá diferenciar el tiro y condiciones que tiene que cumplir
             //si el turno es 2, significa que primero tenemos que simular el tiro del turno 1, y viceversa
 
+            if (turno == 1)
+            {
+                label8.Text = jugador2;  //ya que simulamos el tiro del turno 1, pero seguidamente será el turno del jugador 2
+            }
+            else if (turno == 2)
+            {
+                label8.Text = jugador1; 
+            }
            
             recibido = 1;
             timer2.Start();  //empieza la simulacion del tiro del rival
 
-        }
+        }  // funcion para recrear el tiro
 
 
         private void KeyEvent(object sender, KeyEventArgs e) //Keyup Event 
@@ -183,10 +194,10 @@ namespace WindowsFormsApplication1
        
         private void timer1_Tick(object sender, EventArgs e)
         {
-
+            //diferenciamos los dos turnos para aprovechar el mismo timer para las dos progress bar.
             if (turno == 1)
             {
-
+                //el progress bar va ir subiendo y bajando hasta que se apreta la tecla f, que llama a la funcion power() y para este timer
                 if (max1 == 0)
                 {
                     pBar1.Value++;
@@ -239,7 +250,7 @@ namespace WindowsFormsApplication1
         private void timer2_Tick(object sender, EventArgs e)
         {
             t = t + 0.5;
-
+            //diferenciamos los 2 turnos porque cada uno hace una parabola hacia una direccion opuesta al otro.
             if (turno == 1)
             {
 
@@ -251,12 +262,13 @@ namespace WindowsFormsApplication1
 
                 if (vida == 0)
                 {
-                    if (x > 870 && y > 160 && y < 260)
+                    if (x > 860 && y > 150 && y < 260)
                     {
+                        //MessageBox.Show(pBar4.Value.ToString());
 
                         if (pBar4.Value == 5)
                         {
-                            MessageBox.Show("Ganaste!!");
+                            //MessageBox.Show("Ganaste!!");
                         }
                         pBar4.Value = pBar4.Value - 5;
                         vida = 1; //tenemos que controloar que solo quita vida una vez, ya que la condicion se cumpliria mas de una vez ya que lo compara cada 50ms
@@ -278,12 +290,12 @@ namespace WindowsFormsApplication1
 
                 if (vida == 0)
                 {
-                    if (x < 170 && y > 155 && y < 265)
+                    if (x < 160 && y > 150 && y < 270)
                     {
 
                         if (pBar3.Value == 5)
                         {
-                            MessageBox.Show("Ganaste!!");
+                           // MessageBox.Show("Ganaste!!");
                         }
                         pBar3.Value = pBar3.Value - 5;
                         vida = 1; //tenemos que controloar que solo quita vida una vez, ya que la condicion se cumpliria mas de una vez ya que lo compara cada 50ms
@@ -292,7 +304,7 @@ namespace WindowsFormsApplication1
            }
 
 
-            if (x > 1050 || x <0 || y > 435) //si se sale por la derecha o por abajo retorna a la posición original
+            if (x > 1050 || x <0 || y > 435) //si se sale por la derecha, la izquierda o por abajo retorna a la posición original la flecha
             {
 
                 x = 0;
@@ -302,7 +314,7 @@ namespace WindowsFormsApplication1
                 if (turno == 1)
                 {
                     pictureBox3.Location = new Point(296, 137);
-                    turno = 2;
+                    turno = 2;  //si estamos simulando el turno del juador 1, una vez finalizado será nuestro turno, el del jugador 2
                 }
                 else if (turno == 2)
                 {
@@ -311,10 +323,12 @@ namespace WindowsFormsApplication1
                 
                 }
                 timer2.Stop();
-                if (recibido == 1)
-                {
+                if (recibido == 1) //una vez se ha finalizado el tiro, si este era una simulacion del rival, entonces se "encienden" los timers de la fuerza y los grados. 
+                {                  //si en cambio hemos lanzado un tiro, tendremos que esperar a recibir el tiro del rival, osea simularlo, para que se nos vuelvan activar los timers.
                      timer1.Start();
                      timer3.Start();
+                     pBar5.Value = 20; 
+                    timer_turno.Start();
                      recibido = 0;
 
                 }
@@ -390,33 +404,42 @@ namespace WindowsFormsApplication1
         
         private void timer_turno_Tick(object sender, EventArgs e)
         {
-            pBar5.Value--;
-            
-            if(pBar5.Value==0)
-            {
-                x = 0;
-                y = 0;
-                t = 0;
-                timer2.Stop();
-                timer1.Start();
-                timer3.Start();
 
+
+            if (pBar5.Value == 0)
+            {
+                Vx = 0;
+                Voy = 0;
                 if (turno == 1)
                 {
-                    pictureBox3.Location = new Point(296, 137);
-                    turno = 2;
+
+                    string men = "10/1/" + Vx + "/" + Voy;
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                    server.Send(msg);
+                    label8.Text = "Le toca a :" + jugador2.ToString();
+
+
+
+
                 }
                 else if (turno == 2)
                 {
-                    pictureBox4.Location = new Point(723, 137);
-                    turno = 1;
+
+                    string men = "10/2/" + Vx + "/" + Voy;
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                    server.Send(msg);
+                    label8.Text = "Le toca a :" + jugador2.ToString();
+
 
                 }
 
+            }
+            else pBar5.Value--;
+
+
               
 
-                pBar5.Value = 20;
-            }
+           
         }
     }
 

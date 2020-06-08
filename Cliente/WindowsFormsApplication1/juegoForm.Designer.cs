@@ -50,10 +50,12 @@
             this.pBar5 = new System.Windows.Forms.ProgressBar();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -228,12 +230,21 @@
             this.label8.TabIndex = 17;
             this.label8.Text = "Le toca a:";
             // 
+            // pictureBox5
+            // 
+            this.pictureBox5.Location = new System.Drawing.Point(936, 191);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(51, 50);
+            this.pictureBox5.TabIndex = 18;
+            this.pictureBox5.TabStop = false;
+            // 
             // juegoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::WindowsFormsApplication1.Properties.Resources.fondo_juego;
             this.ClientSize = new System.Drawing.Size(1051, 469);
+            this.Controls.Add(this.pictureBox5);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.pBar5);
@@ -258,6 +269,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -286,5 +298,6 @@
         private System.Windows.Forms.ProgressBar pBar5;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.PictureBox pictureBox5;
     }
 }

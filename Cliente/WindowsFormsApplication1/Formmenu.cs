@@ -105,7 +105,7 @@ namespace WindowsFormsApplication1
                 {
 
                     case 1: // registrar
-
+                         
                    
 
                         DelegadoParaVisualBox d_visual = new DelegadoParaVisualBox(VisualBox);
@@ -183,7 +183,7 @@ namespace WindowsFormsApplication1
 
                         break;
 
-                    case 10:
+                    case 10:  //simulacion del tiro
 
                        
                         DelegadoTiro tirodelegate = new DelegadoTiro(Tiro);
@@ -226,8 +226,10 @@ namespace WindowsFormsApplication1
             try
             {
                 server.Connect(ipep);//Intentamos conectar el socket
-                this.BackColor = Color.Green;
-                MessageBox.Show("Conectado");
+                //this.BackColor = Color.Green;
+                this.groupBox1.BackColor = Color.Green
+                
+                ;
 
 
             }
@@ -383,6 +385,11 @@ namespace WindowsFormsApplication1
         {
           
             
+        }
+
+        private void textoserver_Click(object sender, EventArgs e)
+        {
+
         }  
     }
 }

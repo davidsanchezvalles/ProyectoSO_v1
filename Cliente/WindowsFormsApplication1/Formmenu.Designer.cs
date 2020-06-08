@@ -56,7 +56,6 @@
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -102,7 +101,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.groupBox1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.registrar);
             this.groupBox1.Controls.Add(this.label3);
@@ -114,14 +113,14 @@
             this.groupBox1.Controls.Add(this.usuario);
             this.groupBox1.Location = new System.Drawing.Point(25, 98);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(372, 208);
+            this.groupBox1.Size = new System.Drawing.Size(372, 198);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Cliente";
             // 
             // groupBox2
             // 
-            this.groupBox2.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.groupBox2.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.groupBox2.Controls.Add(this.textoserver);
             this.groupBox2.Controls.Add(this.genteconectada);
             this.groupBox2.Controls.Add(this.tiemp);
@@ -130,48 +129,52 @@
             this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.idpartida);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(372, 208);
+            this.groupBox2.Size = new System.Drawing.Size(372, 202);
             this.groupBox2.TabIndex = 18;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Consultas al servidor";
+            this.groupBox2.Text = "             Consultas al servidor";
             this.groupBox2.Visible = false;
             // 
             // textoserver
             // 
-            this.textoserver.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textoserver.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.textoserver.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textoserver.Location = new System.Drawing.Point(25, 88);
             this.textoserver.Name = "textoserver";
-            this.textoserver.Size = new System.Drawing.Size(142, 95);
+            this.textoserver.Size = new System.Drawing.Size(142, 66);
             this.textoserver.TabIndex = 12;
-            this.textoserver.Text = "Respuestas";
+            this.textoserver.Text = "Respuesta:";
+            this.textoserver.Click += new System.EventHandler(this.textoserver_Click);
             // 
             // genteconectada
             // 
             this.genteconectada.AutoSize = true;
             this.genteconectada.Location = new System.Drawing.Point(190, 157);
             this.genteconectada.Name = "genteconectada";
-            this.genteconectada.Size = new System.Drawing.Size(0, 13);
+            this.genteconectada.Size = new System.Drawing.Size(0, 15);
             this.genteconectada.TabIndex = 11;
             // 
             // tiemp
             // 
             this.tiemp.AutoSize = true;
+            this.tiemp.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tiemp.Location = new System.Drawing.Point(193, 86);
             this.tiemp.Name = "tiemp";
-            this.tiemp.Size = new System.Drawing.Size(110, 17);
+            this.tiemp.Size = new System.Drawing.Size(125, 19);
             this.tiemp.TabIndex = 9;
             this.tiemp.TabStop = true;
             this.tiemp.Text = "Tiempo en partida";
-            this.tiemp.UseVisualStyleBackColor = true;
+            this.tiemp.UseVisualStyleBackColor = false;
             // 
             // pos
             // 
             this.pos.AutoSize = true;
             this.pos.Location = new System.Drawing.Point(193, 60);
             this.pos.Name = "pos";
-            this.pos.Size = new System.Drawing.Size(115, 17);
+            this.pos.Size = new System.Drawing.Size(130, 19);
             this.pos.TabIndex = 8;
             this.pos.TabStop = true;
             this.pos.Text = "Posición en partida";
@@ -182,7 +185,7 @@
             this.gana.AutoSize = true;
             this.gana.Location = new System.Drawing.Point(193, 34);
             this.gana.Name = "gana";
-            this.gana.Size = new System.Drawing.Size(116, 17);
+            this.gana.Size = new System.Drawing.Size(131, 19);
             this.gana.TabIndex = 7;
             this.gana.TabStop = true;
             this.gana.Text = "Ganador de partida";
@@ -210,9 +213,9 @@
             // 
             // idpartida
             // 
-            this.idpartida.Location = new System.Drawing.Point(45, 53);
+            this.idpartida.Location = new System.Drawing.Point(49, 53);
             this.idpartida.Name = "idpartida";
-            this.idpartida.Size = new System.Drawing.Size(92, 20);
+            this.idpartida.Size = new System.Drawing.Size(92, 21);
             this.idpartida.TabIndex = 3;
             // 
             // registrar
@@ -285,6 +288,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(429, 98);
             this.label4.Name = "label4";
@@ -305,6 +309,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.label5.Location = new System.Drawing.Point(412, 267);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(199, 13);
@@ -314,8 +319,9 @@
             // label7
             // 
             this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(734, 40);
+            this.label7.Location = new System.Drawing.Point(733, 45);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(43, 18);
             this.label7.TabIndex = 15;
@@ -348,22 +354,12 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(531, 19);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 19;
-            this.button6.Text = "jugar";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
             // Formmenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::WindowsFormsApplication1.Properties.Resources.fondo_juego;
             this.ClientSize = new System.Drawing.Size(889, 331);
-            this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.listBox2);
@@ -417,7 +413,6 @@
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
     }
 }
 
