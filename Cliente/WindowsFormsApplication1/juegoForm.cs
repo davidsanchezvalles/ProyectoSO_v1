@@ -18,17 +18,13 @@ namespace WindowsFormsApplication1
         public juegoForm(Socket servidor)
         {
             InitializeComponent();
-            server = servidor;
-            
-            
-            
-           
+            server = servidor;    
         }
 
         //variables globales
         public double t = 0, h, Vy, grado, a = 1.89; //acceleracion escogida convenientemente para los datos del problema
         public double Vx, Voy; //equivalen a la fuerza/velocidad 
-        public int x = 0, y, vida = 0;
+        public int x = 0, y, vida = 0, vida1, vida2;
         public const double PI = 3.1415926535897931;
         public int max1 = 0, max2 = 0;
         public int max_g = 0, grade = 0;
@@ -151,7 +147,7 @@ namespace WindowsFormsApplication1
             timer2.Start();
         }
 
-        public void simulartiro(int torn, double vx, double voy)
+        public void simulartiro(int torn, double vx, double voy, int vida1, int vida2)
         {
             
             Vx = vx;
@@ -246,6 +242,7 @@ namespace WindowsFormsApplication1
 
                 x = Convert.ToInt32(296 + Vx * t);
                 y = Convert.ToInt32(137 - Voy * t + 0.5 * a * t * t); //parabola invertida ja que el eix Y va de adalt cap abaix i no de abaix cap adalt
+                pBar4.Value = vida1;
 
                 pictureBox3.Location = new Point(x, y);
 
@@ -273,6 +270,7 @@ namespace WindowsFormsApplication1
             {
                 x = Convert.ToInt32(727 - Vx * t);
                 y = Convert.ToInt32(137 - Voy * t + 0.5 * a * t * t); //parabola invertida ja que el eix Y va de adalt cap abaix i no de abaix cap adalt
+                pBar3.Value = vida2;
 
                 pictureBox4.Location = new Point(x, y);
 

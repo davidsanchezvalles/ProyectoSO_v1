@@ -43,7 +43,7 @@ namespace WindowsFormsApplication1
 
         private void Tiro(string[] trozos)
         {
-            listaform[0].simulartiro( Convert.ToInt32(trozos[1]) ,Convert.ToDouble(trozos[2]), Convert.ToDouble(trozos[3]));
+            listaform[0].simulartiro( Convert.ToInt32(trozos[1]) ,Convert.ToDouble(trozos[2]), Convert.ToDouble(trozos[3]), Convert.ToInt32(trozos[4]), Convert.ToInt32(trozos[5]));
         }
 
        /* private void threadforms()
@@ -379,5 +379,30 @@ namespace WindowsFormsApplication1
 
         }  //chat
 
+        private void Formmenu_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                //Mensaje de desconexión
+                string mensaje = "0/";
+                groupBox2.Visible = false;
+
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
+
+                // Nos desconectamos
+                this.BackColor = Color.Gray;
+                server.Shutdown(SocketShutdown.Both);
+                server.Close();
+                atender.Abort();
+            }
+            catch
+            {
+                this.BackColor = Color.Gray;
+                server.Shutdown(SocketShutdown.Both);
+                server.Close();
+                atender.Abort();
+            }
+        }
     }
 }

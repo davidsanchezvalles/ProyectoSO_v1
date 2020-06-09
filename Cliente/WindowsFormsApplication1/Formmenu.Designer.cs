@@ -365,6 +365,7 @@
             this.Controls.Add(this.button1);
             this.Name = "Formmenu";
             this.Text = "Juego";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Formmenu_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
