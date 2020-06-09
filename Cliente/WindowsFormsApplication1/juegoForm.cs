@@ -19,10 +19,6 @@ namespace WindowsFormsApplication1
         {
             InitializeComponent();
             server = servidor;
-            
-            
-            
-           
         }
 
         //variables globales
@@ -33,26 +29,10 @@ namespace WindowsFormsApplication1
         public int max1 = 0, max2 = 0;
         public int max_g = 0, grade = 0;
         public int turno;
-        public int recibido;
+        public int recibido=0;
         public Socket server;
         public string jugador1, jugador2;
-        public void inicializar( string jug1, string jug2, int turn)
-        {
-            turno = turn;
-            jugador1 = jug1;
-            jugador2 = jug2;
-            label3.Text = jugador1;
-            label4.Text = jugador2;
-            label8.Text = "Le toca a: " + jugador1;
-            pBar5.Value = 20;
-            if (turno == 1)
-            {
-                timer1.Start();
-                timer3.Start();
-                timer_turno.Start();
-            }
-
-        }
+      
 
 
         private void juegoForm_Load(object sender, EventArgs e)
@@ -104,7 +84,41 @@ namespace WindowsFormsApplication1
             pBar5.Value = 20;
             pBar5.SetState(3);
         }   //inicialització dels controls
-        
+
+
+
+        public void inicializar(string jug1, string jug2, int turn)
+        {
+            turno = turn;
+            jugador1 = jug1;
+            jugador2 = jug2;
+            label3.Text = jugador1;
+            label4.Text = jugador2;
+            label8.Text = "Turno de: " + jugador1;
+            pBar5.Value = 20;
+            if (turno == 1)
+            {
+                timer1.Start();
+                timer3.Start();
+                timer_turno.Start();
+            }
+
+        }  //declarar els primers valors a tindre en compte al iniciar-se el form
+
+        private void KeyEvent(object sender, KeyEventArgs e) //Keyup Event 
+        {
+            if (e.KeyCode == Keys.F)
+            {
+                power();
+            }
+            if (e.KeyCode == Keys.G)
+            {
+                f_grade();
+            }
+
+
+        }
+
         private void power()
         {
 
@@ -130,10 +144,8 @@ namespace WindowsFormsApplication1
                 string men = "10/1/"+ Vx + "/" + Voy;
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
                 server.Send(msg);
-                label8.Text= "Le toca a :" + jugador2.ToString();
-                
-              
-                    
+                label8.Text= "Turno de :" + jugador2.ToString();
+                                    
               
             }
             else if (turno == 2)
@@ -147,7 +159,7 @@ namespace WindowsFormsApplication1
                 string men = "10/2/" + Vx + "/" + Voy;
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
                 server.Send(msg);
-                label8.Text = "Le toca a :" + jugador1.ToString();
+                label8.Text = "Turno de :" + jugador1.ToString();
             }
             
             timer2.Start();
@@ -164,34 +176,19 @@ namespace WindowsFormsApplication1
 
             if (turno == 1)
             {
-                label8.Text = jugador2;  //ya que simulamos el tiro del turno 1, pero seguidamente será el turno del jugador 2
+                label8.Text = "Truno de: "+jugador2;  //ya que simulamos el tiro del turno 1, pero seguidamente será el turno del jugador 2
             }
             else if (turno == 2)
             {
-                label8.Text = jugador1; 
+                label8.Text = "Truno de: " + jugador1; 
             }
            
             recibido = 1;
             timer2.Start();  //empieza la simulacion del tiro del rival
 
-        }  // funcion para recrear el tiro
+        }  // funcion para recrear el tiro del contricante
 
 
-        private void KeyEvent(object sender, KeyEventArgs e) //Keyup Event 
-        {
-            if (e.KeyCode == Keys.F)
-            {
-                power();
-            }
-            if (e.KeyCode == Keys.G)
-            {
-                f_grade();
-            }
-
-
-        }
-
-       
         private void timer1_Tick(object sender, EventArgs e)
         {
             //diferenciamos los dos turnos para aprovechar el mismo timer para las dos progress bar.
@@ -250,6 +247,8 @@ namespace WindowsFormsApplication1
         private void timer2_Tick(object sender, EventArgs e)
         {
             t = t + 0.5;
+            
+            
             //diferenciamos los 2 turnos porque cada uno hace una parabola hacia una direccion opuesta al otro.
             if (turno == 1)
             {
@@ -265,13 +264,26 @@ namespace WindowsFormsApplication1
                     if (x > 860 && y > 150 && y < 260)
                     {
                         //MessageBox.Show(pBar4.Value.ToString());
-
-                        if (pBar4.Value == 5)
+                        vida = 1;
+                        if (pBar4.Value != 0)
                         {
-                            //MessageBox.Show("Ganaste!!");
+                            pBar4.Value = pBar4.Value - 5;
                         }
-                        pBar4.Value = pBar4.Value - 5;
-                        vida = 1; //tenemos que controloar que solo quita vida una vez, ya que la condicion se cumpliria mas de una vez ya que lo compara cada 50ms
+                        else
+                        {
+                            MessageBox.Show("¡¡¡¡Ganó el jugador: " + jugador1 +"!!!");
+                            //si somos el jugador que esta realizando el tiro,y no simulandolo, enviamos el ganador al servidor, para evitar que le llegue duplicado el mensaje
+                            if (recibido == 0)
+                            {
+                                string men = "11/" + jugador1;
+                                byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                                server.Send(msg);
+
+                            }
+                            this.Close();
+                        }
+                        
+                         //tenemos que controloar que solo quita vida una vez, ya que la condicion se cumpliria mas de una vez ya que lo compara cada 50ms
                     }
                 }
 
@@ -293,17 +305,30 @@ namespace WindowsFormsApplication1
                     if (x < 160 && y > 150 && y < 270)
                     {
 
-                        if (pBar3.Value == 5)
+                        vida = 1;
+                        if (pBar3.Value != 0)
                         {
-                           // MessageBox.Show("Ganaste!!");
+                            pBar3.Value = pBar3.Value - 5;
                         }
-                        pBar3.Value = pBar3.Value - 5;
-                        vida = 1; //tenemos que controloar que solo quita vida una vez, ya que la condicion se cumpliria mas de una vez ya que lo compara cada 50ms
+                        else
+                        {
+                            MessageBox.Show("gano el jugador: " + jugador2);
+                            //si somos el jugador que esta realizando el tiro,y no simulandolo, enviamos el ganador al servidor, para evitar que le llegue duplicado el mensaje
+                            if (recibido == 0)
+                            {
+                                string men = "11/" + jugador2;
+                                byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                                server.Send(msg);
+
+                            }
+                            this.Close();
+                        } //tenemos que controloar que solo quita vida una vez, ya que la condicion se cumpliria mas de una vez ya que lo compara cada 50ms
                     }
                 }
            }
 
 
+            
             if (x > 1050 || x <0 || y > 435) //si se sale por la derecha, la izquierda o por abajo retorna a la posición original la flecha
             {
 
@@ -399,8 +424,7 @@ namespace WindowsFormsApplication1
 
             }
         }  //timer de los grados
-
-       
+  
         
         private void timer_turno_Tick(object sender, EventArgs e)
         {
@@ -410,6 +434,12 @@ namespace WindowsFormsApplication1
             {
                 Vx = 0;
                 Voy = 0;
+                timer1.Stop();
+                timer3.Stop();
+                timer_turno.Stop();
+                timer2.Start();
+                
+                
                 if (turno == 1)
                 {
 
@@ -418,9 +448,6 @@ namespace WindowsFormsApplication1
                     server.Send(msg);
                     label8.Text = "Le toca a :" + jugador2.ToString();
 
-
-
-
                 }
                 else if (turno == 2)
                 {
@@ -428,7 +455,7 @@ namespace WindowsFormsApplication1
                     string men = "10/2/" + Vx + "/" + Voy;
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
                     server.Send(msg);
-                    label8.Text = "Le toca a :" + jugador2.ToString();
+                    label8.Text = "Turno de :" + jugador1.ToString();
 
 
                 }
@@ -440,7 +467,7 @@ namespace WindowsFormsApplication1
               
 
            
-        }
+        }  //timer del torn
     }
 
    

@@ -28,6 +28,16 @@ namespace WindowsFormsApplication1
             InitializeComponent();
             
         }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+
+            ListBox listbox = new ListBox();  //necessari?
+            label8.Text = DateTime.Now.ToLongDateString();
+
+        }
+
+
 
         //funciones------------------------------------
         private void Crearform(string[] trozos)
@@ -71,7 +81,7 @@ namespace WindowsFormsApplication1
         private void Respuestas(string[] trozos)
         {
             string respuesta = trozos[1].Split('\0')[0];
-            textoserver.Text = respuesta;
+            textoserver.Text = "La respuesta es: " +respuesta;
 
         }
 
@@ -122,7 +132,6 @@ namespace WindowsFormsApplication1
                         DelegadoParaRespuestas del_respuestas = new DelegadoParaRespuestas(Respuestas);
                         textoserver.Invoke(del_respuestas, new object[] { trozos });
                         
-
                        
                         break;
 
@@ -200,24 +209,12 @@ namespace WindowsFormsApplication1
        
         
         //objetos------------------------------------
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-
-            ListBox listbox = new ListBox();  //necessari?
-
-        }
-
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
+     
         private void button1_Click(object sender, EventArgs e)
         {
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
-            IPAddress direc = IPAddress.Parse("192.168.1.208");
+            IPAddress direc = IPAddress.Parse("192.168.1.105");
             IPEndPoint ipep = new IPEndPoint(direc, 9040);
 
 
@@ -227,7 +224,7 @@ namespace WindowsFormsApplication1
             {
                 server.Connect(ipep);//Intentamos conectar el socket
                 //this.BackColor = Color.Green;
-                this.groupBox1.BackColor = Color.Green
+                this.groupBox1.BackColor = Color.LawnGreen;
                 
                 ;
 
@@ -270,11 +267,12 @@ namespace WindowsFormsApplication1
                 string mensaje = "0/";
                 groupBox2.Visible = false;
 
+
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
 
                 // Nos desconectamos
-                this.BackColor = Color.Gray;
+                groupBox1.BackColor = Color.LightGray;
                 server.Shutdown(SocketShutdown.Both);
                 server.Close();
                 atender.Abort();
@@ -317,7 +315,7 @@ namespace WindowsFormsApplication1
 
                 }
 
-                else if (pos.Checked)
+                /*else if (pos.Checked)
                 {
                     string mensaje = "4/" + idpartida.Text;
                     // Enviamos al servidor el nombre tecleado
@@ -325,7 +323,7 @@ namespace WindowsFormsApplication1
                     server.Send(msg);
 
 
-                }
+                }*/
 
                 else if (tiemp.Checked)
                 {
@@ -381,6 +379,9 @@ namespace WindowsFormsApplication1
 
         }  //chat
 
+       
+        
+        
         private void button6_Click(object sender, EventArgs e)
         {
           
@@ -390,6 +391,15 @@ namespace WindowsFormsApplication1
         private void textoserver_Click(object sender, EventArgs e)
         {
 
-        }  
+        }
+
+        private void idpartida_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
