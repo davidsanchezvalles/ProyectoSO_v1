@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Collections.Generic;
 
 
 namespace WindowsFormsApplication1
@@ -13,20 +14,56 @@ namespace WindowsFormsApplication1
     {
         Socket server;
         Thread atender;
-        juegoForm juego;
-      
+        Thread formulario;
+        List<juegoForm> listaform = new List<juegoForm>();    
 
         delegate void DelegadoParaPonerConectados(string[] texto);
         delegate void DelegadoParaRespuestas(string[] texto);
         delegate void DelegadoParaVisualBox();
-
+        delegate void DelegadoForm(string[] texto);
+        delegate void DelegadoTiro(string[] texto);
 
         public Formmenu()
         {
             InitializeComponent();
+            
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+
+            ListBox listbox = new ListBox();  //necessari?
+            label8.Text = DateTime.Now.ToLongDateString();
+
         }
 
+
+
         //funciones------------------------------------
+        private void Crearform(string[] trozos)
+        {
+
+            juegoForm game = new juegoForm(server);
+            game.inicializar(trozos[1], trozos[2], Convert.ToInt32(trozos[3]));
+            game.Show();
+            
+            listaform.Add(game);
+            
+        }
+
+        private void Tiro(string[] trozos)
+        {
+            listaform[0].simulartiro( Convert.ToInt32(trozos[1]) ,Convert.ToDouble(trozos[2]), Convert.ToDouble(trozos[3]));
+        }
+
+       /* private void threadforms()
+        {
+            ThreadStart ts = delegate { Crearform(); };
+            formulario = new Thread(ts);
+            formulario.Start();
+
+        }  */
+        
         private void PonConectados(string[] trozos)
         {
             int i = 1; // i=0 tiene el código 6 
@@ -44,7 +81,7 @@ namespace WindowsFormsApplication1
         private void Respuestas(string[] trozos)
         {
             string respuesta = trozos[1].Split('\0')[0];
-            textoserver.Text = respuesta;
+            textoserver.Text = "La respuesta es: " +respuesta;
 
         }
 
@@ -67,18 +104,28 @@ namespace WindowsFormsApplication1
             while (true)
             {
                 //Recibimos mensaje del servidor
+                int codigo = 0;
+                string mensaje;
+                string[] trozos={"","",}; 
                 byte[] msg2 = new byte[80];
                 server.Receive(msg2);
                 string recibido = Encoding.ASCII.GetString(msg2).TrimEnd('\0');
-                // MessageBox.Show(recibido);
-                string[] trozos = recibido.Split('/');
-                int codigo = Convert.ToInt32(trozos[0]);
-                string mensaje;
+                MessageBox.Show(recibido);
+               /* if (String.IsNullOrEmpty(recibido))
+                {
+                    codigo = 11;
+                }
+                else
+                {*/
+                    trozos = recibido.Split('/');
+                    codigo = Convert.ToInt32(trozos[0]);
+
+                //}
                 switch (codigo)
                 {
 
                     case 1: // registrar
-
+                         
                    
 
                         DelegadoParaVisualBox d_visual = new DelegadoParaVisualBox(VisualBox);
@@ -94,6 +141,7 @@ namespace WindowsFormsApplication1
 
                         DelegadoParaRespuestas del_respuestas = new DelegadoParaRespuestas(Respuestas);
                         textoserver.Invoke(del_respuestas, new object[] { trozos });
+                        
                        
                         break;
 
@@ -111,6 +159,7 @@ namespace WindowsFormsApplication1
                     case 6:  //conectados
                         DelegadoParaPonerConectados delegado = new DelegadoParaPonerConectados(PonConectados);
                         groupBox2.Invoke(delegado, new object[] { trozos });
+                        
                         break;
 
 
@@ -123,10 +172,6 @@ namespace WindowsFormsApplication1
                             string men = "8/SI";
                             byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
                             server.Send(msg);
-                            int turno = 1;
-                            //juego = new juegoForm(turno, server);
-                            juego.inicializarForm(turno, server);
-                            juego.Show();
 
                         }
                         else
@@ -141,31 +186,32 @@ namespace WindowsFormsApplication1
 
 
                     case 8:  //respuesta invitacion
-                        mensaje = trozos[1].Split('\0')[0];
-                        MessageBox.Show(mensaje);
-                        if (mensaje.Equals("Se acepto invitacion,comienza el juego"))
-                        {
-                            int turno = 2;
-                            //juego = new juegoForm(turno, server);
-                            juego.inicializarForm(turno, server);
-                            juego.Show();
-                        }
+                        
+
+                        //creamos el formulario del juego
+                        DelegadoForm formdelegate = new DelegadoForm(Crearform);
+                        Invoke(formdelegate, new object[] { trozos });
+                      
                         break;
 
 
-                    case 9:
+                    case 9:  //chat
 
                         DelegadoParaPonerConectados del_chat = new DelegadoParaPonerConectados(Chat);
                         listBox2.Invoke(del_chat, new object[] { trozos });
 
                         break;
 
-                    case 10:
-                        mensaje = trozos[1].Split('\0')[0];
-                        int grado = Convert.ToInt32(trozos[1]);
-                        double Vx = Convert.ToDouble(trozos[2]);
-                        double Voy = Convert.ToDouble(trozos[3]);
-                        juego.setValores(grado, Vx, Voy);
+                    case 10:  //simulacion del tiro
+
+                       
+                        DelegadoTiro tirodelegate = new DelegadoTiro(Tiro);
+                        Invoke(tirodelegate, new object[] { trozos });
+
+
+                        break;
+                    case 11:
+                        MessageBox.Show("BE");
                         break;
                 }
             }
@@ -176,25 +222,13 @@ namespace WindowsFormsApplication1
        
         
         //objetos------------------------------------
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-
-            ListBox listbox = new ListBox();  //necessari?
-
-        }
-
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
+     
         private void button1_Click(object sender, EventArgs e)
         {
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
             IPAddress direc = IPAddress.Parse("192.168.1.134");
-            IPEndPoint ipep = new IPEndPoint(direc, 9050);
+            IPEndPoint ipep = new IPEndPoint(direc, 9040);
 
 
             //Creamos el socket 
@@ -202,8 +236,10 @@ namespace WindowsFormsApplication1
             try
             {
                 server.Connect(ipep);//Intentamos conectar el socket
-                this.BackColor = Color.Green;
-                MessageBox.Show("Conectado");
+                //this.BackColor = Color.Green;
+                this.groupBox1.BackColor = Color.LawnGreen;
+                
+                ;
 
 
             }
@@ -244,11 +280,12 @@ namespace WindowsFormsApplication1
                 string mensaje = "0/";
                 groupBox2.Visible = false;
 
+
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
 
                 // Nos desconectamos
-                this.BackColor = Color.Gray;
+                groupBox1.BackColor = Color.LightGray;
                 server.Shutdown(SocketShutdown.Both);
                 server.Close();
                 atender.Abort();
@@ -291,7 +328,7 @@ namespace WindowsFormsApplication1
 
                 }
 
-                else if (pos.Checked)
+                /*else if (pos.Checked)
                 {
                     string mensaje = "4/" + idpartida.Text;
                     // Enviamos al servidor el nombre tecleado
@@ -299,7 +336,7 @@ namespace WindowsFormsApplication1
                     server.Send(msg);
 
 
-                }
+                }*/
 
                 else if (tiemp.Checked)
                 {
@@ -355,13 +392,27 @@ namespace WindowsFormsApplication1
 
         }  //chat
 
+       
+        
+        
         private void button6_Click(object sender, EventArgs e)
         {
-            int turno = 1;
-            juegoForm juego = new juegoForm();
-            this.juego = juego;
-            this.juego.inicializarForm(turno, server);
-            this.juego.Show();
-        }  
+          
+            
+        }
+
+        private void textoserver_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void idpartida_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

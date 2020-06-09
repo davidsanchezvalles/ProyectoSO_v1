@@ -8,8 +8,10 @@
 #include <mysql.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <time.h>
+
 //#include <my_global.h>
-//v4_sergio	
+
 
 
 typedef struct {
@@ -22,9 +24,19 @@ typedef struct {
 	int num;
 }ListaConectados;
 
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; //Acceso excluyente
 
+typedef struct{
+	int identificador;
+	char jugador1[20];
+	char jugador2[20];
+}Cpartida;
+
+
+
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; //Acceso excluyente
 ListaConectados lista;
+Cpartida partida;
+int idP=5;
 
 int Poner(ListaConectados *lista, char nombre[20], int socket){
 	//Anade nuevo conectado.
@@ -275,6 +287,8 @@ void *AtenderCliente(void *socket){
 						printf("Password NO correcto: %s y %s coninciden\n", contrasena, row[0]);
 						printf ("Enviamos a client: %s\n", buff2);
 					}
+					
+					
 				}
 				break;
 			}
@@ -373,24 +387,29 @@ void *AtenderCliente(void *socket){
 				
 				int pos=DamePosicion(&lista,nombre_invitar);
 				printf("Invitando a %s con socket: %d\n",lista.conectados[pos].nombre, lista.conectados[pos].socket);
-				sprintf(buff2,"7/Desea jugar?");
-				write (lista.conectados[pos].socket,buff2, strlen(buff2)); 
+				sprintf(buff2,"7/El jugador %s le ha invitado a jugar,acepta el reto?", nombre);
+				write (lista.conectados[pos].socket,buff2, strlen(buff2));
+				strcpy(partida.jugador1, nombre); //el jugador que invita será el que tendrá el turno 1, el que empezará a jugar primero
 				
 				break;
 			}
 			
-			case 8: {	//respuesta
+			case 8: {	//respuestainvitacion
 				
 				char respuesta[4];
 				p = strtok( NULL, "/");
 				strcpy (respuesta, p);
 				if (strcmp(respuesta,"SI")==0)
 				{
-					sprintf(buff2,"8/Se acepto invitacion,comienza el juego");
-					for (i=0; i<lista.num; i++){  //enviamos este mensaje a todos los clientes
-						write (lista.conectados[i].socket,buff2, strlen(buff2)); 
-					}
-				}else
+					strcpy(partida.jugador2, nombre);  // el jugador que ha aceptado la invitacion será el jugador 2
+					sprintf(buff2,"8/%s/%s/1",partida.jugador1, partida.jugador2); //enviamos al jugador que invito, el jugador 1, los nombres de los jugadores de la partida y le indicamos que será su turno
+					int pos1 = DamePosicion(&lista, partida.jugador1);
+					write (lista.conectados[pos1].socket,buff2, strlen(buff2));
+					sprintf(buff2,"8/%s/%s/0",partida.jugador1, partida.jugador2); //enviamos al jugador 2 que no es su turno 
+					int pos2 = DamePosicion(&lista, partida.jugador2);
+					write (lista.conectados[pos2].socket,buff2, strlen(buff2));
+				
+				}else if (strcmp(respuesta,"NO")==0)
 				{
 					int pos=DamePosicion(&lista,nombre);	
 					sprintf(buff2,"8/No se acepto invitacion");
@@ -414,20 +433,159 @@ void *AtenderCliente(void *socket){
 				
 				break;
 			}
-			case 10: {	//chat
-				char mensaje[50];
-				double fuerzaX, fuerzaY;
-				int grado;
-				p = strtok( NULL, "/");
-				grado = atoi(p);
-				p = strtok(NULL, "/");
-				fuerzaX = atof(p);
-				p = strtok(NULL, "/");
-				fuerzaY = atof(p);
-				printf("/n10/%s/n", mensaje);
-				sprintf(mensaje, "10/%d/%.3f/%.3f", grado, fuerzaX, fuerzaY);
-				printf("GRADOS:	%d	FUERZAx:%f	FUERZAy:%f\n", grado, fuerzaX, fuerzaY);
-				write (sock_conn,mensaje, strlen(mensaje));
+				
+			case 10: { //tiro
+				
+				p = strtok( NULL, "/"); 
+				int turno ;
+				turno = atoi(p);
+				p = strtok( NULL, "/"); 
+				char  Vx[20];
+				strcpy(Vx,p); 
+				p = strtok( NULL, "/"); 
+				char  Voy[20];
+				strcpy(Voy,p);
+				
+				
+				sprintf(buff2,"10/%d/%s/%s", turno,Vx, Voy); // le pasamos a los 2 jugadores los datos para simular el tiro del contrincante y su turno
+				printf("%s\n", buff2);
+				int p1 = DamePosicion(&lista, partida.jugador1);
+				int p2 = DamePosicion(&lista, partida.jugador2);
+				
+				if( turno==1)
+				{
+					write (lista.conectados[p2].socket,buff2, strlen(buff2));
+					
+				}else if ( turno==2)
+				{
+					write (lista.conectados[p1].socket,buff2, strlen(buff2));
+				}
+				
+				
+				break;
+			}
+				
+			case 11:  {//guardar datos partida
+				
+				int p1 = DamePosicion(&lista, partida.jugador1);
+				int p2 = DamePosicion(&lista, partida.jugador2);
+				strcpy(buff2,"11/fi");
+				write (lista.conectados[p2].socket,buff2, strlen(buff2));
+				write (lista.conectados[p1].socket,buff2, strlen(buff2));
+				
+				
+				
+				char resultadoBBdd[100];
+				
+				char ganador[30];
+				p = strtok( NULL, "/"); 
+				strcpy(ganador,p);
+				int identificadorP;
+				
+				pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
+				identificadorP = idP;
+				idP++;
+				pthread_mutex_unlock (&mutex); //ya puede interrumpir
+				
+				
+				//el string output contiene la fecha actual con el formato "09/06/20"
+				time_t tiempo = time(0);
+				struct tm *tlocal = localtime(&tiempo);
+				char output[128];
+				strftime(output,128,"20%y-%m-%d", tlocal);
+				printf("fecha actual: %s, jugador ganador: %s\n", output,ganador);
+				
+				
+				strcpy(consulta,"INSERT INTO partida VALUES(");  //concatenamos la consulta
+				strcat(consulta,"NULL, '");
+				strcat(consulta,output);
+				strcat(consulta,"', '");
+				strcat(consulta,ganador);
+				strcat(consulta,"');");
+				
+				err=mysql_query (conn, consulta);
+				
+				if (err!=0) {
+					printf ("Error al insertar datos en la base %u %s\n",
+							mysql_errno(conn), mysql_error(conn));
+					exit (1);
+				}else
+				{
+					/**pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
+					Poner(&lista,nombre,sock_conn); //añadimos el nuevo usuario a la lista de conectados				
+					pthread_mutex_unlock (&mutex); //ya puede interrumpir*/
+					
+					printf("Inserción a partida correctamente\n");
+				}
+				
+				
+				
+				
+				strcpy(consulta,"INSERT INTO resumen VALUES('");  //concatenamos la consulta
+				strcat(consulta,"1, '");
+				strcat(consulta,ganador);
+				strcat(consulta,"', '");
+				strcat(consulta,identificadorP);
+				strcat(consulta,"');");
+				printf("CASO11\n");
+				
+				err=mysql_query (conn, consulta);
+				
+				if (err!=0) {
+					printf ("Error al insertar datos en la base %u %s\n",
+							mysql_errno(conn), mysql_error(conn));
+					exit (1);
+				}else
+				{
+					/**pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
+					Poner(&lista,nombre,sock_conn); //añadimos el nuevo usuario a la lista de conectados				
+					pthread_mutex_unlock (&mutex); //ya puede interrumpir*/
+					
+					printf("Inserción a resumen(ganador) correctamente\n");
+				}
+				
+				strcpy(consulta,"INSERT INTO resumen VALUES('");  //concatenamos la consulta
+				strcat(consulta,"2, '");
+				if(strcmp(partida.jugador1, ganador)==0){
+					strcat(consulta,partida.jugador2);
+				}else{
+					strcat(consulta,partida.jugador1);
+				}
+				
+				strcat(consulta,"', '");
+				strcat(consulta,identificadorP);
+				strcat(consulta,"');");
+				
+				
+				err=mysql_query (conn, consulta);
+				
+				if (err!=0) {
+					printf ("Error al insertar datos en la base %u %s\n",
+							mysql_errno(conn), mysql_error(conn));
+					exit (1);
+				}else
+				{
+					/**pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
+					Poner(&lista,nombre,sock_conn); //añadimos el nuevo usuario a la lista de conectados				
+					pthread_mutex_unlock (&mutex); //ya puede interrumpir*/
+					
+					printf("Inserción a resumen correctamente\n");
+				}
+				
+				
+				//el string output contiene la fecha actual con el formato "09/06/20"
+				/*time_t tiempo = time(0);
+				struct tm *tlocal = localtime(&tiempo);
+				char output[128];
+				strftime(output,128,"%d/%m/%y", tlocal);
+				printf("fecha actual: %s, jugador ganador: %s\n", output,ganador);*/
+				
+				
+				
+				
+				//hay q insertar en la basede datos:    partida.jugador1  , partida.jugador2,  ganador  , output(fecha)
+
+				
 				
 				break;
 			}
@@ -456,9 +614,9 @@ int main(int argc, char *argv[]) {
 	memset(&serv_adr, 0, sizeof(serv_adr));// inicialitza a zero serv_addr
 	serv_adr.sin_family = AF_INET;	// asocia el socket a cualquiera de las IP de la m?quina.
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY); //htonl formatea el numero que recibe al formato necesario
-	serv_adr.sin_port = htons(9050); // escucharemos en el port 90X0
+	serv_adr.sin_port = htons(9040); // escucharemos en el port 90X0
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0){
-		printf ("Error al bind");
+		printf ("Error al bind\n");
 	}
 	//La cola de peticiones pendientes no podr? ser superior a 4
 	if (listen(sock_listen, 2) < 0){
