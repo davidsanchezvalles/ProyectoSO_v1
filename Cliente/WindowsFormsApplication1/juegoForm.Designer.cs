@@ -204,9 +204,9 @@
             // 
             // pBar5
             // 
-            this.pBar5.Location = new System.Drawing.Point(342, 26);
+            this.pBar5.Location = new System.Drawing.Point(380, 26);
             this.pBar5.Name = "pBar5";
-            this.pBar5.Size = new System.Drawing.Size(298, 10);
+            this.pBar5.Size = new System.Drawing.Size(323, 10);
             this.pBar5.TabIndex = 15;
             // 
             // label7
@@ -224,9 +224,9 @@
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.Location = new System.Drawing.Point(456, 3);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(89, 20);
+            this.label8.Size = new System.Drawing.Size(85, 20);
             this.label8.TabIndex = 17;
-            this.label8.Text = "Le toca a:";
+            this.label8.Text = "Turno de:";
             // 
             // juegoForm
             // 

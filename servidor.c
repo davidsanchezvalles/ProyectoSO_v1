@@ -8,8 +8,10 @@
 #include <mysql.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <time.h>
+
 //#include <my_global.h>
-//v4_sergio	
+
 
 
 typedef struct {
@@ -34,6 +36,7 @@ typedef struct{
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; //Acceso excluyente
 ListaConectados lista;
 Cpartida partida;
+int idP=5;
 
 int Poner(ListaConectados *lista, char nombre[20], int socket){
 	//Anade nuevo conectado.
@@ -284,6 +287,8 @@ void *AtenderCliente(void *socket){
 						printf("Password NO correcto: %s y %s coninciden\n", contrasena, row[0]);
 						printf ("Enviamos a client: %s\n", buff2);
 					}
+					
+					
 				}
 				break;
 			}
@@ -326,6 +331,7 @@ void *AtenderCliente(void *socket){
 				
 				
 				err=mysql_query (conn, consulta);
+				
 				if (err!=0) {
 					printf ("Error al insertar datos en la base %u %s\n",
 					mysql_errno(conn), mysql_error(conn));
@@ -427,9 +433,9 @@ void *AtenderCliente(void *socket){
 				}
 				
 				break;
+			}
 				
-				
-			case 10:  //tiro
+			case 10: { //tiro
 				
 				p = strtok( NULL, "/"); 
 				int turno ;
@@ -440,15 +446,9 @@ void *AtenderCliente(void *socket){
 				p = strtok( NULL, "/"); 
 				char  Voy[20];
 				strcpy(Voy,p);
-				p = strtok( NULL, "/"); 
-				int  vida1;
-				vida1 = atoi(p);
-				p = strtok( NULL, "/"); 
-				int  vida2;
-				vida2 = atoi(p);
 				
 				
-				sprintf(buff2,"10/%d/%s/%s/%d/%d", turno,Vx, Voy, vida1,vida2); // le pasamos a los 2 jugadores los datos para simular el tiro del contrincante y su turno
+				sprintf(buff2,"10/%d/%s/%s", turno,Vx, Voy); // le pasamos a los 2 jugadores los datos para simular el tiro del contrincante y su turno
 				printf("%s\n", buff2);
 				int p1 = DamePosicion(&lista, partida.jugador1);
 				int p2 = DamePosicion(&lista, partida.jugador2);
@@ -461,6 +461,127 @@ void *AtenderCliente(void *socket){
 				{
 					write (lista.conectados[p1].socket,buff2, strlen(buff2));
 				}
+				
+				
+				break;
+			}
+				
+			case 11:  {//guardar datos partida
+				
+				char ganador[30];
+				p = strtok( NULL, "/"); 
+				strcpy(ganador,p);
+			
+				int identificadorP;
+				char str1[20];
+				char str2[20];
+				
+				pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
+				identificadorP = idP;
+				idP++;
+				pthread_mutex_unlock (&mutex); //ya puede interrumpir
+				
+				//el string output contiene la fecha actual con el formato "09-06-20"
+				time_t tiempo = time(0);
+				struct tm *tlocal = localtime(&tiempo);
+				char output[128];
+				strftime(output,128,"20%y-%m-%d", tlocal);
+				printf("Fecha actual: %s, Jugador ganador: %s\n", output,ganador);
+				
+				strcpy(consulta,""); //para vaciar si hay algo
+				strcpy(consulta,"INSERT INTO partida VALUES(");  //concatenamos la consulta
+				strcat(consulta, NULL);
+				strcat(consulta,", '");
+				strcat(consulta,output);
+				strcat(consulta,"', '");
+				strcat(consulta,ganador);
+				strcat(consulta,"');");
+				
+				err=mysql_query (conn, consulta);
+				
+				if (err!=0) {
+					printf ("Error al insertar datos en la base %u %s\n",
+							mysql_errno(conn), mysql_error(conn));
+					exit (1);
+				}else
+				{
+					/**pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
+					Poner(&lista,nombre,sock_conn); //añadimos el nuevo usuario a la lista de conectados				
+					pthread_mutex_unlock (&mutex); //ya puede interrumpir*/
+					
+					printf("Inserción a partida correctamente\n");
+				}
+				
+				strcpy(consulta,"");
+				strcpy(consulta,"INSERT INTO resumen VALUES('");  //concatenamos la consulta
+				strcat(consulta,"1, '");
+				strcat(consulta,ganador);
+				strcat(consulta,"', ");
+				sprintf(str1, "%d", identificadorP);
+				strcat(consulta, str1);
+				strcat(consulta,");");
+				
+				err=mysql_query (conn, consulta);
+				
+				if (err!=0) {
+					printf ("Error al insertar datos en la base %u %s\n",
+							mysql_errno(conn), mysql_error(conn));
+					exit (1);
+				}else
+				{
+					/**pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
+					Poner(&lista,nombre,sock_conn); //añadimos el nuevo usuario a la lista de conectados				
+					pthread_mutex_unlock (&mutex); //ya puede interrumpir*/
+					
+					printf("Inserción a resumen(ganador) correctamente\n");
+				}
+				
+				
+				strcpy(consulta,"");
+				strcpy(consulta,"INSERT INTO resumen VALUES('");  //concatenamos la consulta
+				strcat(consulta,"2, '");
+				if(strcmp(partida.jugador1, ganador)==0)
+				{
+					strcat(consulta,partida.jugador2);
+				}
+				else
+				{
+					strcat(consulta,partida.jugador1);
+				}
+				strcat(consulta,"', ");
+				sprintf(str1, "%d", identificadorP);
+				strcat(consulta, str2);
+				strcat(consulta,");");
+				
+				
+				err=mysql_query (conn, consulta);
+				
+				
+				if (err!=0) {
+					printf ("Error al insertar datos en la base %u %s\n",
+							mysql_errno(conn), mysql_error(conn));
+					exit (1);
+				}else
+				{
+					/**pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
+					Poner(&lista,nombre,sock_conn); //añadimos el nuevo usuario a la lista de conectados				
+					pthread_mutex_unlock (&mutex); //ya puede interrumpir*/
+					
+					printf("Inserción a resumen correctamente\n");
+				}
+				
+				
+				//el string output contiene la fecha actual con el formato "09/06/20"
+				/*time_t tiempo = time(0);
+				struct tm *tlocal = localtime(&tiempo);
+				char output[128];
+				strftime(output,128,"%d/%m/%y", tlocal);
+				printf("fecha actual: %s, jugador ganador: %s\n", output,ganador);*/
+				
+				
+				
+				
+				//hay q insertar en la basede datos:    partida.jugador1  , partida.jugador2,  ganador  , output(fecha)
 				
 				
 				break;
