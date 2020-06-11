@@ -200,6 +200,12 @@ namespace WindowsFormsApplication1
 
 
                         break;
+                    case 12:   //notificación de eliminar
+                        mensaje = trozos[1].Split('\0')[0];
+                        MessageBox.Show(mensaje);
+
+                        break;
+
                 }
             }
 
@@ -387,14 +393,36 @@ namespace WindowsFormsApplication1
             {
                 MessageBox.Show("Error al enviar mensaje.");
             }
-
-
-
         }  //chat
 
-       
-        
-        
+        private void button6_Click_1(object sender, EventArgs e)
+        {
+            DialogResult dardebaja;
+            dardebaja = MessageBox.Show("¿Está seguro que desea eliminar su cuenta?","Eliminar cuenta", MessageBoxButtons.YesNo);
+            if (dardebaja == System.Windows.Forms.DialogResult.Yes)
+            {
+                string men = "12/" + usuario.Text + "/" + contra.Text;
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                server.Send(msg);
+
+                string mensaje = "0/";
+                byte[] mesage = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                groupBox2.Visible = false;
+
+                server.Send(mesage);
+
+                // Nos desconectamos
+                groupBox1.BackColor = Color.LightGray;
+                server.Shutdown(SocketShutdown.Both);
+                server.Close();
+                atender.Abort();
+
+            }
+        }
+
+
+
+
         private void button6_Click(object sender, EventArgs e)
         {
           
@@ -419,5 +447,7 @@ namespace WindowsFormsApplication1
         {
 
         }
+
+
     }
 }

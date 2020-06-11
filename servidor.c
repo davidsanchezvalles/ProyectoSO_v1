@@ -177,7 +177,7 @@ void *AtenderCliente(void *socket){
 		p = strtok( buff, "/"); //primera llamada strtok
 		codigo = atoi(p);  //convierte el string en un entero
 		
-		if(codigo==1 || codigo==2 ){  //los casos de acceder y registrar
+		if(codigo==1 || codigo==2 || codigo==12 ){  //los casos de acceder y registrar
 			p = strtok( NULL, "/");
 			strcpy (nombre, p);
 		}
@@ -577,9 +577,37 @@ void *AtenderCliente(void *socket){
 				
 				
 				//hay q insertar en la basede datos:    partida.jugador1  , partida.jugador2,  ganador  , output(fecha)
+			}
+		case 12:
+				{
+				
+				strcpy(consulta,""); //nos aseguramos que esta vacio
+				strcpy(consulta,"DELETE FROM jugador WHERE usuario = '");  //concatenamos la consulta
+				strcat(consulta,nombre);
+				strcat(consulta,"' AND contrasena = ");
+				p = strtok( NULL, "/");
+				strcpy (contrasena, p);
+				strcat(consulta,contrasena);
+				strcat(consulta,";");
 				
 				
+				err=mysql_query (conn, consulta);
 				
+				if (err!=0) {
+					printf ("Error al borrar datos en la base %u %s\n",
+							mysql_errno(conn), mysql_error(conn));
+					exit (1);
+				}else
+				{
+					/**pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
+					Poner(&lista,nombre,sock_conn); //añadimos el nuevo usuario a la lista de conectados				
+					pthread_mutex_unlock (&mutex); //ya puede interrumpir*/
+					
+					strcpy (buff2,"12/El servidor realizo correctamente el registro");
+					write (sock_conn,buff2, strlen(buff2));//enviamos mensaje
+				}
+				
+				break;
 			}
 				
 		}
