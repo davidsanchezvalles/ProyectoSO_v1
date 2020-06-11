@@ -247,7 +247,7 @@ namespace WindowsFormsApplication1
         {
             try
             {
-                string mensaje = "1/" + usuario.Text + "/" + contra.Text + "/" + email.Text;
+                string mensaje = "1/" + usuario.Text + "/" + contra.Text;
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
@@ -344,35 +344,48 @@ namespace WindowsFormsApplication1
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (listBox1.SelectedItem != null)
+            try
             {
-                string nombre = listBox1.SelectedItem.ToString();
-                string mensaje = "7/" + nombre;
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                server.Send(msg);
+                if (listBox1.SelectedItem != null)
+                {
+                    string nombre = listBox1.SelectedItem.ToString();
+                    string mensaje = "7/" + nombre;
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
 
 
+                }
+                else
+                {
+                    MessageBox.Show("Debe seleccionar a un jugador conectado");
+                }
             }
-            else
+            catch
             {
-                MessageBox.Show("Debe seleccionar a un jugador conectado");
+                MessageBox.Show("Error al enviar invitación, inténtelo de nuevo.");
             }
 
         }   //invitar
 
         private void button5_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != null)
+            try
             {
-                string mensaje = "9/" + textBox1.Text;
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                server.Send(msg);
-                textBox1.Clear();
+                if (textBox1.Text != null)
+                {
+                    string mensaje = "9/" + textBox1.Text;
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+                    textBox1.Clear();
+                }
+                else
+                {
+                    MessageBox.Show("Debe escribir un mensaje");
+                }
             }
-            else
+            catch
             {
-                MessageBox.Show("Debe escribir un mensaje");
-
+                MessageBox.Show("Error al enviar mensaje.");
             }
 
 

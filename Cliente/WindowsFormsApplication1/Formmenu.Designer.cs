@@ -37,7 +37,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.contra = new System.Windows.Forms.TextBox();
-            this.email = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
@@ -97,7 +96,7 @@
             // 
             // acceder
             // 
-            this.acceder.Location = new System.Drawing.Point(262, 131);
+            this.acceder.Location = new System.Drawing.Point(262, 118);
             this.acceder.Name = "acceder";
             this.acceder.Size = new System.Drawing.Size(75, 23);
             this.acceder.TabIndex = 5;
@@ -112,7 +111,6 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.contra);
-            this.groupBox1.Controls.Add(this.email);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.acceder);
             this.groupBox1.Controls.Add(this.usuario);
@@ -125,7 +123,7 @@
             // 
             // registrar
             // 
-            this.registrar.Location = new System.Drawing.Point(173, 131);
+            this.registrar.Location = new System.Drawing.Point(173, 118);
             this.registrar.Name = "registrar";
             this.registrar.Size = new System.Drawing.Size(75, 23);
             this.registrar.TabIndex = 13;
@@ -139,15 +137,14 @@
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(44, 51);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 25);
+            this.label3.Size = new System.Drawing.Size(0, 25);
             this.label3.TabIndex = 12;
-            this.label3.Text = "Email";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(44, 77);
+            this.label1.Location = new System.Drawing.Point(44, 56);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(123, 25);
             this.label1.TabIndex = 11;
@@ -155,18 +152,10 @@
             // 
             // contra
             // 
-            this.contra.Location = new System.Drawing.Point(173, 83);
+            this.contra.Location = new System.Drawing.Point(173, 62);
             this.contra.Name = "contra";
             this.contra.Size = new System.Drawing.Size(164, 20);
             this.contra.TabIndex = 10;
-            // 
-            // email
-            // 
-            this.email.Location = new System.Drawing.Point(173, 57);
-            this.email.Name = "email";
-            this.email.Size = new System.Drawing.Size(164, 20);
-            this.email.TabIndex = 9;
-            this.email.Text = "(Solo si desea registrarse)";
             // 
             // groupBox2
             // 
@@ -185,7 +174,7 @@
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.idpartida);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(25, 45);
+            this.groupBox2.Location = new System.Drawing.Point(25, 61);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(372, 258);
             this.groupBox2.TabIndex = 18;
@@ -466,7 +455,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox contra;
-        private System.Windows.Forms.TextBox email;
         private System.Windows.Forms.Button registrar;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton tiemp;

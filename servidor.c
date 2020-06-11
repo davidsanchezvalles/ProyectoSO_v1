@@ -211,11 +211,7 @@ void *AtenderCliente(void *socket){
 				p = strtok( NULL, "/");
 				strcpy (contrasena, p);
 				strcat(consulta,contrasena);
-				strcat(consulta,",'");
-				p = strtok( NULL, "/");
-				strcpy (email, p);
-				strcat(consulta,email);
-				strcat(consulta,"');");
+				strcat(consulta,");");
 				
 				
 				err=mysql_query (conn, consulta);
@@ -474,7 +470,6 @@ void *AtenderCliente(void *socket){
 			
 				int identificadorP;
 				char str1[20];
-				char str2[20];
 				
 				pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
 				identificadorP = idP;
@@ -490,10 +485,10 @@ void *AtenderCliente(void *socket){
 				
 				strcpy(consulta,""); //para vaciar si hay algo
 				strcpy(consulta,"INSERT INTO partida VALUES(");  //concatenamos la consulta
-				strcat(consulta, NULL);
-				strcat(consulta,", '");
+				strcat(consulta, "NULL");
+				strcat(consulta,",'");
 				strcat(consulta,output);
-				strcat(consulta,"', '");
+				strcat(consulta,"','");
 				strcat(consulta,ganador);
 				strcat(consulta,"');");
 				
@@ -513,10 +508,10 @@ void *AtenderCliente(void *socket){
 				}
 				
 				strcpy(consulta,"");
-				strcpy(consulta,"INSERT INTO resumen VALUES('");  //concatenamos la consulta
-				strcat(consulta,"1, '");
+				strcpy(consulta,"INSERT INTO resumen VALUES(");  //concatenamos la consulta
+				strcat(consulta,"1,'");
 				strcat(consulta,ganador);
-				strcat(consulta,"', ");
+				strcat(consulta,"',");
 				sprintf(str1, "%d", identificadorP);
 				strcat(consulta, str1);
 				strcat(consulta,");");
@@ -538,7 +533,7 @@ void *AtenderCliente(void *socket){
 				
 				
 				strcpy(consulta,"");
-				strcpy(consulta,"INSERT INTO resumen VALUES('");  //concatenamos la consulta
+				strcpy(consulta,"INSERT INTO resumen VALUES(");  //concatenamos la consulta
 				strcat(consulta,"2, '");
 				if(strcmp(partida.jugador1, ganador)==0)
 				{
@@ -550,7 +545,7 @@ void *AtenderCliente(void *socket){
 				}
 				strcat(consulta,"', ");
 				sprintf(str1, "%d", identificadorP);
-				strcat(consulta, str2);
+				strcat(consulta, str1);
 				strcat(consulta,");");
 				
 				
@@ -570,7 +565,7 @@ void *AtenderCliente(void *socket){
 					printf("Inserción a resumen correctamente\n");
 				}
 				
-				
+				break;
 				//el string output contiene la fecha actual con el formato "09/06/20"
 				/*time_t tiempo = time(0);
 				struct tm *tlocal = localtime(&tiempo);
@@ -584,7 +579,7 @@ void *AtenderCliente(void *socket){
 				//hay q insertar en la basede datos:    partida.jugador1  , partida.jugador2,  ganador  , output(fecha)
 				
 				
-				break;
+				
 			}
 				
 		}
