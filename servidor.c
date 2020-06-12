@@ -431,7 +431,7 @@ void *AtenderCliente(void *socket){
 				break;
 			}
 				
-			case 10: { //tiro
+			case 10: {  //tiro
 				
 				p = strtok( NULL, "/"); 
 				int turno ;
@@ -462,7 +462,7 @@ void *AtenderCliente(void *socket){
 				break;
 			}
 				
-			case 11:  {//guardar datos partida
+			case 11: {  //guardar datos partida
 				
 				char ganador[30];
 				p = strtok( NULL, "/"); 
@@ -508,13 +508,20 @@ void *AtenderCliente(void *socket){
 				}
 				
 				strcpy(consulta,"");
-				strcpy(consulta,"INSERT INTO resumen VALUES(");  //concatenamos la consulta
-				strcat(consulta,"1,'");
+				strcpy(consulta,"INSERT INTO resumen VALUES('");  //concatenamos la consulta
+				strcat(consulta,ganador);
+				strcat(consulta,"',");
+				sprintf(str1, "%d,", identificadorP);
+				strcat(consulta, str1);
+				strcat(consulta,"1");
+				strcat(consulta,");");
+				
+				/*strcat(consulta,"1,'");
 				strcat(consulta,ganador);
 				strcat(consulta,"',");
 				sprintf(str1, "%d", identificadorP);
 				strcat(consulta, str1);
-				strcat(consulta,");");
+				strcat(consulta,");");*/
 				
 				err=mysql_query (conn, consulta);
 				
@@ -533,8 +540,8 @@ void *AtenderCliente(void *socket){
 				
 				
 				strcpy(consulta,"");
-				strcpy(consulta,"INSERT INTO resumen VALUES(");  //concatenamos la consulta
-				strcat(consulta,"2, '");
+				strcpy(consulta,"INSERT INTO resumen VALUES('");  
+				
 				if(strcmp(partida.jugador1, ganador)==0)
 				{
 					strcat(consulta,partida.jugador2);
@@ -543,15 +550,18 @@ void *AtenderCliente(void *socket){
 				{
 					strcat(consulta,partida.jugador1);
 				}
-				strcat(consulta,"', ");
-				sprintf(str1, "%d", identificadorP);
+				strcat(consulta,"',");
+				sprintf(str1, "%d,", identificadorP);
 				strcat(consulta, str1);
-				strcat(consulta,");");
+				strcat(consulta,"2);");
+				
+				
+				
+				
 				
 				
 				err=mysql_query (conn, consulta);
-				
-				
+								
 				if (err!=0) {
 					printf ("Error al insertar datos en la base %u %s\n",
 							mysql_errno(conn), mysql_error(conn));
@@ -576,10 +586,10 @@ void *AtenderCliente(void *socket){
 				
 				
 				
-				//hay q insertar en la basede datos:    partida.jugador1  , partida.jugador2,  ganador  , output(fecha)
+				
 			}
-		case 12:
-				{
+			case 12: {  //darse de baja
+				
 				
 				strcpy(consulta,""); //nos aseguramos que esta vacio
 				strcpy(consulta,"DELETE FROM jugador WHERE usuario = '");  //concatenamos la consulta
@@ -634,7 +644,7 @@ int main(int argc, char *argv[]) {
 	memset(&serv_adr, 0, sizeof(serv_adr));// inicialitza a zero serv_addr
 	serv_adr.sin_family = AF_INET;	// asocia el socket a cualquiera de las IP de la m?quina.
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY); //htonl formatea el numero que recibe al formato necesario
-	serv_adr.sin_port = htons(9040); // escucharemos en el port 90X0
+	serv_adr.sin_port = htons(9020); // escucharemos en el port 90X0
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0){
 		printf ("Error al bind\n");
 	}

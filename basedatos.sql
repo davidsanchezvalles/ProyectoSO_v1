@@ -13,9 +13,9 @@ CREATE TABLE partida (
 )ENGINE = InnoDB;
 
 CREATE TABLE resumen (
-   posicion INTEGER NOT NULL,
    jugador VARCHAR(16) NOT NULL,
    partida INTEGER NOT NULL,
+   posicion INTEGER NOT NULL,
    FOREIGN KEY (jugador) REFERENCES jugador(usuario),
    FOREIGN KEY (partida) REFERENCES partida(ID)
 )ENGINE = InnoDB;
@@ -27,8 +27,11 @@ INSERT INTO jugador VALUES('martigc', 1234);
 INSERT INTO partida VALUES(NULL, '2020-01-12', 'davidsv');
 INSERT INTO partida VALUES(NULL, '2020-01-18', 'sergiogl');
 INSERT INTO partida VALUES(NULL, '2020-02-15', 'martigc');
-INSERT INTO partida VALUES(NULL, '2020-01-18', 'martigc');
 
-INSERT INTO resumen VALUES(1, 'davidsv', 1);
-INSERT INTO resumen VALUES(2, 'martigc', 3);
-INSERT INTO resumen VALUES(3, 'sergiogl', 2);
+
+INSERT INTO resumen VALUES('davidsv', 1, 1);
+INSERT INTO resumen VALUES('martigc', 1, 2);
+INSERT INTO resumen VALUES('sergiogl',2 , 1);
+INSERT INTO resumen VALUES('davidsv',2 , 2);
+INSERT INTO resumen VALUES('martigc',3 , 1);
+INSERT INTO resumen VALUES('davidsv',3 , 2);
