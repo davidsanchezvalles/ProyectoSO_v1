@@ -55,14 +55,6 @@ namespace WindowsFormsApplication1
         {
             listaform[0].simulartiro( Convert.ToInt32(trozos[1]) ,Convert.ToDouble(trozos[2]), Convert.ToDouble(trozos[3]));
         }
-
-       /* private void threadforms()
-        {
-            ThreadStart ts = delegate { Crearform(); };
-            formulario = new Thread(ts);
-            formulario.Start();
-
-        }  */
         
         private void PonConectados(string[] trozos)
         {
@@ -95,137 +87,116 @@ namespace WindowsFormsApplication1
         private void VisualBox()
         {
             groupBox1.BackColor = Color.LightSkyBlue;
-
         }
 
         private void atenderserver()
         {
-
-            while (true)
+            try
             {
-                //Recibimos mensaje del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                string recibido = Encoding.ASCII.GetString(msg2).TrimEnd('\0');
-                 //MessageBox.Show(recibido);
-                string[] trozos = recibido.Split('/');
-                int codigo = Convert.ToInt32(trozos[0]);
-                string mensaje;
-                switch (codigo)
+                while (true)
                 {
 
-                    case 1: // registrar
-                         
-                   
-
-                        DelegadoParaVisualBox d_visual = new DelegadoParaVisualBox(VisualBox);
-                        groupBox1.Invoke(d_visual);
-                      
-                        break;
-
-                    case 2:  //No sesta fent servir!!
-                        mensaje = trozos[1].Split('\0')[0];
-                        break;
-
-                    case 3:  //ganador
-
-                        DelegadoParaRespuestas del_respuestas = new DelegadoParaRespuestas(Respuestas);
-                        textoserver.Invoke(del_respuestas, new object[] { trozos });
-                        
-                       
-                        break;
-
-                    case 4:  //tiempo jugado
-                        mensaje = trozos[1].Split('\0')[0];
-                        MessageBox.Show("El tiempo de partida ha sido: " + mensaje);
-                        break;
-
-                    case 5:  //Los jugadores con los que he jugado
-                        mensaje = trozos[1].Split('\0')[0];
-                        MessageBox.Show("Los usuarios contra los que has jugado son: " + mensaje);
-                        break;
+                    //Recibimos mensaje del servidor
+                    byte[] msg2 = new byte[80];
+                    server.Receive(msg2);
+                    string recibido = Encoding.ASCII.GetString(msg2).TrimEnd('\0');
+                    //MessageBox.Show(recibido);
+                    string[] trozos = recibido.Split('/');
+                    int codigo = Convert.ToInt32(trozos[0]);
+                    string mensaje;
 
 
-                    case 6:  //conectados
-                        DelegadoParaPonerConectados delegado = new DelegadoParaPonerConectados(PonConectados);
-                        groupBox2.Invoke(delegado, new object[] { trozos });
-                        
-                        break;
+                    switch (codigo)
+                    {
+
+                        case 1: // registrar
+
+                            DelegadoParaVisualBox d_visual = new DelegadoParaVisualBox(VisualBox);
+                            groupBox1.Invoke(d_visual);
+
+                            break;
+
+                        case 2:  //No sesta fent servir!!
+                            mensaje = trozos[1].Split('\0')[0];
+                            break;
+
+                        case 3:  //consultas
+
+                            DelegadoParaRespuestas del_respuestas = new DelegadoParaRespuestas(Respuestas);
+                            textoserver.Invoke(del_respuestas, new object[] { trozos });
 
 
-                    case 7:  //recibimos invitacion
-                        mensaje = trozos[1].Split('\0')[0];
-                        DialogResult result;
-                        result = MessageBox.Show(mensaje, "invitacion", MessageBoxButtons.YesNo);
-                        if (result == System.Windows.Forms.DialogResult.Yes)
-                        {
-                            string men = "8/SI";
-                            byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
-                            server.Send(msg);
+                            break;
 
-                        }
-                        else
-                        {
-                            string men = "8/NO";
-                            byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
-                            server.Send(msg);
+                        case 6:  //conectados
+                            DelegadoParaPonerConectados delegado = new DelegadoParaPonerConectados(PonConectados);
+                            groupBox2.Invoke(delegado, new object[] { trozos });
 
-                        }
-
-                        break;
+                            break;
 
 
-                    case 8:  //respuesta invitacion
-                        
+                        case 7:  //recibimos invitacion
+                            mensaje = trozos[1].Split('\0')[0];
+                            DialogResult result;
+                            result = MessageBox.Show(mensaje, "invitacion", MessageBoxButtons.YesNo);
+                            if (result == System.Windows.Forms.DialogResult.Yes)
+                            {
+                                string men = "8/SI";
+                                byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                                server.Send(msg);
 
-                        //creamos el formulario del juego
-                        DelegadoForm formdelegate = new DelegadoForm(Crearform);
-                        Invoke(formdelegate, new object[] { trozos });
+                            }
+                            else
+                            {
+                                string men = "8/NO";
+                                byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                                server.Send(msg);
 
+                            }
 
-                      
-                        break;
-
-
-                    case 9:  //chat
-
-                        DelegadoParaPonerConectados del_chat = new DelegadoParaPonerConectados(Chat);
-                        listBox2.Invoke(del_chat, new object[] { trozos });
-
-                        break;
-
-                    case 10:  //simulacion del tiro
-
-                           //la partida o furmolario
-                        DelegadoTiro tirodelegate = new DelegadoTiro(Tiro);
-                        Invoke(tirodelegate, new object[] { trozos });
+                            break;
 
 
-                        break;
-
-                    case 12:   //notificación de eliminar
-
-                        mensaje = trozos[1].Split('\0')[0];
-                        MessageBox.Show(mensaje);
-
-                        break;
-
-                    case 13:  //Resultado de partida con x jugador
-
-                        DelegadoParaRespuestas del_respuest = new DelegadoParaRespuestas(Respuestas);
-                        textoserver.Invoke(del_respuest, new object[] { trozos });
-                        break;
-
-                    case 14:  //Fecha de partida es
-
-                        DelegadoParaRespuestas del_respuesta = new DelegadoParaRespuestas(Respuestas);
-                        textoserver.Invoke(del_respuesta, new object[] { trozos });
+                        case 8:  //respuesta invitacion
 
 
-                        break;
+                            //creamos el formulario del juego
+                            DelegadoForm formdelegate = new DelegadoForm(Crearform);
+                            Invoke(formdelegate, new object[] { trozos });
 
+
+
+                            break;
+
+
+                        case 9:  //chat
+
+                            DelegadoParaPonerConectados del_chat = new DelegadoParaPonerConectados(Chat);
+                            listBox2.Invoke(del_chat, new object[] { trozos });
+
+                            break;
+
+                        case 10:  //simulacion del tiro
+
+                            //la partida o furmolario
+                            DelegadoTiro tirodelegate = new DelegadoTiro(Tiro);
+                            Invoke(tirodelegate, new object[] { trozos });
+
+
+                            break;
+
+                        case 12:   //notificación de eliminar
+
+                            mensaje = trozos[1].Split('\0')[0];
+                            MessageBox.Show(mensaje);
+
+                            break;
+
+                    }
                 }
             }
+            catch
+            { return; }
 
         }     //procesado de las respuestas del servidor
 
@@ -240,7 +211,7 @@ namespace WindowsFormsApplication1
             //al que deseamos conectarnos
 
             IPAddress direc = IPAddress.Parse("192.168.56.102");
-            IPEndPoint ipep = new IPEndPoint(direc, 9050);
+            IPEndPoint ipep = new IPEndPoint(direc, 9020);
 
 
 
@@ -251,10 +222,6 @@ namespace WindowsFormsApplication1
                 server.Connect(ipep);//Intentamos conectar el socket
                 //this.BackColor = Color.Green;
                 this.groupBox1.BackColor = Color.LawnGreen;
-                
-                ;
-
-
             }
             catch (SocketException)
             {
@@ -262,7 +229,6 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("No he podido conectar con el servidor");
                 return;
             }
-
 
             ThreadStart st = delegate { atenderserver(); };
             atender = new Thread(st);
@@ -281,7 +247,6 @@ namespace WindowsFormsApplication1
 
             }
             catch { MessageBox.Show("Error al registrar."); }
-
 
         }   //registrar
 
@@ -342,16 +307,6 @@ namespace WindowsFormsApplication1
 
                 }
 
-                else if (tiemp.Checked)
-                {
-                    string mensaje = "4/" + textBox3.Text;
-                    // Enviamos al servidor el nombre tecleado
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                    server.Send(msg);
-
-
-                }
-
                 else if (conquienjuego.Checked)
                 {
                     string mensaje = "5/" + usuario.Text;
@@ -372,16 +327,13 @@ namespace WindowsFormsApplication1
 
                 else if (partidaporfecha.Checked)
                 {
+
                     string mensaje = "14/" + usuario.Text + "/" +  textBox4.Text;
                     // Enviamos al servidor el nombre tecleado
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                     server.Send(msg);
 
                 }
-
-
-
-
 
             }
             catch { MessageBox.Show("Error al realizar la consulta."); }
@@ -437,60 +389,49 @@ namespace WindowsFormsApplication1
 
         private void button6_Click_1(object sender, EventArgs e)
         {
-            DialogResult dardebaja;
-            dardebaja = MessageBox.Show("¿Está seguro que desea eliminar su cuenta?","Eliminar cuenta", MessageBoxButtons.YesNo);
-            if (dardebaja == System.Windows.Forms.DialogResult.Yes)
+            try
             {
-                string men = "12/" + usuario.Text + "/" + contra.Text;
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
-                server.Send(msg);
+                DialogResult dardebaja;
+                dardebaja = MessageBox.Show("¿Está seguro que desea eliminar su cuenta?", "Eliminar cuenta", MessageBoxButtons.YesNo);
+                if (dardebaja == System.Windows.Forms.DialogResult.Yes)
+                {
+                    string men = "12/" + usuario.Text + "/" + contra.Text;
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                    server.Send(msg);
 
-                string mensaje = "0/";
-                byte[] mesage = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                groupBox2.Visible = false;
+                    string mensaje = "0/";
+                    byte[] mesage = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    groupBox2.Visible = false;
 
-                server.Send(mesage);
+                    server.Send(mesage);
 
-                // Nos desconectamos
-                groupBox1.BackColor = Color.LightGray;
-                server.Shutdown(SocketShutdown.Both);
-                server.Close();
-                atender.Abort();
+                    // Nos desconectamos
+                    groupBox1.BackColor = Color.LightGray;
+                    server.Shutdown(SocketShutdown.Both);
+                    server.Close();
+                    atender.Abort();
 
+                }
             }
+            catch
+            { MessageBox.Show("Se ha producido un error al dar de baja el usuario."); }
         }
 
-
-
-
-        private void button6_Click(object sender, EventArgs e)
+        private void idpartida_KeyPress(object sender, KeyPressEventArgs e)
         {
-          
-            
-        }
-
-        private void textoserver_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void idpartida_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void gana_CheckedChanged(object sender, EventArgs e)
-        {
-
+            if(char.IsDigit(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+            else if(char.IsControl(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+                MessageBox.Show("Introduzca solo números.");
+            }
         }
     }
 }

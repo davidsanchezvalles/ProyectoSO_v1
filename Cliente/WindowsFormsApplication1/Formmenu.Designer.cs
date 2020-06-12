@@ -41,17 +41,14 @@
             this.button6 = new System.Windows.Forms.Button();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.partidaporfecha = new System.Windows.Forms.RadioButton();
-            this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.resultadodepartida = new System.Windows.Forms.RadioButton();
             this.conquienjuego = new System.Windows.Forms.RadioButton();
             this.textoserver = new System.Windows.Forms.Label();
             this.genteconectada = new System.Windows.Forms.Label();
-            this.tiemp = new System.Windows.Forms.RadioButton();
             this.gana = new System.Windows.Forms.RadioButton();
             this.button2 = new System.Windows.Forms.Button();
             this.idpartida = new System.Windows.Forms.TextBox();
-            this.button6 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -164,13 +161,11 @@
             this.groupBox2.Controls.Add(this.button6);
             this.groupBox2.Controls.Add(this.textBox4);
             this.groupBox2.Controls.Add(this.partidaporfecha);
-            this.groupBox2.Controls.Add(this.textBox3);
             this.groupBox2.Controls.Add(this.textBox2);
             this.groupBox2.Controls.Add(this.resultadodepartida);
             this.groupBox2.Controls.Add(this.conquienjuego);
             this.groupBox2.Controls.Add(this.textoserver);
             this.groupBox2.Controls.Add(this.genteconectada);
-            this.groupBox2.Controls.Add(this.tiemp);
             this.groupBox2.Controls.Add(this.gana);
             this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Controls.Add(this.idpartida);
@@ -197,7 +192,7 @@
             // textBox4
             // 
             this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox4.Location = new System.Drawing.Point(204, 137);
+            this.textBox4.Location = new System.Drawing.Point(204, 126);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(100, 20);
             this.textBox4.TabIndex = 18;
@@ -206,7 +201,7 @@
             // partidaporfecha
             // 
             this.partidaporfecha.AutoSize = true;
-            this.partidaporfecha.Location = new System.Drawing.Point(32, 137);
+            this.partidaporfecha.Location = new System.Drawing.Point(32, 125);
             this.partidaporfecha.Name = "partidaporfecha";
             this.partidaporfecha.Size = new System.Drawing.Size(166, 19);
             this.partidaporfecha.TabIndex = 17;
@@ -214,25 +209,18 @@
             this.partidaporfecha.Text = "Partidas jugadas la fecha:";
             this.partidaporfecha.UseVisualStyleBackColor = true;
             // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(182, 57);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 21);
-            this.textBox3.TabIndex = 16;
-            this.textBox3.Text = "\"ID de la partida\"";
-            // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(248, 110);
+            this.textBox2.Location = new System.Drawing.Point(248, 92);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 21);
             this.textBox2.TabIndex = 15;
+            this.textBox2.Text = "Username";
             // 
             // resultadodepartida
             // 
             this.resultadodepartida.AutoSize = true;
-            this.resultadodepartida.Location = new System.Drawing.Point(32, 110);
+            this.resultadodepartida.Location = new System.Drawing.Point(32, 94);
             this.resultadodepartida.Name = "resultadodepartida";
             this.resultadodepartida.Size = new System.Drawing.Size(210, 19);
             this.resultadodepartida.TabIndex = 14;
@@ -243,7 +231,7 @@
             // conquienjuego
             // 
             this.conquienjuego.AutoSize = true;
-            this.conquienjuego.Location = new System.Drawing.Point(32, 85);
+            this.conquienjuego.Location = new System.Drawing.Point(32, 62);
             this.conquienjuego.Name = "conquienjuego";
             this.conquienjuego.Size = new System.Drawing.Size(207, 19);
             this.conquienjuego.TabIndex = 13;
@@ -260,7 +248,6 @@
             this.textoserver.Size = new System.Drawing.Size(316, 43);
             this.textoserver.TabIndex = 12;
             this.textoserver.Text = "Respuesta:";
-            this.textoserver.Click += new System.EventHandler(this.textoserver_Click);
             // 
             // genteconectada
             // 
@@ -270,29 +257,16 @@
             this.genteconectada.Size = new System.Drawing.Size(0, 15);
             this.genteconectada.TabIndex = 11;
             // 
-            // tiemp
-            // 
-            this.tiemp.AutoSize = true;
-            this.tiemp.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.tiemp.Location = new System.Drawing.Point(32, 56);
-            this.tiemp.Name = "tiemp";
-            this.tiemp.Size = new System.Drawing.Size(144, 19);
-            this.tiemp.TabIndex = 9;
-            this.tiemp.TabStop = true;
-            this.tiemp.Text = "Tiempo en la  partida:";
-            this.tiemp.UseVisualStyleBackColor = false;
-            // 
             // gana
             // 
             this.gana.AutoSize = true;
-            this.gana.Location = new System.Drawing.Point(32, 28);
+            this.gana.Location = new System.Drawing.Point(32, 27);
             this.gana.Name = "gana";
             this.gana.Size = new System.Drawing.Size(180, 19);
             this.gana.TabIndex = 7;
             this.gana.TabStop = true;
             this.gana.Text = "Ganador de partida numero:";
             this.gana.UseVisualStyleBackColor = true;
-            this.gana.CheckedChanged += new System.EventHandler(this.gana_CheckedChanged);
             // 
             // button2
             // 
@@ -306,23 +280,12 @@
             // 
             // idpartida
             // 
-            this.idpartida.Location = new System.Drawing.Point(218, 28);
+            this.idpartida.Location = new System.Drawing.Point(218, 26);
             this.idpartida.Name = "idpartida";
             this.idpartida.Size = new System.Drawing.Size(110, 21);
             this.idpartida.TabIndex = 3;
             this.idpartida.Text = "\"ID de la partida\"";
-            this.idpartida.TextChanged += new System.EventHandler(this.idpartida_TextChanged);
-            // 
-            // button6
-            // 
-            this.button6.BackColor = System.Drawing.Color.Red;
-            this.button6.Location = new System.Drawing.Point(239, 181);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(99, 23);
-            this.button6.TabIndex = 20;
-            this.button6.Text = "Darse de baja";
-            this.button6.UseVisualStyleBackColor = false;
-            this.button6.Click += new System.EventHandler(this.button6_Click_1);
+            this.idpartida.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.idpartida_KeyPress);
             // 
             // button3
             // 
@@ -344,7 +307,6 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(157, 186);
             this.listBox1.TabIndex = 11;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -427,7 +389,6 @@
             this.label8.Size = new System.Drawing.Size(41, 16);
             this.label8.TabIndex = 19;
             this.label8.Text = "fecha";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // Formmenu
             // 
@@ -473,7 +434,6 @@
         private System.Windows.Forms.TextBox contra;
         private System.Windows.Forms.Button registrar;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RadioButton tiemp;
         private System.Windows.Forms.RadioButton gana;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox idpartida;
@@ -487,7 +447,6 @@
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.RadioButton resultadodepartida;
         private System.Windows.Forms.RadioButton conquienjuego;

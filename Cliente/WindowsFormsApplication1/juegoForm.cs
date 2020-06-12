@@ -131,60 +131,69 @@ namespace WindowsFormsApplication1
             timer3.Stop();
             timer_turno.Stop();
             vida = 0;
-         
-            //depende del turno, cojeremos los valores de unos progresbar o otros, y realizaremos un tiro de derecha a izquierda o viceversa
-            if (turno == 1)
+            try
             {
+                //depende del turno, cojeremos los valores de unos progresbar o otros, y realizaremos un tiro de derecha a izquierda o viceversa
+                if (turno == 1)
+                {
 
-                string[] trozos = label1.Text.Split(' ');
-                grado = Convert.ToInt32(trozos[0]);
-                Vx = pBar1.Value * Math.Cos((grado * 2 * PI) / 360) * 3.95; //numero  3.95 elegido convenientemente
-                Voy = pBar1.Value * Math.Sin((grado * 2 * PI) / 360) * 3.95;
+                    string[] trozos = label1.Text.Split(' ');
+                    grado = Convert.ToInt32(trozos[0]);
+                    Vx = pBar1.Value * Math.Cos((grado * 2 * PI) / 360) * 3.95; //numero  3.95 elegido convenientemente
+                    Voy = pBar1.Value * Math.Sin((grado * 2 * PI) / 360) * 3.95;
 
-                string men = "10/1/"+ Vx + "/" + Voy;
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
-                server.Send(msg);
-                label8.Text= "Turno de :" + jugador2.ToString();
-                                    
-              
+                    string men = "10/1/" + Vx + "/" + Voy;
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                    server.Send(msg);
+                    label8.Text = "Turno de :" + jugador2.ToString();
+
+
+                }
+                else if (turno == 2)
+                {
+
+                    string[] trozos = label2.Text.Split(' ');
+                    grado = Convert.ToInt32(trozos[0]);
+                    Vx = pBar2.Value * Math.Cos((grado * 2 * PI) / 360) * 3.95; //numero  3.95 elegido convenientemente
+                    Voy = pBar2.Value * Math.Sin((grado * 2 * PI) / 360) * 3.95;
+
+                    string men = "10/2/" + Vx + "/" + Voy;
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                    server.Send(msg);
+                    label8.Text = "Turno de :" + jugador1.ToString();
+                }
+
+                timer2.Start();
             }
-            else if (turno == 2)
-            {
+            catch
+            { MessageBox.Show("Se ha perdido la conexión con el servidor."); }
 
-                string[] trozos = label2.Text.Split(' ');
-                grado = Convert.ToInt32(trozos[0]);
-                Vx = pBar2.Value * Math.Cos((grado * 2 * PI) / 360) * 3.95; //numero  3.95 elegido convenientemente
-                Voy = pBar2.Value * Math.Sin((grado * 2 * PI) / 360) * 3.95;
-
-                string men = "10/2/" + Vx + "/" + Voy;
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
-                server.Send(msg);
-                label8.Text = "Turno de :" + jugador1.ToString();
-            }
-            
-            timer2.Start();
         }
 
         public void simulartiro(int torn, double vx, double voy)
         {
-
-            Vx = vx;
-            Voy = voy;
-            vida = 0; //variable para controlar que solo le quita una vez la vida, y no varias veces en un mismo tiro
-            turno = torn;  //de esta manera el timer2 , el que realiza la parábola, sabrá diferenciar el tiro y condiciones que tiene que cumplir
-            //si el turno es 2, significa que primero tenemos que simular el tiro del turno 1, y viceversa
-
-            if (turno == 1)
+            try
             {
-                label8.Text = "Turno de: "+ jugador2;  //ya que simulamos el tiro del turno 1, pero seguidamente será el turno del jugador 2
+                Vx = vx;
+                Voy = voy;
+                vida = 0; //variable para controlar que solo le quita una vez la vida, y no varias veces en un mismo tiro
+                turno = torn;  //de esta manera el timer2 , el que realiza la parábola, sabrá diferenciar el tiro y condiciones que tiene que cumplir
+                               //si el turno es 2, significa que primero tenemos que simular el tiro del turno 1, y viceversa
+
+                if (turno == 1)
+                {
+                    label8.Text = "Turno de: " + jugador2;  //ya que simulamos el tiro del turno 1, pero seguidamente será el turno del jugador 2
+                }
+                else if (turno == 2)
+                {
+                    label8.Text = "Turno de: " + jugador1;
+                }
+
+                recibido = 1;
+                timer2.Start();  //empieza la simulacion del tiro del rival
             }
-            else if (turno == 2)
-            {
-                label8.Text = "Turno de: " + jugador1; 
-            }
-           
-            recibido = 1;
-            timer2.Start();  //empieza la simulacion del tiro del rival
+            catch
+            { MessageBox.Show("Error al realizar la simulación."); }
 
         }  // funcion para recrear el tiro del contricante
 
@@ -281,11 +290,17 @@ namespace WindowsFormsApplication1
                             //si somos el jugador que esta realizando el tiro,y no simulandolo, enviamos el ganador al servidor, para evitar que le llegue duplicado el mensaje
                             if (recibido == 0 )
                             {
-                                string men = "11/" + jugador1;
-                                byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
-                                server.Send(msg);
-                               
-                                
+                                try
+                                {
+                                    string men = "11/" + jugador1;
+                                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                                    server.Send(msg);
+                                }
+                                catch
+                                { 
+                                    MessageBox.Show("Se ha perdido la conexión con el servidor.");
+                                    this.Close();
+                                }
                             }
                             //MessageBox.Show("¡¡¡¡Ganó el jugador: " + jugador1 +"!!!");
                             stop = 1;
@@ -329,9 +344,17 @@ namespace WindowsFormsApplication1
                             //si somos el jugador que esta realizando el tiro,y no simulandolo, enviamos el ganador al servidor, para evitar que le llegue duplicado el mensaje
                             if (recibido != 1)
                             {
-                                string men = "11/" + jugador2;
-                                byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
-                                server.Send(msg);
+                                try
+                                {
+                                    string men = "11/" + jugador2;
+                                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
+                                    server.Send(msg);
+                                }
+                                catch
+                                {
+                                    MessageBox.Show("Se ha perdido la conexión con el servidor.");
+                                    this.Close();
+                                }
 
                             }
                             //MessageBox.Show("gano el jugador: " + jugador2);
