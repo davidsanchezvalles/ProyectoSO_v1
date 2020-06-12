@@ -38,18 +38,18 @@
             this.label1 = new System.Windows.Forms.Label();
             this.contra = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button6 = new System.Windows.Forms.Button();
             this.textBox4 = new System.Windows.Forms.TextBox();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.partidaporfecha = new System.Windows.Forms.RadioButton();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.resultadodepartida = new System.Windows.Forms.RadioButton();
+            this.conquienjuego = new System.Windows.Forms.RadioButton();
             this.textoserver = new System.Windows.Forms.Label();
             this.genteconectada = new System.Windows.Forms.Label();
             this.tiemp = new System.Windows.Forms.RadioButton();
             this.gana = new System.Windows.Forms.RadioButton();
             this.button2 = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
             this.idpartida = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -61,7 +61,6 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -163,26 +162,36 @@
             this.groupBox2.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.groupBox2.Controls.Add(this.button6);
             this.groupBox2.Controls.Add(this.textBox4);
-            this.groupBox2.Controls.Add(this.radioButton3);
+            this.groupBox2.Controls.Add(this.partidaporfecha);
             this.groupBox2.Controls.Add(this.textBox3);
             this.groupBox2.Controls.Add(this.textBox2);
-            this.groupBox2.Controls.Add(this.radioButton2);
-            this.groupBox2.Controls.Add(this.radioButton1);
+            this.groupBox2.Controls.Add(this.resultadodepartida);
+            this.groupBox2.Controls.Add(this.conquienjuego);
             this.groupBox2.Controls.Add(this.textoserver);
             this.groupBox2.Controls.Add(this.genteconectada);
             this.groupBox2.Controls.Add(this.tiemp);
             this.groupBox2.Controls.Add(this.gana);
             this.groupBox2.Controls.Add(this.button2);
-            this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.idpartida);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(25, 61);
+            this.groupBox2.Location = new System.Drawing.Point(26, 61);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(372, 258);
             this.groupBox2.TabIndex = 18;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "             Consultas al servidor";
+            this.groupBox2.Text = " ";
             this.groupBox2.Visible = false;
+            // 
+            // button6
+            // 
+            this.button6.BackColor = System.Drawing.Color.Red;
+            this.button6.Location = new System.Drawing.Point(239, 181);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(99, 23);
+            this.button6.TabIndex = 20;
+            this.button6.Text = "Darse de baja";
+            this.button6.UseVisualStyleBackColor = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click_1);
             // 
             // textBox4
             // 
@@ -191,18 +200,18 @@
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(100, 20);
             this.textBox4.TabIndex = 18;
-            this.textBox4.Text = "ej: 09-06-20";
+            this.textBox4.Text = "ej: 2020-06-26";
             // 
-            // radioButton3
+            // partidaporfecha
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(32, 137);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(166, 19);
-            this.radioButton3.TabIndex = 17;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "Partidas jugadas la fecha:";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.partidaporfecha.AutoSize = true;
+            this.partidaporfecha.Location = new System.Drawing.Point(32, 137);
+            this.partidaporfecha.Name = "partidaporfecha";
+            this.partidaporfecha.Size = new System.Drawing.Size(166, 19);
+            this.partidaporfecha.TabIndex = 17;
+            this.partidaporfecha.TabStop = true;
+            this.partidaporfecha.Text = "Partidas jugadas la fecha:";
+            this.partidaporfecha.UseVisualStyleBackColor = true;
             // 
             // textBox3
             // 
@@ -210,6 +219,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(100, 21);
             this.textBox3.TabIndex = 16;
+            this.textBox3.Text = "\"ID de la partida\"";
             // 
             // textBox2
             // 
@@ -218,27 +228,27 @@
             this.textBox2.Size = new System.Drawing.Size(100, 21);
             this.textBox2.TabIndex = 15;
             // 
-            // radioButton2
+            // resultadodepartida
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(32, 110);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(210, 19);
-            this.radioButton2.TabIndex = 14;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Resultado de partida con jugador:";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.resultadodepartida.AutoSize = true;
+            this.resultadodepartida.Location = new System.Drawing.Point(32, 110);
+            this.resultadodepartida.Name = "resultadodepartida";
+            this.resultadodepartida.Size = new System.Drawing.Size(210, 19);
+            this.resultadodepartida.TabIndex = 14;
+            this.resultadodepartida.TabStop = true;
+            this.resultadodepartida.Text = "Resultado de partida con jugador:";
+            this.resultadodepartida.UseVisualStyleBackColor = true;
             // 
-            // radioButton1
+            // conquienjuego
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(32, 85);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(207, 19);
-            this.radioButton1.TabIndex = 13;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Jugadores con los que he jugado";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.conquienjuego.AutoSize = true;
+            this.conquienjuego.Location = new System.Drawing.Point(32, 85);
+            this.conquienjuego.Name = "conquienjuego";
+            this.conquienjuego.Size = new System.Drawing.Size(207, 19);
+            this.conquienjuego.TabIndex = 13;
+            this.conquienjuego.TabStop = true;
+            this.conquienjuego.Text = "Jugadores con los que he jugado";
+            this.conquienjuego.UseVisualStyleBackColor = true;
             // 
             // textoserver
             // 
@@ -281,6 +291,7 @@
             this.gana.TabStop = true;
             this.gana.Text = "Ganador de partida numero:";
             this.gana.UseVisualStyleBackColor = true;
+            this.gana.CheckedChanged += new System.EventHandler(this.gana_CheckedChanged);
             // 
             // button2
             // 
@@ -292,22 +303,13 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(250, 4);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(54, 13);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "ID Partida";
-            // 
             // idpartida
             // 
             this.idpartida.Location = new System.Drawing.Point(218, 28);
             this.idpartida.Name = "idpartida";
             this.idpartida.Size = new System.Drawing.Size(110, 21);
             this.idpartida.TabIndex = 3;
+            this.idpartida.Text = "\"ID de la partida\"";
             this.idpartida.TextChanged += new System.EventHandler(this.idpartida_TextChanged);
             // 
             // button3
@@ -415,16 +417,6 @@
             this.label8.Text = "fecha";
             this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(248, 181);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(100, 23);
-            this.button6.TabIndex = 20;
-            this.button6.Text = "Darse de baja";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click_1);
-            // 
             // Formmenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -472,7 +464,6 @@
         private System.Windows.Forms.RadioButton tiemp;
         private System.Windows.Forms.RadioButton gana;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox idpartida;
         private System.Windows.Forms.Label genteconectada;
         private System.Windows.Forms.ListBox listBox1;
@@ -486,11 +477,11 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton resultadodepartida;
+        private System.Windows.Forms.RadioButton conquienjuego;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.RadioButton radioButton3;
+        private System.Windows.Forms.RadioButton partidaporfecha;
         private System.Windows.Forms.Button button6;
     }
 }

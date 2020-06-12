@@ -14,7 +14,6 @@ namespace WindowsFormsApplication1
     {
         Socket server;
         Thread atender;
-        Thread formulario;
         List<juegoForm> listaform = new List<juegoForm>();    
 
         delegate void DelegadoParaPonerConectados(string[] texto);
@@ -46,6 +45,7 @@ namespace WindowsFormsApplication1
             juegoForm game = new juegoForm(server);
             game.inicializar(trozos[1], trozos[2], Convert.ToInt32(trozos[3]));
             game.Show();
+            
             
             listaform.Add(game);
             
@@ -81,7 +81,7 @@ namespace WindowsFormsApplication1
         private void Respuestas(string[] trozos)
         {
             string respuesta = trozos[1].Split('\0')[0];
-            textoserver.Text = "La respuesta es: " +respuesta;
+            textoserver.Text = "La respuesta es: " + respuesta;
 
         }
 
@@ -135,14 +135,14 @@ namespace WindowsFormsApplication1
                        
                         break;
 
-                    case 4:  //posicion
+                    case 4:  //tiempo jugado
                         mensaje = trozos[1].Split('\0')[0];
-                        MessageBox.Show("La posicion es: " + mensaje);
+                        MessageBox.Show("El tiempo de partida ha sido: " + mensaje);
                         break;
 
-                    case 5:  //duracion
+                    case 5:  //Los jugadores con los que he jugado
                         mensaje = trozos[1].Split('\0')[0];
-                        MessageBox.Show("La duracion es: " + mensaje);
+                        MessageBox.Show("Los usuarios contra los que has jugado son: " + mensaje);
                         break;
 
 
@@ -181,6 +181,8 @@ namespace WindowsFormsApplication1
                         //creamos el formulario del juego
                         DelegadoForm formdelegate = new DelegadoForm(Crearform);
                         Invoke(formdelegate, new object[] { trozos });
+
+
                       
                         break;
 
@@ -194,15 +196,31 @@ namespace WindowsFormsApplication1
 
                     case 10:  //simulacion del tiro
 
-             
+                           //la partida o furmolario
                         DelegadoTiro tirodelegate = new DelegadoTiro(Tiro);
                         Invoke(tirodelegate, new object[] { trozos });
 
 
                         break;
+
                     case 12:   //notificación de eliminar
+
                         mensaje = trozos[1].Split('\0')[0];
                         MessageBox.Show(mensaje);
+
+                        break;
+
+                    case 13:  //Resultado de partida con x jugador
+
+                        DelegadoParaRespuestas del_respuest = new DelegadoParaRespuestas(Respuestas);
+                        textoserver.Invoke(del_respuest, new object[] { trozos });
+                        break;
+
+                    case 14:  //Fecha de partida es
+
+                        DelegadoParaRespuestas del_respuesta = new DelegadoParaRespuestas(Respuestas);
+                        textoserver.Invoke(del_respuesta, new object[] { trozos });
+
 
                         break;
 
@@ -221,7 +239,7 @@ namespace WindowsFormsApplication1
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
             IPAddress direc = IPAddress.Parse("192.168.56.102");
-            IPEndPoint ipep = new IPEndPoint(direc, 9040);
+            IPEndPoint ipep = new IPEndPoint(direc, 9050);
 
 
             //Creamos el socket 
@@ -279,9 +297,10 @@ namespace WindowsFormsApplication1
 
                 // Nos desconectamos
                 groupBox1.BackColor = Color.LightGray;
+                atender.Abort();
                 server.Shutdown(SocketShutdown.Both);
                 server.Close();
-                atender.Abort();
+                
             }
             catch
             {
@@ -321,25 +340,44 @@ namespace WindowsFormsApplication1
 
                 }
 
-                /*else if (pos.Checked)
-                {
-                    string mensaje = "4/" + idpartida.Text;
-                    // Enviamos al servidor el nombre tecleado
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                    server.Send(msg);
-
-
-                }*/
-
                 else if (tiemp.Checked)
                 {
-                    string mensaje = "5/" + idpartida.Text;
+                    string mensaje = "4/" + textBox3.Text;
                     // Enviamos al servidor el nombre tecleado
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                     server.Send(msg);
 
 
                 }
+
+                else if (conquienjuego.Checked)
+                {
+                    string mensaje = "5/" + usuario.Text;
+                    // Enviamos al servidor el nombre tecleado
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+
+                }
+
+                else if (resultadodepartida.Checked)
+                {
+                    string mensaje = "13/" + usuario.Text + "/" + textBox2.Text;
+                    // Enviamos al servidor el nombre tecleado
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+
+                }
+
+                else if (partidaporfecha.Checked)
+                {
+                    string mensaje = "14/" + usuario.Text + "/" +  textBox4.Text;
+                    // Enviamos al servidor el nombre tecleado
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+
+                }
+
+
 
 
 
@@ -448,6 +486,9 @@ namespace WindowsFormsApplication1
 
         }
 
+        private void gana_CheckedChanged(object sender, EventArgs e)
+        {
 
+        }
     }
 }

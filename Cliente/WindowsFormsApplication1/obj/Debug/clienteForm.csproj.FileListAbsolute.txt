@@ -8,3 +8,12 @@ C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\o
 C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
 C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
 C:\Users\antonia\Desktop\Proyecto\Proyecto-SO\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\User\Desktop\proyecto2\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\User\Desktop\proyecto2\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\User\Desktop\proyecto2\ProyectoSO\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\User\Desktop\proyecto2\ProyectoSO\Cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\User\Desktop\proyecto2\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Formmenu.resources
+C:\Users\User\Desktop\proyecto2\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.juegoForm.resources
+C:\Users\User\Desktop\proyecto2\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\User\Desktop\proyecto2\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.Cache
+C:\Users\User\Desktop\proyecto2\ProyectoSO\Cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csprojResolveAssemblyReference.cache
