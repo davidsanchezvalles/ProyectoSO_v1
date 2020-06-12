@@ -24,7 +24,7 @@ namespace WindowsFormsApplication1
         //variables globales
         public double t = 0, h, Vy, grado, a = 1.89; //acceleracion escogida convenientemente para los datos del problema
         public double Vx, Voy; //equivalen a la fuerza/velocidad 
-        public int x = 0, y, vida = 0;
+        public int x = 0, y, vida = 0,stop=0;
         public const double PI = 3.1415926535897931;
         public int max1 = 0, max2 = 0;
         public int max_g = 0, grade = 0;
@@ -261,25 +261,34 @@ namespace WindowsFormsApplication1
 
                 if (vida == 0)
                 {
+                  
+                    
                     if (x > 860 && y > 150 && y < 260)
                     {
-                        //MessageBox.Show(pBar4.Value.ToString());
-                        vida = 1;
+                        
+                        label9.Text = pBar4.Value.ToString();
                         if (pBar4.Value != 0)
                         {
+                          
                             pBar4.Value = pBar4.Value - 5;
+                            vida = 1;
+                            
                         }
-                        else
+                      
+                        else if (stop==0)  //al ser un timer, ejecturá las condiciones cada intervalo, y eso produce que se realicen estas mas veces de lo requerido
                         {
-                            MessageBox.Show("¡¡¡¡Ganó el jugador: " + jugador1 +"!!!");
+                            
                             //si somos el jugador que esta realizando el tiro,y no simulandolo, enviamos el ganador al servidor, para evitar que le llegue duplicado el mensaje
-                            if (recibido == 0)
+                            if (recibido == 0 )
                             {
                                 string men = "11/" + jugador1;
                                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
                                 server.Send(msg);
-
+                               
+                                
                             }
+                            //MessageBox.Show("¡¡¡¡Ganó el jugador: " + jugador1 +"!!!");
+                            stop = 1;
                             this.Close();
                         }
                         
@@ -302,25 +311,31 @@ namespace WindowsFormsApplication1
 
                 if (vida == 0)
                 {
+                  
                     if (x < 160 && y > 150 && y < 270)
                     {
-
-                        vida = 1;
+                        label9.Text = pBar3.Value.ToString();
+                       
                         if (pBar3.Value != 0)
                         {
+                            
                             pBar3.Value = pBar3.Value - 5;
+                            vida = 1;
+                          
                         }
-                        else
+                        else if (stop==0)
                         {
-                            MessageBox.Show("gano el jugador: " + jugador2);
+                           
                             //si somos el jugador que esta realizando el tiro,y no simulandolo, enviamos el ganador al servidor, para evitar que le llegue duplicado el mensaje
-                            if (recibido == 0)
+                            if (recibido != 1)
                             {
                                 string men = "11/" + jugador2;
                                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(men);
                                 server.Send(msg);
 
                             }
+                            //MessageBox.Show("gano el jugador: " + jugador2);
+                            stop = 1;
                             this.Close();
                         } //tenemos que controloar que solo quita vida una vez, ya que la condicion se cumpliria mas de una vez ya que lo compara cada 50ms
                     }
@@ -353,14 +368,11 @@ namespace WindowsFormsApplication1
                      timer1.Start();
                      timer3.Start();
                      pBar5.Value = 20; 
-                    timer_turno.Start();
+                     timer_turno.Start();
                      recibido = 0;
 
                 }
-                /*timer1.Start();
-                timer3.Start();
-                
-                pBar5.Value = 20;*/
+            
 
             }
         }  // timer del tiro parabolico

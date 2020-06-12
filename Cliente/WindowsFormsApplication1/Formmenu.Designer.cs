@@ -49,8 +49,8 @@
             this.tiemp = new System.Windows.Forms.RadioButton();
             this.gana = new System.Windows.Forms.RadioButton();
             this.button2 = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
             this.idpartida = new System.Windows.Forms.TextBox();
+            this.button6 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -61,7 +61,6 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -173,7 +172,6 @@
             this.groupBox2.Controls.Add(this.tiemp);
             this.groupBox2.Controls.Add(this.gana);
             this.groupBox2.Controls.Add(this.button2);
-            this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.idpartida);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(25, 61);
@@ -210,6 +208,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(100, 21);
             this.textBox3.TabIndex = 16;
+            this.textBox3.Text = "\"ID de la partida\"";
             // 
             // textBox2
             // 
@@ -292,23 +291,25 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(250, 4);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(54, 13);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "ID Partida";
-            // 
             // idpartida
             // 
             this.idpartida.Location = new System.Drawing.Point(218, 28);
             this.idpartida.Name = "idpartida";
             this.idpartida.Size = new System.Drawing.Size(110, 21);
             this.idpartida.TabIndex = 3;
+            this.idpartida.Text = "\"ID de la partida\"";
             this.idpartida.TextChanged += new System.EventHandler(this.idpartida_TextChanged);
+            // 
+            // button6
+            // 
+            this.button6.BackColor = System.Drawing.Color.Red;
+            this.button6.Location = new System.Drawing.Point(239, 181);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(99, 23);
+            this.button6.TabIndex = 20;
+            this.button6.Text = "Darse de baja";
+            this.button6.UseVisualStyleBackColor = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click_1);
             // 
             // button3
             // 
@@ -415,16 +416,6 @@
             this.label8.Text = "fecha";
             this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(248, 181);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(100, 23);
-            this.button6.TabIndex = 20;
-            this.button6.Text = "Darse de baja";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click_1);
-            // 
             // Formmenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -472,7 +463,6 @@
         private System.Windows.Forms.RadioButton tiemp;
         private System.Windows.Forms.RadioButton gana;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox idpartida;
         private System.Windows.Forms.Label genteconectada;
         private System.Windows.Forms.ListBox listBox1;

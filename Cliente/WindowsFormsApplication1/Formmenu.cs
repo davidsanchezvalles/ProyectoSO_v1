@@ -47,6 +47,7 @@ namespace WindowsFormsApplication1
             game.inicializar(trozos[1], trozos[2], Convert.ToInt32(trozos[3]));
             game.Show();
             
+            
             listaform.Add(game);
             
         }
@@ -181,6 +182,8 @@ namespace WindowsFormsApplication1
                         //creamos el formulario del juego
                         DelegadoForm formdelegate = new DelegadoForm(Crearform);
                         Invoke(formdelegate, new object[] { trozos });
+
+
                       
                         break;
 
@@ -194,7 +197,7 @@ namespace WindowsFormsApplication1
 
                     case 10:  //simulacion del tiro
 
-             
+                           //la partida o furmolario
                         DelegadoTiro tirodelegate = new DelegadoTiro(Tiro);
                         Invoke(tirodelegate, new object[] { trozos });
 
@@ -220,8 +223,8 @@ namespace WindowsFormsApplication1
         {
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
-            IPAddress direc = IPAddress.Parse("192.168.56.102");
-            IPEndPoint ipep = new IPEndPoint(direc, 9040);
+            IPAddress direc = IPAddress.Parse("192.168.1.208");
+            IPEndPoint ipep = new IPEndPoint(direc, 9020);
 
 
             //Creamos el socket 
@@ -279,9 +282,10 @@ namespace WindowsFormsApplication1
 
                 // Nos desconectamos
                 groupBox1.BackColor = Color.LightGray;
+                atender.Abort();
                 server.Shutdown(SocketShutdown.Both);
                 server.Close();
-                atender.Abort();
+                
             }
             catch
             {
