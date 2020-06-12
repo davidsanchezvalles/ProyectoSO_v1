@@ -102,7 +102,15 @@ namespace WindowsFormsApplication1
                     string recibido = Encoding.ASCII.GetString(msg2).TrimEnd('\0');
                     //MessageBox.Show(recibido);
                     string[] trozos = recibido.Split('/');
-                    int codigo = Convert.ToInt32(trozos[0]);
+                    int codigo = 0;
+                    try
+                    {
+                        codigo = Convert.ToInt32(trozos[0]);
+                    }
+                    catch (FormatException)
+                    {
+                        MessageBox.Show("Lo sentimos, hubo un error en el servidor");
+                    }
                     string mensaje;
 
 
@@ -185,12 +193,15 @@ namespace WindowsFormsApplication1
 
                             break;
 
-                        case 12:   //notificación de eliminar
+                        case 12:   //notificación 
 
                             mensaje = trozos[1].Split('\0')[0];
                             MessageBox.Show(mensaje);
 
                             break;
+
+                        
+
 
                     }
                 }

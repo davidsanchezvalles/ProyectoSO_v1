@@ -275,10 +275,10 @@ namespace WindowsFormsApplication1
                     if (x > 860 && y > 150 && y < 260)
                     {
                         
-                        label9.Text = pBar4.Value.ToString();
+                      
                         if (pBar4.Value != 0)
                         {
-                          
+                            pictureBox5.Visible = false;
                             pBar4.Value = pBar4.Value - 5;
                             vida = 1;
                             
@@ -329,11 +329,11 @@ namespace WindowsFormsApplication1
                   
                     if (x < 160 && y > 150 && y < 270)
                     {
-                        label9.Text = pBar3.Value.ToString();
+                        
                        
                         if (pBar3.Value != 0)
                         {
-                            
+                            pictureBox6.Visible = false;
                             pBar3.Value = pBar3.Value - 5;
                             vida = 1;
                           

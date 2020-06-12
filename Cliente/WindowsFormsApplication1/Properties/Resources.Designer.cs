@@ -113,6 +113,16 @@ namespace WindowsFormsApplication1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap helmet_opt__3_ {
+            get {
+                object obj = ResourceManager.GetObject("helmet_opt (3)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icono_enviar_p {
             get {
                 object obj = ResourceManager.GetObject("icono enviar_p", resourceCulture);
