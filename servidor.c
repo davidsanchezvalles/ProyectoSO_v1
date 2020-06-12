@@ -492,7 +492,7 @@ void *AtenderCliente(void *socket){
 				pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
 				identificadorP = idP;
 				idP++;
-				pthread_mutex_unlock (&mutex); //ya puede interrumpir
+				
 				
 				//el string output contiene la fecha actual con el formato "09-06-20"
 				time_t tiempo = time(0);
@@ -518,9 +518,7 @@ void *AtenderCliente(void *socket){
 					exit (1);
 				}else
 				{
-					/**pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
-					Poner(&lista,nombre,sock_conn); //añadimos el nuevo usuario a la lista de conectados				
-					pthread_mutex_unlock (&mutex); //ya puede interrumpir*/
+				
 					
 					printf("Inserción a partida correctamente\n");
 				}
@@ -534,12 +532,7 @@ void *AtenderCliente(void *socket){
 				strcat(consulta,"1");
 				strcat(consulta,");");
 				
-				/*strcat(consulta,"1,'");
-				strcat(consulta,ganador);
-				strcat(consulta,"',");
-				sprintf(str1, "%d", identificadorP);
-				strcat(consulta, str1);
-				strcat(consulta,");");*/
+			
 				
 				err=mysql_query (conn, consulta);
 				
@@ -549,9 +542,6 @@ void *AtenderCliente(void *socket){
 					exit (1);
 				}else
 				{
-					/**pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
-					Poner(&lista,nombre,sock_conn); //añadimos el nuevo usuario a la lista de conectados				
-					pthread_mutex_unlock (&mutex); //ya puede interrumpir*/
 					
 					printf("Inserción a resumen(ganador) correctamente\n");
 				}
@@ -574,6 +564,8 @@ void *AtenderCliente(void *socket){
 				strcat(consulta,"2);");
 				
 				err=mysql_query (conn, consulta);
+				
+				pthread_mutex_unlock (&mutex); //ya puede interrumpir
 								
 				if (err!=0) {
 					printf ("Error al insertar datos en la base %u %s\n",
@@ -581,12 +573,16 @@ void *AtenderCliente(void *socket){
 					exit (1);
 				}else
 				{
-					/**pthread_mutex_lock (&mutex);//Pedimos que no interrumpan
-					Poner(&lista,nombre,sock_conn); //añadimos el nuevo usuario a la lista de conectados				
-					pthread_mutex_unlock (&mutex); //ya puede interrumpir*/
+			
 					
 					printf("Inserción a resumen correctamente\n");
 				}
+				sprintf(buff2,"13/Felicidades,usted ha ganado!!");
+				int pos1 = DamePosicion(&lista, ganador);
+				write (lista.conectados[pos1].socket,buff2, strlen(buff2));
+				sprintf(buff2,"13/Lo siento,usted ha perdido!!");  
+				int pos2 = DamePosicion(&lista, partida.jugador2);
+				write (lista.conectados[pos2].socket,buff2, strlen(buff2));
 				
 				break;
 				//el string output contiene la fecha actual con el formato "09/06/20"
