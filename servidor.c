@@ -8,8 +8,10 @@
 #include <mysql.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <time.h>
+
 //#include <my_global.h>
-//v4_sergio	
+
 
 
 typedef struct {
@@ -284,6 +286,8 @@ void *AtenderCliente(void *socket){
 						printf("Password NO correcto: %s y %s coninciden\n", contrasena, row[0]);
 						printf ("Enviamos a client: %s\n", buff2);
 					}
+					
+					
 				}
 				break;
 			}
@@ -427,9 +431,9 @@ void *AtenderCliente(void *socket){
 				}
 				
 				break;
+			}
 				
-				
-			case 10:  //tiro
+			case 10: { //tiro
 				
 				p = strtok( NULL, "/"); 
 				int turno ;
@@ -455,6 +459,38 @@ void *AtenderCliente(void *socket){
 				{
 					write (lista.conectados[p1].socket,buff2, strlen(buff2));
 				}
+				
+				
+				break;
+			}
+				
+			case 11:  {//guardar datos partida
+				
+				char ganador[30];
+				p = strtok( NULL, "/"); 
+				strcpy(ganador,p);
+				
+				
+				//el string output contiene la fecha actual con el formato "09/06/20"
+				time_t tiempo = time(0);
+				struct tm *tlocal = localtime(&tiempo);
+				char output[128];
+				strftime(output,128,"%d/%m/%y", tlocal);
+				printf("fecha actual: %s, jugador ganador: %s\n", output,ganador);
+				
+				
+				
+				//el string output contiene la fecha actual con el formato "09/06/20"
+				/*time_t tiempo = time(0);
+				struct tm *tlocal = localtime(&tiempo);
+				char output[128];
+				strftime(output,128,"%d/%m/%y", tlocal);
+				printf("fecha actual: %s, jugador ganador: %s\n", output,ganador);*/
+				
+				
+				
+				
+				//hay q insertar en la basede datos:    partida.jugador1  , partida.jugador2,  ganador  , output(fecha)
 				
 				
 				break;
