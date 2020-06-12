@@ -51,6 +51,7 @@
             this.gana = new System.Windows.Forms.RadioButton();
             this.button2 = new System.Windows.Forms.Button();
             this.idpartida = new System.Windows.Forms.TextBox();
+            this.button6 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -311,6 +312,17 @@
             this.idpartida.TabIndex = 3;
             this.idpartida.Text = "\"ID de la partida\"";
             this.idpartida.TextChanged += new System.EventHandler(this.idpartida_TextChanged);
+            // 
+            // button6
+            // 
+            this.button6.BackColor = System.Drawing.Color.Red;
+            this.button6.Location = new System.Drawing.Point(239, 181);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(99, 23);
+            this.button6.TabIndex = 20;
+            this.button6.Text = "Darse de baja";
+            this.button6.UseVisualStyleBackColor = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click_1);
             // 
             // button3
             // 

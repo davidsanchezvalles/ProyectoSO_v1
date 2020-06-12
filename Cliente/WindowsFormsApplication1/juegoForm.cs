@@ -176,7 +176,7 @@ namespace WindowsFormsApplication1
 
             if (turno == 1)
             {
-                label8.Text = "Turno de: "+jugador2;  //ya que simulamos el tiro del turno 1, pero seguidamente será el turno del jugador 2
+                label8.Text = "Turno de: "+ jugador2;  //ya que simulamos el tiro del turno 1, pero seguidamente será el turno del jugador 2
             }
             else if (turno == 2)
             {

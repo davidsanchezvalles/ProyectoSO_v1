@@ -499,6 +499,7 @@ void *AtenderCliente(void *socket){
 				
 				
 				idP = atoi(row[0]) +1;
+
 				
 				char ganador[30];
 				p = strtok( NULL, "/"); 
@@ -590,7 +591,7 @@ void *AtenderCliente(void *socket){
 				sprintf(str1, "%d,", identificadorP);
 				strcat(consulta, str1);
 				strcat(consulta,"2);");
-				
+
 				err=mysql_query (conn, consulta);
 								
 				if (err!=0) {
@@ -614,7 +615,7 @@ void *AtenderCliente(void *socket){
 				strftime(output,128,"%d/%m/%y", tlocal);
 				printf("fecha actual: %s, jugador ganador: %s\n", output,ganador);*/
 				
-				
+			
 			}
 			case 12: {  //darse de baja
 				
@@ -750,6 +751,7 @@ int main(int argc, char *argv[]) {
 	serv_adr.sin_family = AF_INET;	// asocia el socket a cualquiera de las IP de la m?quina.
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY); //htonl formatea el numero que recibe al formato necesario
 	serv_adr.sin_port = htons(9050); // escucharemos en el port 90X0
+
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0){
 		printf ("Error al bind\n");
 	}
